@@ -1,0 +1,155 @@
+﻿@using HCLAcademy.Models;
+@using HCLAcademy.HtmlHelpers;
+
+@model IEnumerable<HCLAcademy.Models.UserSkill>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="../Content/jquery.mCustomScrollbar.css" rel="stylesheet" />
+<link href="../Content/css/competence.css" rel="stylesheet" />
+<link href="../Content/css/style.css" rel="stylesheet" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i' rel='stylesheet' type='text/css'>
+<div id="body">       
+         <section class="content-wrapper main-content clear-fix container">
+             <div style="border:1px solid #326295;padding:12px;padding-bottom: 35px;">
+             <h2>Competency level for assigned skills</h2>
+             <div style="writing-mode:vertical-rl;text-orientation:sideways-right;float:left;padding-bottom:0px;"><p style="font-size:20px;">Competency Level</p></div>             
+             <div class="chart-main">
+                 <div class="chart-hld" style="margin-left: 30px;">
+                     <ul>
+                         @foreach (var item in Model)
+                         {
+                             if (@item.Competence == "EXPERT")
+                             {
+                                 <li>
+                                     <div class="box green">
+                                         <span>Expert</span>
+                                     </div>
+                                     <div class="box orange">
+                                         <span>Proficient</span>
+                                     </div>
+                                     <div class="box blue">
+                                         <span>Competent</span>
+                                     </div>
+                                     <div class="box yellow">
+                                         <span>Advanced Beginner</span>
+                                     </div>
+                                     <div class="box red">
+                                         <span>Novice</span>
+                                     </div>
+                                 </li>
+                             }
+                             else if (@item.Competence == "PROFICIENT")
+                             {
+                                 <li>
+                                     <div class="box orange">
+                                         <span>Proficient</span>
+                                     </div>
+                                     <div class="box blue">
+                                         <span>Competent</span>
+                                     </div>
+                                     <div class="box yellow">
+                                         <span>Advanced Beginner</span>
+                                     </div>
+                                     <div class="box red">
+                                         <span>Novice</span>
+                                     </div>
+                                 </li>
+                             }
+                             else if (@item.Competence == "COMPETENT")
+                             {
+                                 <li>
+                                     <div class="box blue">
+                                         <span>Competent</span>
+                                     </div>
+                                     <div class="box yellow">
+                                         <span>Advanced Beginner</span>
+                                     </div>
+                                     <div class="box red">
+                                         <span>Novice</span>
+                                     </div>
+                                 </li>
+                             }
+                             else if (@item.Competence == "ADVANCED BEGINNER")
+                             {
+                                 <li>
+                                     <div class="box yellow">
+                                         <span>Advanced Beginner</span>
+                                     </div>
+                                     <div class="box red">
+                                         <span>Novice</span>
+                                     </div>
+                                 </li>
+                             }
+                             else if (@item.Competence == "BEGINNER")
+                             {
+                                 <li>
+                                     <div class="box red">
+                                         <span>Novice</span>
+                                     </div>
+                                 </li>
+                             }
+                             else if (@item.Competence == "NOVICE")
+                             {
+                                 <li>
+                                     <div class="box red">
+                                         <span>Novice</span>
+                                     </div>
+                                 </li>
+                             }
+                         }
+                     </ul>
+                 </div>
+                 <div class="skills-pan" style="margin-left:30px;">
+                     <ul>
+                         @foreach (var item in Model)
+                         {
+                             <li>@Html.DisplayFor(modelItem => item.Skill)</li>
+                         }
+                     </ul>
+                 </div>
+                 <div style="padding-left:30px;font-size:20px;text-align:left;padding-top:20px;">
+                        <p style="float:left;">Skills assigned to user</p>
+                        <span class="glyphicon glyphicon-arrow-right" style="float:left;margin-left:10px;"></span>
+                 </div>
+             </div>
+                 </div>
+         </section>
+</div>
+<script src="../Content/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script type="text/javascript" language="Javascript">
+
+    @*function getDetails(id) {
+
+        $("#novice-pop").html(" <img src='/Images/loading_01.gif' class='loader-img loader-position' />");
+        var competancyLevel = $("#" + id + " > span").text();
+
+        var objCompetancy = {
+            CompetancyLevel: competancyLevel,
+            UserSkill: "@ViewBag.UserSkill"
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/CareerProgression/GetCompetancyDetails",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(objCompetancy),
+            success: function (response) {
+                $("#novice-pop").html(response);
+
+                $("#novice-pop .tab-pane").mCustomScrollbar({
+                    setHeight: 500,
+                    theme: "dark-3"
+                });
+            },
+            failure: function (response) {
+                alert("Failed");
+            }
+        });
+    }*@
+
+</script>
+

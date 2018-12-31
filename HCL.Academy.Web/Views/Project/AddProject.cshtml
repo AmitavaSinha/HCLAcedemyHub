@@ -1,0 +1,63 @@
+﻿@model HCLAcademy.Models.Project
+
+@{
+    ViewBag.Title = "AddProject";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    var allProjects = Session["Projects"];
+}
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <h2>Projects</h2>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+           
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <table class="table table-bordered table-striped" id="tblProjects">
+                        <thead style="background-color:#326295;color:#fff">
+                            <tr>
+                                <th style="border:none">Add Project</th>
+                                <th style="border:none"></th>
+                                <th style="border:none"></th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td><label>Project Name</label></td>
+                            <td>@Html.EditorFor(model => model.ProjectName, new { htmlAttributes = new { @id = "projectName", @class = "form-control" } })</td>
+                            <td><input type="submit" value="Submit" class="btn btn-default" /></td>
+                        </tr>
+                    </table>
+
+                    @Html.ValidationMessageFor(model => model.ProjectName, "", new { @class = "text-danger" })
+                    @Html.Partial("Index", allProjects)
+                </div>
+
+
+            </div>
+
+
+            @*<script>
+                    function AddProject() {
+                        var PostData = {
+                            project: $("#projectName").val()
+                        };
+                        console.log(JSON.stringify(PostData));
+                        $.ajax({
+                            type: "POST",
+                            url: "/Project/AddProject",
+                            contentType: "application/json;",
+                            dataType: "",
+                            data: JSON.stringify(PostData),
+                            success: function (result) {
+                                ShowSkills($('#dvUserId').text(), $('#userEmailSkill').html());
+                            }
+                    }
+                </script>*@
+        }
+    </section>
+
+</div>

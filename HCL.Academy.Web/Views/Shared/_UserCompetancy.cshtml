@@ -1,0 +1,112 @@
+﻿@model HCLAcademy.Models.SkillSetDetails
+
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header profile-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h2 class="modal-title">@Model.competancyLevel</h2>
+        </div>
+        <div class="modal-body">
+            <ul class="skill-tab" role="tablist">
+                <li role="presentation" class="active"><a href="#soft" aria-controls="soft" role="tab" data-toggle="tab">Soft skills</a></li>
+                <li role="presentation"><a href="#professional" aria-controls="professional" role="tab" data-toggle="tab">Professional skills</a></li>
+            </ul>
+            @if (Model != null)
+            {
+                <div class="tab-content skillstab-cont">
+                    <div role="tabpanel" class="tab-pane active" id="soft">
+                        @if (Model.SoftSkillSet != null && Model.SoftSkillSet.Count > 0)
+                        {
+                            <ul>
+                                @foreach (var softItem in Model.SoftSkillSet)
+                                {
+                                    <li>
+                                        <h4>@softItem.SkillHeader</h4>
+                                        <p>@softItem.SkillDescription</p>
+                                    </li>
+                                }
+
+                                @if (Model.SoftSkillTrainings != null && Model.SoftSkillTrainings.Count > 0)
+                                {
+                                    <li style="border:double">
+                                        <h4>Available Trainings:-</h4>
+                                        <ul style="list-style-type:circle !important">
+                                            @foreach (var softTraining in Model.SoftSkillTrainings)
+                                            {
+                                                <li>
+                                                    @if (softTraining.IsInternalTraining)
+                                                    {
+                                                        <h4>@Html.ActionLink(softTraining.TrainingName, "TrainingMaterials", "Training", new { Selected = softTraining.TrainingName }, new { @target = "_blank" })</h4>
+                                                    }
+                                                    else
+                                                    {
+                                                        <h4><a href="@softTraining.TrainingLink" target="_blank">@softTraining.TrainingName</a></h4>
+                                                    }
+                                                    <ul>
+                                                        <li>Description: @softTraining.TrainingDescription</li>
+                                                    </ul>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li style="border:double">
+                                        <h4>Available Trainings - No training is available for this section.</h4>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="professional">
+                        @if (Model.ProfessionalSkillSet != null && Model.ProfessionalSkillSet.Count > 0)
+                        {
+                            <ul>
+                                @foreach (var profeItem in Model.ProfessionalSkillSet)
+                                {
+                                    <li>
+                                        <h4>@profeItem.SkillHeader</h4>
+                                        <p>@profeItem.SkillDescription</p>
+                                    </li>
+                                }
+
+                                
+                                @if (Model.ProfessionalSkilltrainings != null && Model.ProfessionalSkilltrainings.Count > 0)
+                                {
+                                    <li style="border:double">
+                                        <h4>Available Trainings:-</h4>
+                                        <ul style="list-style-type:circle !important">
+                                            @foreach (var profTraining in Model.ProfessionalSkilltrainings)
+                                            {
+                                                <li>
+                                                    @if (profTraining.IsInternalTraining)
+                                                    {
+                                                        <h4>@Html.ActionLink(profTraining.TrainingName, "TrainingMaterials", "Training", new { Selected = profTraining.TrainingName }, new { @target = "_blank" })</h4>
+                                                    }
+                                                    else
+                                                    {
+                                                        <h4><a href="@profTraining.TrainingLink" target="_blank">@profTraining.TrainingName</a></h4>
+                                                    }
+                                                    <ul>
+                                                        <li>Description: @profTraining.TrainingDescription</li>
+                                                    </ul>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li style="border:double">
+                                        <h4>Available Trainings - No training is available for this section.</h4>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

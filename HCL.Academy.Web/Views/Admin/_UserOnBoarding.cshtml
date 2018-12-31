@@ -1,0 +1,464 @@
+﻿@model HCLAcademy.Models.UserOnBoarding
+
+
+<div class="col-md-12">
+    <div class="details-table table-responsive">
+        <div style="border:thin" id="search-details">
+            @* <h4>User: </h4>*@
+            <input type="hidden" id="hdnUserId" value=@Model.UserId />
+            <input type="hidden" id="hdnUserEmail" value=@Model.Email />
+            <table class="table table-bordered admin-onbrdtble" id="tblUser">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        @if (!(string.IsNullOrWhiteSpace(Model.CurrentProfileSharing)))
+                        {
+                            <th>Profile Sharing</th>
+                        }
+                        @if (!(string.IsNullOrWhiteSpace(Model.CurrentBGVStatus)))
+                        {
+                            <th>BGV Status</th>
+                        }
+                        <th>Primary Skill</th>
+                        <th>Competency Level</th>
+                        @if (!(string.IsNullOrWhiteSpace(Model.CurrentStatus)))
+                        {
+                            <th>Status</th>
+                        }
+                        @*<th>Is NLWork Permit</th>*@
+                        @*<th>Edit</th>*@
+                        <th>GEO</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Model.Name</td>
+                        <td>@Model.Email</td>
+                        @if (!(string.IsNullOrWhiteSpace(Model.CurrentProfileSharing)))
+                        {
+                            <td>@Model.CurrentProfileSharing</td>
+                        }
+                        @if (!(string.IsNullOrWhiteSpace(Model.CurrentBGVStatus)))
+                        {
+                            <td>@Model.CurrentBGVStatus</td>
+                        }
+
+                        @if (string.IsNullOrWhiteSpace(Model.CurrentSkill))
+                        {
+                            <td>
+                                @Html.DropDownList("ddSkillOnBoard", new SelectList(Model.Skills, "SkillId", "SkillName"), "Please Select Skill",
+                                                new
+                                                {
+                                                    @id = "ddSkillOnBoard",
+                                                    @class = "form-control"
+                                                })
+                                <span class="error" id="SkillError" style="display:none; margin-left: 10px;">Skill is required</span>
+                            </td>
+                        }
+                        else
+                        {
+                            <td><div id="dvCurrentSkill">@Model.CurrentSkill</div> </td>
+                        }
+
+                        @if (string.IsNullOrWhiteSpace(Model.CurrentCompetance))
+                        {
+                            <td>
+                                @*@Html.DropDownList("ddCompetenceOnBoard", new SelectList(Model.Competence, "CompetanceId", "CompetanceName"), "Please Select Competence",
+                new
+                {
+                    @id = "ddCompetenceOnBoard",
+                    @class = "form-control"
+                })*@
+                                @Html.DropDownList("ddCompetenceOnBoard", new SelectList(Enumerable.Empty<SelectListItem>(), "CompetenceId", "CompetenceName"), "Please Select Competence",
+                                              new
+                                              {
+                                                  @id = "ddCompetenceOnBoard",
+                                                  @class = "form-control"
+                                              })
+                                <span class="error" id="CompetenceError" style="display:none; margin-left: 10px;">Competence is required</span>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>@Model.CurrentCompetance</td>
+                        }
+
+                        @if (!(string.IsNullOrWhiteSpace(Model.CurrentStatus)))
+                        {
+                            <td>@Model.CurrentStatus</td>
+                        }
+                        @if (string.IsNullOrWhiteSpace(Model.CurrentGEO))
+                        {
+                            <td>
+                                @Html.DropDownList("ddGEO", new SelectList(Model.GEOs, "Id", "Title"), "Please Select GEO",
+                                                     new
+                                                     {
+                                                         @id = "ddGEO",
+                                                         @class = "form-control"
+                                                     })
+                                <span class="error" id="GEOError" style="display:none; margin-left: 10px;">GEO is required</span>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>@Model.CurrentGEO</td>
+                        }
+                        @if (string.IsNullOrWhiteSpace(Model.CurrentRole))
+                        {
+                            <td>
+                                @Html.DropDownList("ddGEO", new SelectList(Model.Roles, "Id", "Title"), "Please Select Role",
+                                                     new
+                                                     {
+                                                         @id = "ddRole",
+                                                         @class = "form-control"
+                                                     })
+                                <span class="error" id="RoleError" style="display:none; margin-left: 10px;">Role is required</span>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>@Model.CurrentRole</td>
+                        }
+                        @*<td>@Html.CheckBox("IsNLWorkPermit", @Model.IsNLWorkPermit)</td>*@
+                        @*<td>
+            <a style="cursor:pointer;"><linkbutton onclick="EditOnBoardItem()">Edit</linkbutton></a>
+        </td>*@
+                    </tr>
+                </tbody>
+            </table>
+
+            @if (!Model.IsPresentInOnBoard)
+            {
+                <input type="button" id="btnOnBoardUser" class="sta-adminbt" onclick="OnBoardUser()" value="Save" />
+            }
+            else
+            {
+                <input type="button" id="btnOnBoardUser" class="sta-adminbt" onclick="OnBoardUser()" value="Save" disabled="disabled" />
+            }
+
+        </div>
+
+        <div @*class="row"*@ id="divUserOnBoardLoader"></div>
+
+        <div class="modal fade" id="popup-EditOnboarding" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="modal-close-Adduser"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Edit OnBoarding Details</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <table>
+                            <tr>
+                                <td>Email: </td>
+                                <td>@Model.Email</td>
+                            </tr>
+                            <tr>
+                                <td>Profile Sharing: </td>
+                                <td>
+                                    @Html.DropDownList("ddProfileOnBoardEdit", new SelectList(Model.ProfileSharingStatus, "ProfileSharingId", "ProfileSharingName"), "Please Select Sharing Status",
+                                                new
+                                                {
+                                                    @id = "ddProfileOnBoardEdit",
+                                                    @class = "form-control",
+
+                                                })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>BGV Status: </td>
+                                <td>
+                                    @Html.DropDownList("ddBGVStatusOnBoardEdit", new SelectList(Model.BGVStatus, "BGVStatusId", "BGVStatusName"), "Please Select BGV Status",
+                                                new
+                                                {
+                                                    @id = "ddBGVStatusOnBoardEdit",
+                                                    @class = "form-control"
+                                                })
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Skill: </td>
+                                <td>
+                                    @Html.DropDownList("ddSkillOnBoardEdit", new SelectList(Model.Skills, "SkillId", "SkillName"), "Please Select Skill",
+                                                new
+                                                {
+                                                    @id = "ddSkillOnBoardEdit",
+                                                    @class = "form-control"
+                                                })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Competence: </td>
+                                <td>
+                                    @Html.DropDownList("ddCompetanceOnBoardEdit", new SelectList(Model.Competence, "CompetenceId", "CompetenceName"), "Please Select Competence",
+                                                new
+                                                {
+                                                    @id = "ddCompetanceOnBoardEdit",
+                                                    @class = "form-control"
+                                                })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Status: </td>
+                                <td>
+                                    @Html.DropDownList("ddStatusOnBoardEdit", new SelectList(Model.Status, "StatusId", "StatusName"), "Please Select Status",
+                                                new
+                                                {
+                                                    @id = "ddStatusOnBoardEdit",
+                                                    @class = "form-control",
+
+                                                })
+                                </td>
+                            </tr>
+
+                        </table>
+
+                        <input type="button" id="btnEditOnBoard" onclick="EditOnBoard()" value="Submit" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@*<script src="~/Scripts/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>*@
+@*<script src="~/Scripts/jquery.min.1.12.4.js"></script>*@
+@*<link href="~/Scripts/lib/bootstrap-datepicker.css" rel="stylesheet" />
+    <script src="~/Scripts/lib/bootstrap-datepicker.js"></script>*@
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+<link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        FillCompetenceBySkillName();
+        // Validate Skill
+        $("#ddSkillOnBoard").on("change", function () {
+            var input = $(this);
+            var is_name = input.val();
+            if (is_name) {
+                input.removeClass("invalid").addClass("valid");
+                input.css('border', '2px solid green');
+                $("#SkillError").css('display', 'none');
+                FillCompetence();
+            }
+            else {
+                input.removeClass("valid").addClass("invalid");
+                input.css('border', '2px solid red');
+                $("#SkillError").css('display', 'block');
+            }
+        });
+
+        // Validate Competence
+        $("#ddCompetenceOnBoard").on("change", function () {
+            var input = $(this);
+            var is_name = input.val();
+            if (is_name) {
+                input.removeClass("invalid").addClass("valid");
+                input.css('border', '2px solid green');
+                $("#CompetenceError").css('display', 'none');
+            }
+            else {
+                input.removeClass("valid").addClass("invalid");
+                input.css('border', '2px solid red');
+                $("#CompetenceError").css('display', 'block');
+            }
+        });
+
+        $("#ddGEO").on("change", function () {
+            var input = $(this);
+            var is_name = input.val();
+            if (is_name) {
+                input.removeClass("invalid").addClass("valid");
+                input.css('border', '2px solid green');
+                $("#GEOError").css('display', 'none');
+            }
+            else {
+                input.removeClass("valid").addClass("invalid");
+                input.css('border', '2px solid red');
+                $("#GEOError").css('display', 'block');
+            }
+        });
+
+    });
+
+    function EditOnBoardItem() {
+        $("#popup-EditOnboarding").modal('show');
+    }
+
+    function OnBoardUser() {
+
+        if ($("#ddCompetenceOnBoard")[0].selectedIndex == 0 || $("#ddSkillOnBoard")[0].selectedIndex == 0) {
+            alert('Please select skill and competence');
+            return;
+        }
+        var isValid = true;
+        var valid1 = $("#ddSkillOnBoard").hasClass("valid");
+        if (!valid1) {
+            isValid = false;
+            $("#ddSkillOnBoard").css('border', '2px solid red');
+            $("#SkillError").css('display', 'block');
+        }
+
+        var valid2 = $("#ddCompetenceOnBoard").hasClass("valid");
+        if (!valid2) {
+            isValid = false;
+            $("#ddCompetenceOnBoard").css('border', '2px solid red');
+            $("#CompetenceError").css('display', 'block');
+        }
+
+        var valid3 = $("#ddGEO").hasClass("valid");
+        if (!valid3) {
+            isValid = false;
+            $("#ddCompetenceOnBoard").css('border', '2px solid red');
+            $("#CompetenceError").css('display', 'block');
+            $("#GEOError").css('display', 'block');
+        }
+
+        if (isValid) {
+            $("#divUserOnBoardLoader").html(" <img src='/Images/loading_01.gif' class='loader-img loader-position' />");
+            var PostData = {
+                competence: $("#ddCompetenceOnBoard :selected").val(),
+                skillId: $("#ddSkillOnBoard").val(),
+                userId: $("#hdnUserId").val(),
+                email: $("#hdnUserEmail").val(),
+                geo: $("#ddGEO").val(),
+                roleId: $("#ddRole").val()
+                //isNLWorkPermit: $("#IsNLWorkPermit").is(':checked')
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/Admin/OnBoardUser",
+                contentType: "application/json;",
+                dataType: "",
+                data: JSON.stringify(PostData),
+                success: function (result) {
+                    if (result) {
+                        $("#btnOnBoardUser").attr('disabled', 'disabled');//.removeAttr('disabled');
+                        // $("#divUserOnBoardLoader").html("<h3>Data saved successfully !</div>");
+                        $("#divUserOnBoardLoader").html("<h3>" + result + "</div>");
+
+                    }
+
+                    else {
+                        $("#btnOnBoardUser").attr('disabled', 'disabled');//.removeAttr('disabled');
+                        //$("#divUserOnBoardLoader").html("<h3>Something went wrong !</div>");
+                        $("#divUserOnBoardLoader").html("<h3>" + result + "</div>");
+                    }
+                }
+            });
+        }
+    }
+    function FillCompetence() {
+
+        var skillId = $('#ddSkillOnBoard').val();
+
+        $.ajax({
+
+            url: "/Admin/FillCompetence",
+
+            type: "GET",
+
+            dataType: "JSON",
+
+            data: { Id: skillId },
+
+            success: function (competencies) {
+
+                $("#ddCompetenceOnBoard").html(""); // clear before appending new list
+                $("#ddCompetenceOnBoard").append($('<option></option>').val('Please Select Competency Level').html('Please Select Competency Level'));
+                $.each(competencies, function (i, competence) {
+                    if (competence.CompetenceName != "All") {
+                        $("#ddCompetenceOnBoard").append(
+
+                            $('<option></option>').val(competence.CompetenceId).html(competence.CompetenceName));
+                    }
+                });
+            }
+
+        });
+
+    }
+    function FillCompetenceBySkillName() {
+
+
+        if ($("#dvCurrentSkill").html() != null) {
+
+            var skillName = $("#dvCurrentSkill").html();
+
+            $.ajax({
+
+                url: "/Admin/FillCompetenceBySkillName",
+
+                type: "GET",
+
+                dataType: "JSON",
+
+                data: { name: skillName },
+
+                success: function (competencies) {
+
+                    $("#ddCompetenceOnBoard").html(""); // clear before appending new list
+                    $("#ddCompetenceOnBoard").append($('<option></option>').val('Please Select Competency Level').html('Please Select Competency Level'));
+
+                    $.each(competencies, function (i, competence) {
+                        if (competence.CompetenceName != "All") {
+                            $("#ddCompetenceOnBoard").append(
+                                $('<option></option>').val(competence.CompetenceId).html(competence.CompetenceName));
+                        }
+                    });
+                }
+
+            });
+
+        }
+
+
+
+    }
+    function EditOnBoard() {
+        var skill = $("#ddSkillOnBoardEdit").val();
+        var competence = $("#ddCompetenceOnBoard :selected").val();
+        var userId = $("#hdnUserId").val();
+
+        var skill = { SkillId: $("#ddSkillOnBoardEdit").val(), SkillName: $("#ddSkillOnBoardEdit :selected").text() };
+        var skills = [];
+
+        skills.push(skill);
+
+        var objOnboard = {
+            UserId: $("#hdnUserId").val(),
+            Skills: skills,
+            CurrentCompetance: $("#ddCompetanceOnBoardEdit :selected").val(),
+            CurrentStatus: $("#ddStatusOnBoardEdit :selected").text(),
+            CurrentProfileSharing: $("#ddProfileOnBoardEdit :selected").text(),
+            CurrentBGVStatus: $("#ddBGVStatusOnBoardEdit :selected").text()
+        }
+
+
+        var PostData = {
+            objUserOnboard: objOnboard
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Admin/EditOnBoardUser",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                alert(result);
+            }
+        });
+    }
+
+
+</script>

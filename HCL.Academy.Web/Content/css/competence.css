@@ -1,0 +1,370 @@
+.ing-bg{
+	background-color:#50a5c2;
+}
+.competence-pan{	
+	padding:10px;
+	max-width:1156px;
+	margin:0 auto;
+    border:1px solid #ddd;
+}
+.competence-main {
+    background: url(../../Images/competence-bg.png) no-repeat 0 100% #dddee3;
+    padding: 0 16px 20px;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    min-height: 692px;
+    position: relative;    
+}
+.competence-main h3{
+	text-align:center;
+	font-weight:600;
+	font-family:'Open Sans', sans-serif;
+	text-transform:uppercase;
+	color:#6d6e72;
+	font-size:20px;
+	padding:10px 0 20px;
+	margin:0;
+	line-height:25px;
+}
+.competence-main h3 span{
+	color:#980909;
+	font-weight:600;
+	display:block;
+	margin-top:4px;
+}
+.stand{
+	position:absolute;	
+	width:125px;
+	background:url(../../Images/stand-bg.png) no-repeat 50% 100%;
+	height:227px;
+}
+
+.definition{
+	border-radius:50%;
+	-moz-border-radius:50%;
+	-ms-border-radius:50%;
+	-o-border-radius:50%;
+	-webkit-border-radius:50%;
+	border:5px solid #2d3a42;
+	min-height:126px;
+	display:block;
+	text-align:center;
+	font-weight:600;
+	font-family:'Open Sans', sans-serif;
+	text-transform:uppercase;
+	color:#fff;
+	font-size:25px;
+	text-shadow:0 1px 3px #444444;	
+	vertical-align:middle;
+	outline:none !important;
+}
+.definition span{
+	display:block;
+	color:#2d3a42;
+	text-shadow:none;
+	font-size:18px;
+    padding-top:5px;
+}
+.definition:hover, .definition:focus{
+	text-decoration:none !important;
+	color:#fff;
+}
+
+.stand-novice{
+	bottom:148px;
+	left:60px;
+}
+.stand-beginner{
+	bottom:217px;
+	left:290px;
+}
+.stand-proficient{
+	bottom:165px;
+	left:510px;
+}
+.stand-competent{
+	bottom:218px;
+	right:300px;
+}
+.stand-expert{
+	bottom:92px;
+	right:110px;
+}
+.yellow-defin{
+	background-color:#f6be21;
+	padding-top:24px;
+}
+.blue-advanced{
+	background-color:#5edff9;
+	padding-top:18px;
+}
+.green-proficient{
+	background-color:#b0d864;
+	padding-top:20px;
+}
+.purple-competent{
+	background-color:#d260b1;
+	padding-top:20px;
+}
+.blue-expert{
+	background-color:#46bbc7;
+	padding-top:20px;
+}
+.car-position {
+    position: absolute;    
+}
+.car-novice{
+	bottom: 115px;
+    left: 5px;
+}
+.car-beginner {
+    bottom: 195px;
+    left: 307px;
+}
+.car-proficient{
+	transform: rotateY(-176deg);
+    transform-origin: 46% 50% 100px;
+	right: 411px;
+    bottom: 130px;
+}
+.car-competent {
+    right: 347px;
+    bottom: 199px;
+}
+.car-expert {
+    right: 184px;
+    bottom: 32px;
+}
+.skill-tab{
+	list-style-type:none;
+	padding:0;
+	margin:0;
+}
+.skill-tab li{
+	display:inline-block;
+	margin-right:2px;	
+}
+.skill-tab li a{
+	display:block;
+	text-align:center;
+	font-weight:400;
+	font-family:'Open Sans', sans-serif;
+	text-transform:uppercase;
+	color:#6e6f70;
+	font-size:15px;
+	line-height:52px;
+	background-color:#c3c1c1;
+	border-top:6px solid #929191;
+	min-width:202px;
+	border-radius:5px 5px 0 0;
+	-moz-border-radius:5px 5px 0 0;
+	-webkit-border-radius:5px 5px 0 0;
+	-ms-border-radius:5px 5px 0 0;
+	-o-border-radius:5px 5px 0 0;
+}
+.skill-tab li.active a{
+	background-color:#f2f1f1;
+	border-top:6px solid #ff6201;
+	color:#ff6201;
+}
+.skill-tab li a:hover, .skill-tab li a:focus{
+	text-decoration:none;
+}
+.modal-title {
+    background-color: #50a5c2;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 20px;
+    padding: 15px;
+    border-radius: 6px 6px 0 0;
+    -moz-border-radius: 6px 6px 0 0;
+    -o-border-radius: 6px 6px 0 0;
+    -webkit-border-radius: 6px 6px 0 0;
+}
+.profile-header {
+    padding: 0 !important;
+}
+.profile-header .close {
+    font-size: 37px!important;
+    margin-right: 8px!important;
+    margin-top: 8px!important;
+}
+.skillstab-cont{
+	/*height:300px;*/
+}
+.skillstab-cont ul{
+	list-style-type:none;
+	padding:0;
+	margin:20px 0 0;
+}
+.skillstab-cont ul li{
+	padding:10px;
+	margin-bottom:10px;
+}
+.skillstab-cont ul li h4{
+	font-weight:600;
+	font-family:'Open Sans', sans-serif;
+	font-size:15px;
+	color:#666666;
+	margin:0 0 5px;
+}
+.skillstab-cont ul li p{
+	font-weight:400;
+	font-family:'Open Sans', sans-serif;
+	font-size:13px;
+	line-height:20px;
+	color:#666666;
+	margin:0 0 5px;
+	padding:0;
+}
+.skillstab-cont ul li p:last-child{
+	margin-bottom:0;
+}
+.skillstab-cont ul li:nth-child(even){
+	background-color:rgba(225, 225, 225, 0.5);
+}
+.skillstab-cont ul li ul{
+	margin-top:5px;
+	margin-left:15px;
+}
+.skillstab-cont ul li ul li{
+	background:none;
+	margin-bottom:5px;
+	font-weight:300;
+	padding:0;
+	font-size:13px;
+	color:#666666;
+	font-family:'Open Sans', sans-serif;
+}
+.skillstab-cont ul li ul li:nth-child(even){
+	background-color:inherit;
+}
+.skillstab-cont .mCSB_draggerContainer{
+	top:36px;
+}
+
+.loader-position {
+        margin: 80px auto;
+}
+
+@media only screen and (min-width: 992px) and (max-width:1200px) {
+	.competence-main{
+	-webkit-background-size: 1024px;
+	-moz-background-size: 1024px;
+	-o-background-size: 1024px;
+	background-size: 1024px;
+	}
+	.stand-novice {
+    bottom: 133px;
+    left: 29px;
+}
+.stand-beginner {
+    bottom: 196px;
+    left: 265px;
+}
+.stand-competent {
+    bottom: 195px;
+    right: 245px;
+}
+.stand-proficient {
+    bottom: 148px;
+    left: 455px;
+}
+.stand-expert {
+    bottom: 82px;
+    right: 80px;
+}
+.car-position img{
+		width:140px;
+	}
+	.car-novice {
+		bottom: 104px;
+		left: 5px;
+	}
+	.car-beginner {
+		bottom: 176px;
+		left: 284px;
+	}
+	.car-competent {
+		right: 288px;
+		bottom: 179px;
+	}
+	.car-proficient {
+		right: 358px;
+		bottom: 114px;
+	}
+	.car-expert {
+		right: 150px;
+		bottom: 32px;
+	}
+}
+
+@media only screen and (min-width: 768px) and (max-width:991px) {
+	
+	.competence-main{
+	-webkit-background-size: 768px;
+	-moz-background-size: 768px;
+	-o-background-size: 768px;
+	background-size: 768px;
+	min-height:536px;
+	}
+	.stand{
+		width:107px;
+		height: 186px;
+	}
+	.definition{
+		min-height:107px;
+	}
+	.definition span{
+		font-size:14px;
+	}
+	.stand-novice{
+		bottom:100px;
+		left:20px;
+	}
+	.stand-beginner{
+		bottom: 147px;
+		left: 190px;
+	}
+	.stand-proficient{
+		bottom: 111px;
+		left: 330px;
+	}
+	.stand-competent{
+		bottom: 147px;
+		right: 179px;
+	}
+	.stand-expert{
+		bottom: 61px;
+		right: 48px;
+	}
+	.car-position img{
+		width:112px;
+	}
+	.car-novice {
+		bottom: 77px;
+		left: 5px;
+	}	
+	.car-competent {
+		right: 217px;
+		bottom: 133px;
+	}
+	.car-expert {
+		right: 104px;
+		bottom: 22px;
+	}
+	.car-proficient {    
+		right: 260px;
+		bottom: 85px;
+	}
+	.car-beginner {
+		bottom: 131px;
+		left: 205px;
+	}
+}
+
+
+
+

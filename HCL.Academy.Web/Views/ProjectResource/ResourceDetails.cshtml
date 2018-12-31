@@ -1,0 +1,68 @@
+﻿@using HCLAcademy.Models;
+
+@model HCLAcademy.Models.Resource
+
+@{
+    /**/
+
+    /**/
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div id="body">
+
+        <section class="content-wrapper main-content clear-fix container">
+            <div class="col-md-12">
+                <div class="tab-content">
+                    <div class="table-responsive">
+                        <h2>Overall count of resources for the project</h2>
+                        <div>Project Name : @Html.DisplayFor(model => model.projectName)@Html.HiddenFor(model => model.projectId, new { htmlAttributes = new { @class = "form-control" } })@Html.HiddenFor(model => model.projectName, new { htmlAttributes = new { @class = "form-control" } })</div>
+                        <table class="table table-bordered table-striped" id="onboard-data-table" style="position:center;width:auto;overflow-x:hidden">
+                            <thead style="background-color:#326295;color:#fff">
+                                <tr>
+                                    <th colspan="6" style="border-left:none;text-align:center"><b>Competence Level-Current State</b></th>
+                                    <th colspan="5" style="text-align:center"><b>Competence Level-Desired State</b></th>
+                                </tr>
+                                <tr>
+                                    <th>Skill</th>
+                                    <th><b>Novice</b></th>
+                                    <th><b>Advanced Beginner</b></th>
+                                    <th><b>Competent</b></th>
+                                    <th><b>Proficient</b></th>
+                                    <th><b>Expert</b></th>
+                                    <th><b>Novice</b></th>
+                                    <th><b>Advanced Beginner</b></th>
+                                    <th><b>Competent</b></th>
+                                    <th><b>Proficient</b></th>
+                                    <th><b>Expert</b></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.allResources.Count; i++)
+                                {
+                                    <tr>
+                                        <th style="color:ghostwhite;background-color:cornflowerblue">@Html.DisplayFor(m => m.allResources[i].skill)@Html.HiddenFor(m => m.allResources[i].skillId, new { htmlAttributes = new { @class = "form-control" } })@Html.HiddenFor(m => m.allResources[i].skill, new { htmlAttributes = new { @class = "form-control" } })</th>
+                                        <td style="background-color:#feeade">@Html.DisplayFor(m => m.allResources[i].availableBeginnerCount, new { Class = "form-control" })</td>
+                                        <td style="background-color:#feeade">@Html.DisplayFor(m => m.allResources[i].AvailableadvancedBeginnerCount, new { Class = "form-control" })</td>
+                                        <td style="background-color:#feeade">@Html.DisplayFor(m => m.allResources[i].AvailablecompetentCount, new { Class = "form-control" })</td>
+                                        <td style="background-color:#feeade">@Html.DisplayFor(m => m.allResources[i].availableProficientCount, new { Class = "form-control" })</td>
+                                        <td style="background-color:#feeade">@Html.DisplayFor(m => m.allResources[i].availableExpertCount, new { Class = "form-control" })</td>
+                                        <td style="background-color:#aeea93">@Html.DisplayFor(m => m.allResources[i].expectedBeginnerCount, new { Class = "form-control" })</td>
+                                        <td style="background-color:#aeea93">@Html.DisplayFor(m => m.allResources[i].ExpectedadvancedBeginnerCount, new { Class = "form-control" })</td>
+                                        <td style="background-color:#aeea93">@Html.DisplayFor(m => m.allResources[i].ExpectedcompetentCount, new { Class = "form-control" })</td>
+                                        <td style="background-color:#aeea93">@Html.DisplayFor(m => m.allResources[i].expectedProficientCount, new { Class = "form-control" })</td>
+                                        <td style="background-color:#aeea93">@Html.DisplayFor(m => m.allResources[i].expectedExpertCount, new { Class = "form-control" })</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+}
+

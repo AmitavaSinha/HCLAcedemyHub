@@ -1,0 +1,37 @@
+﻿@model IEnumerable<HCLAcademy.Models.Project>
+
+    <table class="table table-bordered table-striped">
+        <thead style="background-color:#326295;color:#fff">
+            <tr>
+                <th>
+                    @Html.Label("Project Name")
+                </th>
+                <th>Actions</th>
+                <th style="border:none"></th>
+                <th style="border:none"></th>
+                <th style="border:none"></th>
+                <th style="border:none"></th>
+                <th style="border:none"></th>
+                <th style="border:none"></th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectName)
+            </td>
+
+            <td>@Html.ActionLink("Edit", "EditProjects", new { projectID = item.ID })</td>
+            <td>@Html.ActionLink("Delete", "DeleteProject", new { projectID = item.ID }, new { onclick = "return confirm('Are you sure you wish to delete?');" }) </td>
+            <td>@Html.ActionLink("Manage Skill", "Manage", "ProjectSkills", new { projectid = item.ID }, null)</td>
+            <td>@Html.ActionLink("Expected Competency", "Create", "ProjectExpectedResource", new { projectID = item.ID }, null)</td>
+            <td>@Html.ActionLink("Available Competency", "Create", "ProjectAvailableResource", new { projectID = item.ID }, null)</td>
+            <td>@Html.ActionLink("Overall Competency", "ResourceDetails", "ProjectResource", new { projectID = item.ID }, null)</td>
+            <td>@Html.ActionLink("Skill HeatMap", "Details", "SkillHeatMap", new { projectID = item.ID }, null)</td>
+        </tr>
+        }
+
+    </table>
+

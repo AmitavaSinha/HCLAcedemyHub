@@ -1,0 +1,63 @@
+﻿@using HCLAcademy.Utility;
+@model List<HCLAcademy.Models.OnboardingHelp>
+
+@*<h2>OnboardingHelp</h2>*@
+
+@*<div class="modal fade" id="OnboardHelpModal" role="dialog">*@
+    <div class="modal-dialog">
+        @{
+            <div class="modal-content profile-table">
+                <div class="modal-header profile-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2 class="modal-title">Onboarding Help</h2>
+                </div>
+                <div class="modal-body profile-pan">
+
+                    @foreach (var onboardHelp in Model)
+                    {
+                        string title = onboardHelp.Title;
+                        string description = onboardHelp.Description;
+                        Int32 ordering = onboardHelp.OrderingId;
+
+                        <ul class="domain-list">
+                            <li class="drop">
+                                <i class="fa fa-chevron-circle-right" aria-hidden="true"></i><a href="#">@title</a>
+                                <ul style="display:none;">
+                                    <li>
+                                        @description
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    }
+
+                </div>
+            </div>
+        }
+    </div>
+@*</div>*@
+
+<div class="modal fade" id="popup-DisplayMsg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="modal-close-Adduser"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body" id="modal-body-DisplayMsg" style="text-align:center; font-size:18px; padding:15px 0 20px;">
+                ...
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.domain-list li.drop').click(function () {
+            // $('.domain-list li.drop > ul').toggle();
+            $(this).find('ul').toggle();
+
+        });
+    });
+</script>

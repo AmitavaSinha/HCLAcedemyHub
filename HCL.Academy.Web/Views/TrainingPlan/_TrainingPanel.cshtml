@@ -1,0 +1,237 @@
+﻿@using HCLAcademy.HtmlHelpers;
+@using HCLAcademy.Models;
+@using HCLAcademy.Utility;
+@using HCL.Academy.Web.DAL;
+@model List<HCLAcademy.Models.UserSkillDetail>
+
+@{
+    ViewBag.Title = "Training";
+}
+
+
+<!--- training panel start --->
+@*<div class="training-hld">*@
+<script>
+
+    /******* POP UP Window ******/
+    function popupExternalContent(url, title, w, h) {
+        var left = (screen.width / 2) - (w / 2);
+        var top = (screen.height / 2) - (h / 2);
+        return window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+    }
+
+</script>
+<div class="row" style="margin-left:0px;margin-right:0px;padding-top:20px;">
+    <h3 style="color:#3F51B5;font-size:19px;text-transform:uppercase;font-weight:600;">Skill Based Training</h3>
+</div>
+<div class="row training-hld" style="margin-top:12px">
+
+    @{
+        if (Model.Count > 0)
+        {
+            int i = 0; int complete;
+            foreach (var course in Model)
+            {
+                if (course.TrainingType.ToString().ToLower() == TrainingType.SkillTraining.ToString().ToLower()) { 
+                complete = 0;
+
+                <div>
+                    <div class="training-main">
+                        <h3>@course.skillName</h3>
+                        <div id="content-1" class="content horizontal-images light training-hrscroll">
+                            @if (course.listOfTraining.Count > 0)
+                            {
+                                i = 0;
+                                <ul>
+                                    @foreach (var training in course.listOfTraining)
+                                    {
+                                        ++i;
+                                        <li class="@training.bgColor">
+                                            <div class="blue-pan">
+                                                <span></span>
+                                                <p>@i</p>
+                                            </div>
+                                            @*<div class="status-infrm" title="@training.ModuleNames">
+                                                    <a href="#" target="_blank">@Utilities.Truncate(training.ModuleNames, 25)</a>
+                                                    <p>Status: <span>@training.status.GetDisplayName()</span></p>
+                                                    @if (training.status.ToString().Equals("Completed"))
+                                                    {
+                                                        complete++;
+                                                    }
+                                                </div>*@
+                                            @if (training.IsLink)
+                                            {
+                                                <div class="status-infrm" title="@training.TrainingName" data-id="@training.LinkUrl">
+                                                    <a onclick="popupExternalContent('@training.LinkUrl', 'best window',1000,550);" href="javascript:void(0);">
+                                                        <h5>@Utilities.Truncate(training.TrainingName, 25)</h5>
+                                                    </a>
+                                                    <p>Status: <span>@training.status.GetDisplayName()</span></p>
+                                                    @if (training.status.ToString().Equals("Completed"))
+                                                    {
+                                                        complete++;
+                                                    }
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="status-infrm" title="@training.TrainingName" data-id="@training.LinkUrl">
+
+                                                    <a target="_self" href="@Url.Action("DownloadFile", "Home",new { filePath = EncryptionHelper.Encrypt(training.DocumentUrl)})">
+                                                        <h5>@Utilities.Truncate(training.TrainingName, 25)</h5>
+                                                    </a>
+                                                    <p>Status: <span>@training.status.GetDisplayName()</span></p>
+                                                    @if (training.status.ToString().Equals("Completed"))
+                                                    {
+                                                        complete++;
+                                                    }
+                                                </div>
+                                            }
+
+
+
+                                        </li>
+
+
+                                    }
+
+                                </ul>
+
+                            }
+                        </div>
+                        <ul>
+                            <li class="complete">
+                                <div class="stat-comp"></div>
+                                @{
+                                    string perc = string.Empty;
+                                    if (complete < i)
+                                    {
+                                        int percentComplete = (int)Math.Round((double)(100 * complete) / i);
+                                        perc = percentComplete.ToString() + "%";
+                                    }
+                                    else
+                                    {
+                                        perc = "100%";
+                                    }
+
+                                    <p>Complete<span>@perc</span></p>
+                                }
+
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                }
+            }
+        }
+    }
+
+</div>
+
+<div class="row" style="margin-left:0px;margin-right:0px;padding-top:20px;">
+    <h3 style="color:#3F51B5;font-size:19px;text-transform:uppercase;font-weight:600;">Role Based Training</h3>
+</div>
+
+<div class="row training-hld" style="margin-top:12px">
+
+    @{
+        if (Model.Count > 0)
+        {
+            int i = 0; int complete;
+            foreach (var course in Model)
+            {
+                if (course.TrainingType.ToString().ToLower() == TrainingType.RoleTraining.ToString().ToLower())
+                {
+                    complete = 0;
+
+                    <div>
+                        <div class="training-main">
+                            <h3>@course.skillName</h3>
+                            <div id="content-1" class="content horizontal-images light training-hrscroll">
+                                @if (course.listOfTraining.Count > 0)
+                                {
+                                    i = 0;
+                                    <ul>
+                                        @foreach (var training in course.listOfTraining)
+                                        {
+                                            ++i;
+                                            <li class="@training.bgColor">
+                                                <div class="blue-pan">
+                                                    <span></span>
+                                                    <p>@i</p>
+                                                </div>
+                                                @*<div class="status-infrm" title="@training.ModuleNames">
+                                                        <a href="#" target="_blank">@Utilities.Truncate(training.ModuleNames, 25)</a>
+                                                        <p>Status: <span>@training.status.GetDisplayName()</span></p>
+                                                        @if (training.status.ToString().Equals("Completed"))
+                                                        {
+                                                            complete++;
+                                                        }
+                                                    </div>*@
+                                                @if (training.IsLink)
+                                                {
+                                                    <div class="status-infrm" title="@training.TrainingName" data-id="@training.LinkUrl">
+                                                        <a onclick="popupExternalContent('@training.LinkUrl', 'best window',1000,550);" href="javascript:void(0);">
+                                                            <h5>@Utilities.Truncate(training.TrainingName, 25)</h5>
+                                                        </a>
+                                                        <p>Status: <span>@training.status.GetDisplayName()</span></p>
+                                                        @if (training.status.ToString().Equals("Completed"))
+                                                        {
+                                                            complete++;
+                                                        }
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="status-infrm" title="@training.TrainingName" data-id="@training.LinkUrl">
+
+                                                        <a target="_self" href="@Url.Action("DownloadFile", "Home",new { filePath = EncryptionHelper.Encrypt(training.DocumentUrl)})">
+                                                            <h5>@Utilities.Truncate(training.TrainingName, 25)</h5>
+                                                        </a>
+                                                        <p>Status: <span>@training.status.GetDisplayName()</span></p>
+                                                        @if (training.status.ToString().Equals("Completed"))
+                                                        {
+                                                            complete++;
+                                                        }
+                                                    </div>
+                                                }
+
+
+
+                                            </li>
+
+
+                                        }
+
+                                    </ul>
+
+                                }
+                            </div>
+                            <ul>
+                                <li class="complete">
+                                    <div class="stat-comp"></div>
+                                    @{
+                                        string perc = string.Empty;
+                                        if (complete < i)
+                                        {
+                                            int percentComplete = (int)Math.Round((double)(100 * complete) / i);
+                                            perc = percentComplete.ToString() + "%";
+                                        }
+                                        else
+                                        {
+                                            perc = "100%";
+                                        }
+
+                                        <p>Complete<span>@perc</span></p>
+                                    }
+
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    }
+</div>
+
+<!--- training panel end --->

@@ -1,0 +1,127 @@
+﻿@model List<HCLAcademy.Models.AcademyEvent>
+
+<div id="carousel-Event-vertical" class="vertical-slider carousel vertical slide" data-ride="carousel">
+
+    <div class="carousel-inner" role="listbox">
+        @{
+            if (Model != null && Model.Count > 0)
+            {
+                int i = 0; int month = 0;
+                foreach (var item in Model)
+                {
+                    <div class="@(i == 0 ? "item active" : "item")">
+                        <div class="media">
+
+                            <div class="row">
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    <span class="date-pan">
+                                        <span class="date">
+                                            @{
+                    DateTime utcdate = item.EventDate;
+                    var istdate = TimeZoneInfo.ConvertTimeFromUtc(utcdate, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")).Day;
+                                            }
+                                            @istdate
+                                        </span>
+                                        @{
+
+                    month = int.Parse(item.EventDate.Month.ToString());
+                    if (month == 1)
+                    {
+                        <span class="month">Jan</span>
+                    }
+                    if (month == 2)
+                    {
+                        <span class="month">Feb</span>
+                    }
+                    if (month == 3)
+                    {
+                        <span class="month">Mar</span>
+                    }
+                    if (month == 4)
+                    {
+                        <span class="month">Apr</span>
+                    }
+                    if (month == 5)
+                    {
+                        <span class="month">May</span>
+                    }
+                    if (month == 6)
+                    {
+                        <span class="month">June</span>
+                    }
+                    if (month == 7)
+                    {
+                        <span class="month">July</span>
+                    }
+                    if (month == 8)
+                    {
+                        <span class="month">August</span>
+                    }
+                    if (month == 9)
+                    {
+                        <span class="month">September</span>
+                    }
+                    if (month == 10)
+                    {
+                        <span class="month">October</span>
+                    }
+                    if (month == 11)
+                    {
+                        <span class="month">November</span>
+                    }
+                    if (month == 12)
+                    {
+                        <span class="month">December</span>
+                    }
+
+                                        }
+                                        <span class="location">@item.Location</span>
+                                    </span>
+                                </div>
+
+
+                                <div class="media-body panel-heading" style="padding-top:0;">
+                                    <h4 class="media-heading">@item.Title</h4>
+                                    <!--<p class="post"> - a month ago</p>-->
+                                    <a href="#" class="M3">
+                                        @{
+                    String result = System.Text.RegularExpressions.Regex.Replace(@item.Description, @"<[^>
+                                                            ]*>", String.Empty);
+
+                                        }
+                                        @result
+                                    </a>
+                                    <p class="comment-bdr">
+                                        <a href="../News/NewsEvents" target="_self"><i class="fa fa-reply"></i><span style="padding-left: 3px">Read More </span></a>
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    i++;
+                }
+            }
+            else
+            {
+                <div class="item active">
+                    <div class="media">
+                        There is no recent events.
+                    </div>
+                </div>
+            }
+}
+
+    </div>
+
+    <div class="arrow-control" style="visibility:hidden">
+        <a class="up carousel-control up-team" href="../News/NewsEvents" role="button" data-slide="prev">
+            <i class="fa fa-chevron-up" aria-hidden="true"></i>
+        </a>
+        <a class="down carousel-control down-team" href="../News/NewsEvents" role="button" data-slide="next">
+            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+        </a>
+    </div>
+</div>

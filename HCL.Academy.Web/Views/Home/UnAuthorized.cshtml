@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "UnAuthorized";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>UnAuthorized</h2>
+
+<br /><br /><br />
+<div class="alert alert-danger col-md-offset-4" style="padding-top:100px;max-width:450px">
+    <h1>Unauthorized Access!</h1>
+    <p>Oops! You don't have permission to access this page.</p><br />
+    You need to be a member of @ViewBag.groupName group to access this page
+</div>
+
+@Html.ActionLink("Back to Home", "Home", "Home")
+
+

@@ -1,0 +1,40 @@
+﻿    @{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+    <link href="~/Content/jquery.treeview.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery.cookie.js"></script>
+    <script src="~/Scripts/jquery.treeview.js"></script>
+    <script type="text/javascript" language="Javascript">
+    $(document).ready(function () {
+
+        //$("#WikiTabMenu").load("/Wiki/GetTabMenu");
+        //$("#OnBoardingTree").load("/Wiki/WikiDocumentTree", function () {
+
+        //    $('#chapterFolders').treeview({ collapsed: true });
+        //});
+
+        $("#OnBoardingTree").load("/wiki/WikiDocumentTree", function () {
+             $('#chapterFolders').treeview({ collapsed: true }).find('.cls_@ViewBag.Selected').prev().click();
+            // $('#chapterFolders').treeview({ collapsed: true }).find('.cls_@ViewBag.Selected').prev().click();
+           // var $scrollTo = $('#chapterFolders').treeview({ collapsed: true }).find('.cls_@ViewBag.Selected').prev();
+            //$(scrollTo).prev().click();
+            // var $container = $("html,body");
+            //var $scrollTo = $('.cls_@ViewBag.Selected');
+            //$container.animate({ scrollTop: $scrollTo.offset().top - $container.offset().top + $container.scrollTop(), scrollLeft: 0 }, 300);
+        });
+
+
+    });
+    </script>
+
+
+    <div id="body">
+        <section class="content-wrapper main-content clear-fix container">
+            <h2>Document Repository</h2>
+            <div id="OnBoardingTree">
+                <img src="~/Images/loading_01.gif" class="loader-img" />
+            </div>
+        <!-- /.container -->
+    </section>
+</div>

@@ -1,0 +1,306 @@
+﻿@model List<HCLAcademy.Models.AcademyJoinersCompletion>
+
+<style>
+    .assesment-poppan ul li input {
+        float: left;
+        margin-right: 10px;
+    }
+
+    .assesment-poppan ul li {
+        color: #444444;
+    }
+
+    .pL5{
+        padding-left:5px !important;
+    }
+    .pR5 {
+        padding-right: 5px !important;
+    }
+</style>
+
+<input type="hidden" id="activeAssementModal" />
+
+<div id="Learnt12" class="tab-pane fade active in">
+
+    <div class="row">
+        <div class="tagline col-md-12 col-sm-12">
+            <div class="table-responsive box-item">
+                <div style="font-size: 20px;">
+                    <div class="grid col-md-12 col-sm-12 col-xs-12 text-left">
+                        <div class="row tagline tabber-heading">
+                            <div class="col-sm-7 col-xs-7 pL5 pR5">Assessment Name</div>
+                            <div class="col-sm-3 col-xs-3 pL5 pR5">Last Date</div>
+                            <div class="col-sm-2 col-xs-2 pL5 pR5">Action</div>
+                            @*<div class="col-sm-2 col-xs-2">Status</div>*@
+                        </div>
+                        <div id="assesmentInprogress" class="listItems">
+
+                            @{
+                                int k = 0;
+                                string bgColor = "background : #ccc";
+                                bool pendingitems = false;
+                            }
+
+                            @foreach (var item in Model)
+                            {
+                                if (item.TrainingAssessmentLookUpText != "Coding Assessment")
+                                {
+                                    if (!item.AssessmentStatus)
+                                    {
+                                        pendingitems = true;
+                                        if (k % 2 == 0)
+                                        {
+                                            bgColor = "background : #ccc";
+                                        }
+                                        else
+                                        {
+                                            bgColor = "background : #ddd";
+                                        }
+
+                                        k++;
+                            <div class="row itemRows">
+                                <div class="col-sm-7 col-xs-7 pL5 pR5">
+                                    @item.TrainingAssessmentLookUpText
+                                    <span class="small-txt">@item.TrainingCourseLookUpText <i class="fa fa-long-arrow-right" aria-hidden="true"></i> @item.TrainingModuleLookupText</span>
+                                </div>
+                                <div class="col-sm-3 col-xs-3 pL5 pR5">@item.CompletionDate</div>
+                                    @*@if (DateTime.Now.Date <= item.LastDayCompletion.Date && item.Attempts < item.MaxAttempts)*@
+                                    @if (Convert.ToInt32(DateTime.Now.ToString("yyyyMMdd")) <= Convert.ToInt32(item.LastDayCompletion.ToString("yyyyMMdd")) && item.Attempts < item.MaxAttempts)
+                                    {
+                                        if (item.IsTrainingLink)
+                                        {
+                                            <div class="col-sm-2 col-xs-2"><a href="@item.TrainingLink" target="_blank" style="font-size: 18px;margin-top: 5px;display: inline-block;"><i class="fa fa-play" aria-hidden="true"></i></a></div>
+                                        }
+                                        else
+                                        {
+
+                                            <div class="col-sm-2 col-xs-2">
+                                                @*@Html.ActionLink("Start", "Index", "Assessment",
+                        new { id = item.Id }, new { @target = "_blank", @data_toggle = "confirmation", @data_singleton = "true" })*@
+                                                <a href="@Url.Action("Index", "Assessment",new { id = item.Id })" style="font-size: 18px;margin-top: 5px;display: inline-block;" target="_blank" data-toggle="confirmation" data-singleton="true">
+                                                    <i class="fa fa-play" aria-hidden="true"></i>
+                                                </a>
+                                            </div>
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //if (DateTime.Now.Date > item.LastDayCompletion.Date)
+                                        if (Convert.ToInt32(DateTime.Now.ToString("yyyyMMdd")) > Convert.ToInt32(item.LastDayCompletion.ToString("yyyyMMdd")))
+                                        {
+                                            if (item.IsTrainingLink)
+                                            {
+                                                <div class="col-sm-2 col-xs-2"><a href="@item.TrainingLink" target="_blank" style="font-size: 18px;margin-top: 5px;display: inline-block;"><i class="fa fa-play"></i></a></div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-sm-2 col-xs-2">
+                                                    @*@Html.ActionLink("Start", "Index", "Assessment", new { id = item.Id }, new { onclick = "javascript:return false;", title = "Due Date Passed" })*@
+                                                    <a href="@Url.Action("Index", "Assessment",new { id = item.Id })" style="font-size: 18px;margin-top: 5px;display: inline-block;" target="_blank" onclick="javascript:return false;" title="Due Date Passed">
+                                                        <i class="fa fa-play" aria-hidden="true"></i>
+                                                    </a>
+                                                </div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (item.IsTrainingLink)
+                                            {
+                                                <div class="col-sm-2 col-xs-2"><a href="@item.TrainingLink" target="_blank" style="font-size: 18px;margin-top: 5px;display: inline-block;"><i class="fa fa-play"></i></a></div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-sm-2 col-xs-2">
+                                                    @*@Html.ActionLink("Start", "Index", "Assessment", new { id = item.Id }, new { onclick = "javascript:return false;", title = "Maximum Attempts exceeded" })*@
+                                                    <a href="@Url.Action("Index", "Assessment",new { id = item.Id })" style="font-size: 18px;margin-top: 5px;display: inline-block;" target="_blank" onclick="javascript:return false;" title="Maximum Attempts exceeded">
+                                                        <i class="fa fa-play" aria-hidden="true"></i>
+                                                    </a>
+                                                </div>
+                                            }
+                                        }
+                                    }
+                                </div>
+                                }
+                                }
+                                else
+                                {
+                                if (!item.AssessmentStatus)
+                                {
+                                pendingitems = true;
+                            <div class="row itemRows">
+                                <div class="col-sm-7 col-xs-7 crse-nme pL5 pR5">
+                                    @item.TrainingAssessmentLookUpText
+                                    @*<span><i class="fa fa-long-arrow-right" aria-hidden="true"></i> </span>*@
+                                </div>
+                                <div class="col-sm-3 col-xs-3 pL5 pR5">@item.CompletionDate</div>
+                                <div class="col-sm-2 col-xs-2">
+                                    <a href="http://hcl-assessment.labs.hclets.com/hcl-academy-assessment/login" style="font-size: 18px;margin-top: 5px;display: inline-block;" target="_blank"><i class="fa fa-play"></i></a>
+                                </div>
+                            </div>
+                                }
+                                }
+                                }
+
+                                @if (!pendingitems)
+                                {
+                                    <div class="row">
+                                        No Pending Assessment to show.
+                                    </div>
+                                }
+
+                            </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="center" id="assesmentInprogressPagination"></div>
+</div>
+
+<div id="Ideas12" class="tab-pane fade">
+    <div class="row">
+        <div class="tagline col-md-12 col-sm-12">
+            <div class="table-responsive">
+                <div style="font-size: 20px;">
+
+
+                    <div class="grid col-md-12 col-sm-12 col-xs-12 text-left">
+
+                        <div class="row tagline tabber-heading">
+                            <div class="col-sm-8 col-xs-8">Assessment Name</div>
+                            <div class="col-sm-4 col-xs-4">Score</div>
+                        </div>
+                        <div id="assesmentCompleted">
+                            @{
+                                bool completeditems = false;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                if (item.AssessmentStatus) //Changed to AssessmentStatus from TrainingStatus - SKB
+                                {
+                                    <div class="row itemRows">
+                                        <div class="col-sm-8 col-xs-8">
+                                            @item.TrainingAssessmentLookUpText
+                                            <span class="small-txt">@item.TrainingCourseLookUpText <i class="fa fa-long-arrow-right" aria-hidden="true"></i> @item.TrainingAssessmentLookUpText</span>
+                                        </div>
+                                        <div class="col-sm-4 col-xs-4">
+                                            @item.MarksSecured %
+                                            <a href="@Url.Action("DownloadCertificate", "Home", new { id = item.Id })" class="btn" style="float:right" target="_self" title="Download Certificate">
+                                                <i class="fa fa-download" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+
+                                    </div>
+                                    completeditems = true;
+                                }
+                            }
+                            @if (!completeditems)
+                            {
+                                <div class="row">
+                                    No Completed Assessments to show.
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="center" id="assesmentCompletedPagination"></div>
+</div>
+
+<script type="text/javascript">
+
+
+    // Do not change anything below here ...
+    function getScore1(form) {
+        $('#resetbtn').attr('disabled', 'disabled'); // Reset button disabled on GetScore button click
+        var modalId = $('#activeAssementModal').val();
+        var assessmentId = $(modalId).attr("data-assessmentid");
+        var passingmarks = parseInt($(modalId).attr("data-passingmark"));
+        var assessmentstatus = $(modalId).attr("data-assessmentstatus");
+        var answeredQuestions = $(modalId + ' ul').find("input[type='radio']:checked");
+        var totalMarks = 0;
+        for (var i = 0; i < answeredQuestions.length; i++) {
+            var selectedOptionValue = $(answeredQuestions[i]).val();
+            var correctOptionValue = $(answeredQuestions[i]).parent().parent().attr("data-correctoptionvalue");
+            if (selectedOptionValue == correctOptionValue) {
+                var mark = parseInt($(answeredQuestions[i]).parent().parent().attr("data-marks"));
+                totalMarks = totalMarks + mark;
+            }
+        }
+        var objAssesmentCompletion = {
+            TotalMarks: totalMarks,
+            AssessmentId: assessmentId,
+            PassingMarks: passingmarks
+        };
+        $.ajax({
+            type: "POST",
+            url: "/Assessment/AssessmentResult",
+            contentType: "application/json;",
+            dataType: "json",
+            data: JSON.stringify(objAssesmentCompletion),
+            success: function (response) {
+                if (response == "Passed") {
+                    $(modalId + " #successAlert p").html("Your score is " + totalMarks);
+                    $(modalId + " #successAlert").css("display", "block");
+                }
+                else {
+                    $(modalId + " #failureAlert p").html("Your score is " + totalMarks);
+                    $(modalId + " #failureAlert").css("display", "block");
+                }
+                setTimeout(function () { window.location.reload(true); }, 3000);
+                //$("#Content").text(response.d);
+            },
+            failure: function (response) {
+                alert(response.d);
+            }
+        });
+
+    }
+    function showModal(obj) {
+        var modalId = $(obj).attr('data-modal');
+        $(modalId).modal('show');
+        $('#activeAssementModal').val(modalId);
+        //alert(modalId);
+        timeTicker(modalId);
+    }
+
+    function timeTicker(modalId) {
+        var interval = null;
+        $(modalId + ' #timeTicker').html("30:00");
+        //document.getElementById('timeTicker').innerHTML = '30:00';
+        setTimeout(function () {
+            var min = 29;
+            var sec = 60;
+            interval = setInterval(function () {
+                var now = new Date(); //get local time
+                sec = parseInt(sec) - 1;
+                $(modalId + ' #timeTicker').html(min + ':' + sec);
+                //document.getElementById('timeTicker').innerHTML = min + ':' + sec;
+                if (sec == 0) {
+                    $(modalId + ' #timeTicker').html(min + ':' + sec);
+                    //document.getElementById('timeTicker').innerHTML = min + ':' + sec;
+                    min = parseInt(min) - 1;
+                    sec = 60;
+                }
+                if (min == -1) {
+                    clearInterval(interval);
+                    getScore1();
+                }
+
+
+            }, 1000);
+        }, 200);
+        $(modalId + ' .close').click(function () {
+            $(modalId + ' #timeTicker').html("");
+            clearInterval(interval);
+        });
+    }
+</script>

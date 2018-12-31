@@ -1,0 +1,572 @@
+﻿
+@model HCLAcademy.Models.UserOnBoarding
+
+
+<div class="col-md-12">
+    <div class="details-table table-responsive">
+
+        <div>
+            <h4>Assigned Trainings:</h4>
+            <table class="table table-bordered admin-onbrdtble" id="tblUserTraining">
+                <thead>
+                    <tr>
+                        <th>Training Course</th>
+                        <th>Training Module</th>
+                        <th>IsMandatory</th>
+                        <th>IsTrainingCompleted</th>
+                        <th>LastDayCompletion</th>
+                        <th>CompletedDate</th>
+                        <th>IsTrainingActive</th>
+                        <th>IsIncludeOnBoarding</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.UserTrainings)
+                    {
+                        <tr class="data-training-row">
+                            <td>@item.SkillName</td>
+                            <td>@item.TrainingName</td>
+                            <td>@item.IsMandatory</td>
+                            <td>@Html.CheckBox("IsTrainingCompleted", @item.IsTrainingCompleted)</td>
+                            <td>@item.LastDayCompletion</td>
+                            <td>@item.CompletedDate</td>
+                            <td>@Html.CheckBox("IsTrainingActive", @item.IsTrainingActive)</td>
+                            <td>@Html.CheckBox("IsIncludeOnBoarding", @item.IsIncludeOnBoarding)</td>
+                            <td class='data-Added-trainingExisting-row' style='visibility:hidden'>@item.TrainingId</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <input type="button" id="btnSaveTraining" class="sta-adminbt" onclick="OpenTrainingPopUp()" value="Add Training For User" />
+        </div>
+
+
+
+        <div>
+            <h4>Assigned Assessment</h4>
+            <table class="table table-bordered admin-onbrdtble" id="tblUserAssessment">
+                <thead>
+                    <tr>
+                        <th>Training Course</th>
+                        <th>Assessment Name</th>
+                        <th>Training Module</th>
+                        <th>IsMandatory</th>
+                        <th>IsTrainingCompleted</th>
+                        <th>LastDayCompletion</th>
+                        <th>CompletedDate</th>
+                        <th>IsTrainingActive</th>
+                        <th>IsIncludeOnBoarding</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.UserAssessments)
+                    {
+                        <tr class="data-assessment-row">
+                            <td>@item.SkillName</td>
+                            <td>@item.TrainingAssessment</td>
+                            <td>@item.TrainingName</td>
+                            <td>@item.IsMandatory</td>
+                            <td>@Html.CheckBox("IsAssessmentComplete", @item.IsAssessmentComplete)</td>
+                            <td>@item.LastDayCompletion</td>
+                            <td>@item.CompletedDate</td>
+                            <td>@Html.CheckBox("IsAssessmentActive", @item.IsAssessmentActive)</td>
+                            <td>@Html.CheckBox("IsIncludeOnBoarding", @item.IsIncludeOnBoarding)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <input type="button" id="btnSaveAssessment" class="sta-adminbt" onclick="OpenAssessmentPopUp()" value="Add Assessment For User" />
+        </div>
+
+
+        <div class="modal fade" id="popup-AddTraining" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="modal-close-Adduser"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Add Trainings</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <table>
+                            <tr>
+                                <td>Skill: </td>
+                                <td>
+                                    @Html.DropDownList("ddSkill", new SelectList(Model.Skills, "SkillId", "SkillName"), "Please Select Skill",
+                                                new
+                                                {
+                                                    @id = "ddSkill",
+                                                    @class = "form-control",
+                                                    @onchange = "GetTraining()"
+                                                })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Competence: </td>
+                                <td>
+                                    @Html.DropDownList("ddCompetance", new SelectList(Model.Competence, "CompetenceId", "CompetenceName"), "Please Select Competence",
+                                                new
+                                                {
+                                                    @id = "ddCompetance",
+                                                    @class = "form-control",
+                                                    @onchange = "GetTraining()"
+                                                })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Training: </td>
+                                <td>
+                                    @Html.DropDownList("ddTraining", new SelectList(Model.Trainings, "TrainingId", "TrainingName"), "Please Select Training",
+                                                new
+                                                {
+                                                    @id = "ddTraining",
+                                                    @class = "form-control",
+
+                                                })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Is Mandatory: </td>
+                                <td> <input id="IsMandatoryNew" type="checkbox" /></td>
+                            </tr>
+                            <tr>
+                                <td>Last Day Of Completion: </td>
+                                <td><input id="dtLastDayCompletion" type="text" class="form-control form_datetime" /></td>
+                            </tr>
+
+                            <tr>
+                                <td>Include OnBoarding: </td>
+                                <td><input id="IsIncludeOnBoardingNew" type="checkbox" /></td>
+
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                <td><input type="button" id="btnAdd" onclick="AddTraining()" value="Add" /></td>
+                            </tr>
+                        </table>
+
+                        <table class="table table-bordered admin-onbrdtble" id="tblTrainings">
+                            <thead>
+                                <tr>
+                                    <th>Skill</th>
+                                    <th>Competence</th>
+                                    <th>Trainings</th>
+                                    <th>IsMandatory</th>
+                                    <th>LastDayCompletion</th>
+                                    <th>IsIncludeOnBoarding</th>
+                                    @*<th>IsAssessmenRequired</th>*@
+                                    <th>DELETE</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+
+                        <input type="button" id="btnSaveTraining" class="sta-adminbt" onclick="SaveTraining()" value="Submit" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="popup-AddAssessment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="modal-close-Adduser"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Add Assessment</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <table>
+                            <tr>
+                                <td>Skill: </td>
+                                <td>
+                                    @Html.DropDownList("ddSkillForAssmnt", new SelectList(Model.Skills, "SkillId", "SkillName"), "Please Select Skill",
+                                                new
+                                                {
+                                                    @id = "ddSkillForAssmnt",
+                                                    @class = "form-control",
+                                                    @onchange = "GetAssessment()"
+                                                })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Competence: </td>
+                                <td>
+                                    @Html.DropDownList("ddCompetanceForAssmnt", new SelectList(Model.Competence, "CompetenceId", "CompetenceName"), "Please Select Competence",
+                                                new
+                                                {
+                                                    @id = "ddCompetanceForAssmnt",
+                                                    @class = "form-control",
+                                                    @onchange = "GetAssessment()"
+                                                })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Assessment: </td>
+                                <td>
+                                    @Html.DropDownList("ddAssessmentForAssmnt", new SelectList(Model.Assessments, "AssessmentId", "AssessmentName"), "Please Select Assessment",
+                                                new
+                                                {
+                                                    @id = "ddAssessmentForAssmnt",
+                                                    @class = "form-control",
+
+                                                })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Is Mandatory: </td>
+                                <td> <input id="IsMandatoryNewForAssmnt" type="checkbox" /></td>
+                            </tr>
+                            <tr>
+                                <td>Last Day Of Completion: </td>
+                                <td><input id="dtLastDayCompletionForAssmnt" type="text" class="form-control form_datetime" /></td>
+                            </tr>
+
+                            <tr>
+                                <td>Include OnBoarding: </td>
+                                <td><input id="IsIncludeOnBoardingNewForAssmnt" type="checkbox" /></td>
+                            </tr>
+                            <tr>
+
+                                <td colspan="2"><input type="button" id="btnAddAssessment" onclick="AddAssessment()" value="Add" /></tdcolspan>
+                            </tr>
+                            <tr>
+
+                                <td><input type="hidden" id="hdnTrainingList" /></td>
+                            </tr>
+                        </table>
+
+                        <table class="table table-bordered admin-onbrdtble" id="tblAssessments">
+                            <thead>
+                                <tr>
+                                    <th>Skill</th>
+                                    <th>Competence</th>
+                                    <th>Trainings</th>
+                                    <th>IsMandatory</th>
+                                    <th>LastDayCompletion</th>
+                                    <th>IsIncludeOnBoarding</th>
+                                    @*<th>IsAssessmenRequired</th>*@
+                                    <th>DELETE</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+
+                        <input type="button" id="btnSaveAssessment" class="sta-adminbt" onclick="SaveAssessment()" value="Submit" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@*<script src="~/Scripts/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>*@
+@*<script src="~/Scripts/jquery.min.1.12.4.js"></script>*@
+@*<link href="~/Scripts/lib/bootstrap-datepicker.css" rel="stylesheet" />
+    <script src="~/Scripts/lib/bootstrap-datepicker.js"></script>*@
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+<link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
+<script>
+    $('#dtLastDayCompletion').datepicker({
+        format: 'yyyy-mm-dd',
+        todaybtn: true,
+        autoclose: true,
+        todayhighlight: true,
+        pickerPosition: "bottom-left"
+    });
+
+    $('#dtLastDayCompletionForAssmnt').datepicker({
+        format: 'yyyy-mm-dd',
+        todaybtn: true,
+        autoclose: true,
+        todayhighlight: true,
+        pickerPosition: "bottom-left"
+    });
+
+    //$(document).ready(function () {
+    //    $("#dtLastDayCompletion").datepicker({
+
+    //        format: 'yyyy-mm-dd hh:ii'
+
+    //    });
+    //});
+
+    function OpenTrainingPopUp() {
+        $("#popup-AddTraining").modal('show');
+    }
+
+    function OpenAssessmentPopUp() {
+        $("#popup-AddAssessment").modal('show');
+    }
+
+
+    function AddTraining() {
+        var tableBody = $('#tblTrainings tbody');
+        var trainingCourseId = $("#ddSkill").val();
+        var trainingCourse = $("#ddSkill :selected").text();
+        var competance = $("#ddCompetance :selected").text();
+        var trainingModuleId = $("#ddTraining").val();
+        var trainingModule = $("#ddTraining :selected").text();
+        var isMandatory = $("#IsMandatoryNew").is(':checked');
+        var isIncludeOnBoarding = $("#IsIncludeOnBoardingNew").is(':checked');
+        var dtLastDayCompletion = $("#dtLastDayCompletion").val();
+
+        var isExist = false;
+
+        $('tr.data-Added-training-row').each(function () {
+
+            var trainingId = $(this).find('.data-Added-training-Training').text();//$("#ddTraining").val();
+            if (trainingModuleId == trainingId) {
+                isExist = true;
+            }
+        })
+
+
+        $('tr.data-Added-trainingExisting-row').each(function () {
+            var trainingId = $(this).find('.data-Added-training-TrainingId').text();//$("#ddTraining").val();
+            if (trainingModuleId == trainingId) {
+                isExist = true;
+            }
+        })
+
+
+
+        if (isExist) {
+            alert("Training Already Adeded");
+        }
+        else {
+            var resultStr = "<tr class='data-Added-training-row'><td>" + trainingCourse + "</td><td>" + competance + "</td><td>" + trainingModule
+                + "</td><td class='data-Added-training-IsMandatory'>" + isMandatory + "</td><td class='data-Added-training-LastDayCompletion'>" + dtLastDayCompletion
+                + "</td><td class='data-Added-training-IsIncludeOnBoarding'>" + isIncludeOnBoarding
+                + "<td class='delete-bt'><i class='fa fa-times' aria-hidden='true'></i></td><td class='data-Added-training-Skill' style='visibility:hidden'>" + trainingCourseId
+                + "</td><td class='data-Added-training-Training' style='visibility:hidden'>" + trainingModuleId
+                + "</td></tr>";
+
+            tableBody.append(resultStr);
+        }
+
+    }
+
+    function GetTraining() {
+
+        var skill = $("#ddSkill").val();
+        var competence = $("#ddCompetance :selected").text();
+        var competenceId = $("#ddCompetance").val();
+
+        if (competenceId == "") {
+            competenceId = 0
+        }
+
+        var PostData = {
+            competence: competence,
+            competenceId: competenceId,
+            skillId: skill
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetTrainingOnSkillAndCompetence",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                var $select = $('#ddTraining');
+                $select.find('option').remove();
+                $('<option>').text("Please Select Training").appendTo($select);
+                $.each(result, function (key, value) {
+
+                    $('<option>').val(value.TrainingId).text(value.TrainingName).appendTo($select);
+                });
+
+            }
+        });
+    }
+
+    function SaveTraining() {
+        var trainings = getAllEmpTraining();
+
+        var userId = $("#hdnUserId").val();
+
+        var PostData = {
+            trainings: trainings,
+            userId: userId
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Admin/AssignTrainingsToUser",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                alert(result);
+            }
+        });
+    }
+
+
+    function getAllEmpTraining() {
+        var Trainings = [];
+        $('tr.data-Added-training-row').each(function () {
+            var trainingCourseId = $(this).find('.data-Added-training-Skill').text();//$("#ddSkill").val();
+            var trainingModuleId = $(this).find('.data-Added-training-Training').text();//$("#ddTraining").val();
+            var isMandatory = $(this).find('.data-Added-training-IsMandatory').text(); //$("#chkIsMandatory").is(':checked');
+            var isIncludeOnBoarding = $(this).find('.data-Added-training-IsIncludeOnBoarding').text(); //$("#chkIsIncludeOnBoarding").val();
+            var dtLastDayCompletion = $(this).find('.data-Added-training-LastDayCompletion').text(); //$("#dtLastDayCompletion").val();
+
+            if (trainingCourseId != 0 && trainingModuleId != 0) {
+                var objTraining = {
+                    SkillId: trainingCourseId,
+                    TrainingId: trainingModuleId,
+                    IsMandatory: isMandatory,
+                    IsIncludeOnBoarding: isIncludeOnBoarding,
+                    LastDayCompletion: dtLastDayCompletion
+                }
+                Trainings.push(objTraining);
+            }
+        });
+
+        return Trainings;
+    }
+
+
+    // For Assessment
+    function GetAssessment() {
+
+        var skill = $("#ddSkillForAssmnt").val();
+        var competence = $("#ddCompetanceForAssmnt :selected").text();
+        var competenceId = $("#ddCompetanceForAssmnt").val();
+        if (competenceId == "") {
+            competenceId = 0
+        }
+
+        var PostData = {
+            competence: competence,
+            competenceId: competenceId,
+            skillId: skill
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetAssessmentOnSkillAndCompetence",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                var $select = $('#ddAssessmentForAssmnt');
+
+                $select.find('option').remove();
+                $('<option>').text("Please Select Assessment").appendTo($select);
+                $.each(result, function (key, value) {
+
+                    $('<option>').val(value.AssessmentId).text(value.AssessmentName).appendTo($select);
+                });
+
+            }
+        });
+    }
+
+    function AddAssessment() {
+        var tableBody = $('#tblAssessments tbody');
+        var trainingCourseId = $("#ddSkillForAssmnt").val();
+        var trainingCourse = $("#ddSkillForAssmnt :selected").text();
+        var competance = $("#ddCompetanceForAssmnt :selected").text();
+        var trainingAssessmentId = $("#ddAssessmentForAssmnt").val();
+        var trainingAssessmentName = $("#ddAssessmentForAssmnt :selected").text();
+        var isMandatory = $("#IsMandatoryNewForAssmnt").is(':checked');
+        var isIncludeOnBoarding = $("#IsIncludeOnBoardingNewForAssmnt").is(':checked');
+        var dtLastDayCompletion = $("#dtLastDayCompletionForAssmnt").val();
+
+        var isExist = false;
+
+        $('tr.data-Added-assessment-row').each(function () {
+
+            var assessmentId = $(this).find('.data-Added-assessment-Assessment').text();//$("#ddTraining").val();
+            if (trainingAssessmentId == assessmentId) {
+                isExist = true;
+            }
+        })
+
+
+        //$('tr.data-Added-trainingExisting-row').each(function () {
+
+        //    var trainingId = $(this).find('.data-Added-training-TrainingId').text();//$("#ddTraining").val();
+        //    if (trainingModuleId == trainingId) {
+        //        isExist = true;
+        //    }
+        //})
+
+
+
+        if (isExist) {
+            alert("Assessment Already Adeded");
+        }
+        else {
+            var resultStr = "<tr class='data-Added-assessment-row'><td>" + trainingCourse + "</td><td>" + competence + "</td><td class='data-Added-assessment-AssessmentName'>" + trainingAssessmentName
+                + "</td><td class='data-Added-assessment-IsMandatory'>" + isMandatory + "</td><td class='data-Added-assessment-LastDayCompletion'>" + dtLastDayCompletion
+                + "</td><td class='data-Added-assessment-IsIncludeOnBoarding'>" + isIncludeOnBoarding
+                + "<td class='delete-bt'><i class='fa fa-times' aria-hidden='true'></i></td><td class='data-Added-assessment-Skill' style='visibility:hidden'>" + trainingCourseId
+                + "</td><td class='data-Added-assessment-Assessment' style='visibility:hidden'>" + trainingAssessmentId
+                + "</td></tr>";
+
+            tableBody.append(resultStr);
+        }
+
+    }
+
+    function SaveAssessment() {
+        var assessments = getAllEmpAssessment();
+
+        var userId = $("#hdnUserId").val();
+
+        var PostData = {
+            assessments: assessments,
+            userId: userId
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Admin/AssignAssessmentsToUser",
+            //url: "/Admin/AssignAssessmentsToAllUser",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                alert(result);
+            }
+        });
+    }
+
+    function getAllEmpAssessment() {
+        var Assessment = [];
+        $('tr.data-Added-assessment-row').each(function () {
+            var trainingCourseId = $(this).find('.data-Added-assessment-Skill').text();//$("#ddSkill").val();
+            var trainingAssessmentId = $(this).find('.data-Added-assessment-Assessment').text();//$("#ddTraining").val();
+            var isMandatory = $(this).find('.data-Added-assessment-IsMandatory').text(); //$("#chkIsMandatory").is(':checked');
+            var isIncludeOnBoarding = $(this).find('.data-Added-assessment-IsIncludeOnBoarding').text(); //$("#chkIsIncludeOnBoarding").val();
+            var dtLastDayCompletion = $(this).find('.data-Added-assessment-LastDayCompletion').text(); //$("#dtLastDayCompletion").val();
+            var trainingAssessment = $(this).find('.data-Added-assessment-AssessmentName').text();
+
+            if (trainingCourseId != 0 && trainingAssessmentId != 0) {
+                var objAssessment = {
+                    TrainingCourseId: trainingCourseId,
+                    TrainingAssessmentId: trainingAssessmentId,
+                    TrainingAssessment: trainingAssessment,
+                    IsMandatory: isMandatory,
+                    IsIncludeOnBoarding: isIncludeOnBoarding,
+                    LastDayCompletion: dtLastDayCompletion
+                }
+                Assessment.push(objAssessment);
+            }
+        });
+
+        return Assessment;
+    }
+
+</script>

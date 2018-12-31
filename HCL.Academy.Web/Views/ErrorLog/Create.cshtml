@@ -1,0 +1,47 @@
+﻿
+@Html.ValidationSummary(true)
+@model HCLAcademy.Models.RedisCacheEntity
+
+<h2>Add Configuration</h2>
+<div class="table-responsive tabular-data">
+
+    <div class="modal-body">
+        <div class="container-fluid">
+            <div class="detls-panel">
+                <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
+                    <form asp-controller="TableStorage" asp-action="Create" method="post">
+                        <table class="table table-striped table-bordered table-bordered">
+                            <tr>
+                                <td class="col-md-1">@Html.LabelFor(m => m.ConnectionString, htmlAttributes: new { @class = "control-label" })</td>
+                                <td>
+                                    @Html.TextBoxFor(m => m.ConnectionString, new { Class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.ConnectionString, "", new { @class = "text-danger" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-1">@Html.LabelFor(m => m.ExpirationPolicy, htmlAttributes: new { @class = "control-label" })</td>
+                            <td>
+                                @Html.TextBoxFor(m => m.ExpirationPolicy, new { Class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ExpirationPolicy, "", new { @class = "text-danger" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center">
+                            <input type="submit" class="btn btn-success" value="Save" />
+                            <input type="reset" class="btn btn-default" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<div>
+    @Html.ActionLink("Back", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

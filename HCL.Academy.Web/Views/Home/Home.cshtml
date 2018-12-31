@@ -1,0 +1,148 @@
+﻿@using HCLAcademy.Common;
+@using System.Configuration;
+
+@model HCLAcademy.Models.BannersList
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string bannerSource = ConfigurationManager.AppSettings["BannerSource"].ToString();
+}
+
+@Styles.Render("~/Content/learningCss")
+@Scripts.Render("~/bundles/homeJs")
+
+
+<style>
+    .pL0 {
+        padding-left: 0px !important
+    }
+
+    .pR0 {
+        padding-right: 0px !important
+    }
+
+    .box-pan .nav-tabs li {
+        width: 49.36%;
+    }
+</style>
+<div class="flexslider container">
+
+    <ul class="slides">
+        @if (bannerSource.Equals("SharePoint"))
+        {
+            if (Model != null)
+            {
+                foreach (var item in Model.BannersListdetails)
+                {
+                    <li>
+                        <img src="data:image;base64,@item.BannerImageSRC" class="img-responsive" alt="" />
+                    </li>
+                }
+            }
+        }
+        else if (bannerSource.Equals("WebApp"))
+        {
+            string bannerFiles = ConfigurationManager.AppSettings["BannerFiles"].ToString();
+            string[] bannerFilesArr = bannerFiles.Split('|');
+
+            foreach (var bannerFile in bannerFilesArr)
+            {
+                    <li>
+                        <img src="~/Images/Banner/@bannerFile" class="img-responsive" alt="" />
+                    </li>
+            }
+        }
+    </ul>
+</div>
+
+<div id="about" class="section-cotent">
+    <div class="container">
+        <!-- /.title-section -->
+        <div class="row">
+            <div class="training-pan col-md-12">
+                <!--- Learning Journey start --->
+                <div class="learning-pan ">
+                    <h2>My Learning Journey</h2>
+                    <div class="learn-inner">
+                        <div class="row" id="MyLearningJourney">
+                            <img src="../Images/loading_01.gif" class="loader-img" style="width:50px" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @* ---our team *@
+    </div>
+    <div class="our-team">
+        <div class="container">
+            <div class="row">
+                @*  *@
+
+                <div class="col-md-4 col-sm-12 col-xs-12 pL0 pR0">
+                    <!-- Training start -->
+                    <div class="box">
+                        <h2>Training</h2>
+                        <div class="box-pan">
+                            <ul class="nav nav-tabs nav-justified" id="myTab13">
+                                <li class="active pL0 pR0 w48"><a class="pT13 pB13" href="#Mandatory">Mandatory</a></li>
+                                <li class="pL0 pR0 w48" style="float:right"><a class="pT13 pB13" href="#Suggested">Suggested</a></li>
+                            </ul>
+                            <div class="tab-content" id="trainings">
+                                <img src="~/Images/loading_01.gif" class="loader-img" />
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Training end -->
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-xs-12 pL0 pR0">
+                    <!-- Assesment start -->
+                    <div class="box">
+                        <h2>Assessment</h2>
+                        <div class="box-pan">
+                            <ul class="nav nav-tabs nav-justified horizontal" id="myTab13">
+                                <li class="active pL0 pR0 w48"><a class="pT13 pB13" href="#Learnt12">Pending</a></li>
+                                <li class="pL0 pR0 w48" style="float:right"><a class="pT13 pB13" href="#Ideas12">Completed</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-content" id="assesmentList">
+                                    <img src="~/Images/loading_01.gif" class="loader-img" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Assesment end -->
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-xs-12 pL0 pR0">
+                    <div class="box">
+                        <div class="patch-events bot-brdr">
+
+                            <div class="patch-blue bot-brdr">
+                                <div class="patch-blue">
+                                    <h1>NEWS</h1>
+                                    <div id="RssNewsList">
+                                        <img src="~/Images/loading_01.gif" class="loader-img" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="patch-blue bot-brdr" style="margin-top:10px;">
+                                <h1>EVENT</h1>
+                                <div id="EventsList">
+                                    <img src="~/Images/loading_01.gif" class="loader-img" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col-md-4 -->
+            </div>
+            <!-- /.our-team -->
+        </div>
+    </div>
+    <!-- /.container -->
+</div>
+
+
+<div id="confrmMsgBox" style="display:none">@MessageConstant.AssesmentConfirmMsg</div>

@@ -1,0 +1,118 @@
+﻿@using System.Configuration;
+@model HCLAcademy.Models.SharePointAuthAutho
+
+@{
+    ViewBag.Title = "Login";
+}
+
+@{
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+
+
+<header class="header">
+    @*<img src="../Images/HCL-ING-Aceademy-Hub_Login.png" alt="HCL Academy Hub" title="HCL Academy Hub"  />*@
+    @{
+        @*string AthenticateHeading = ConfigurationManager.AppSettings["AthenticateHeading"].ToString();
+            if (AthenticateHeading != "")
+            {
+                @Html.Label(@AthenticateHeading, new { style = "font-weight: bold; font-size: 18px;color:#ffffff" })
+            }
+            else
+            {
+                var img = Convert.ToString(Session["landingPageHeaderImg"]);
+                <img id="imgLogo" title="Customer Logo" src="@img" alt="customer logo" />
+
+            }*@
+
+
+        var clientName = Convert.ToString(Session["ClientName"]);
+        <div>
+            <p class="logoatheader">
+                <span class="hcllogo"><img src="~/Images/HCLLogosmall.png" align="middle" /> |</span> <span style="color:white;font-size:16px;font-weight:700;text-transform:capitalize;">@clientName ACADEMY</span>
+            </p>
+        </div>
+
+    }
+
+    <style>
+        .logoatheader {
+            color: white;
+            font-size: 25px;
+        }
+
+        .hcllogo {
+            font-size: 25px;
+            font-style: italic;
+            font-family: Helvetica;
+            font-weight: bolder;
+            font-stretch: ultra-expanded;
+            margin-right: 7px;
+        }
+
+        .customerlogo {
+            font-size: 20px;
+            font-style: normal;
+            font-family: monospace;
+            text-transform: uppercase;
+        }
+    </style>
+
+    <script>
+        /*--- Hide Error Message ---*/
+        function onchangeeventUser() {
+            $('#user').hide();
+        }
+
+        function onchangeeventPswd() {
+            $('#pswd').hide();
+        }
+
+        function disableThisButton() {
+            $('#wipimgdiv').show();
+        }
+    </script>
+</header>
+@*<div class="maintanance" style="text-align:center">
+        <img src="~/Images/underconstruction.jpg" />
+    </div>*@
+
+@using (Html.BeginForm("Login", "Authorize", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <section class="container validate-cont">
+
+        <div id="wipimgdiv" style="display:none; margin:0px auto; position:absolute; margin-left: 500px; margin-top: 150px;">
+            <img src="~/Images/WIP_Animated.gif" style="width:50%" />
+        </div>
+
+        <div class="login-box">
+            @if (ViewBag.Message != null)
+            {
+                <span style="border: 1px solid red;align-content:center">
+                    ViewBag.Message
+                </span>
+            }
+            <h1>Login</h1>
+            <div class="form-box">
+                <span class="add-ons"><i class="glyphicon glyphicon-user"></i></span>
+                @Html.TextBoxFor(a => a.UserName, new { @placeholder = "Username", @onchange = "onchangeeventUser();" })
+                <div id="user" style="color:red;align-content:center;text-align:center">
+                    @Html.ValidationMessageFor(model => model.UserName)
+                </div>
+
+            </div>
+            <div class="form-box">
+                <span class="add-ons"><i class="glyphicon glyphicon-lock"></i></span>
+                @Html.PasswordFor(a => a.Password, new { @placeholder = "Password", @onchange = "onchangeeventPswd();" })
+                <div id="pswd" style="color:red;align-content:center;text-align:center">
+                    @Html.ValidationMessageFor(model => model.Password)
+                </div>
+            </div>
+            <input type="submit" id="btnLogin" value="Login" name="btnLogin" class="btn btn-login" onclick="disableThisButton(this);animateText();" />
+        </div>
+
+    </section>
+}

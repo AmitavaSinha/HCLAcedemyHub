@@ -1,0 +1,34 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/jquery.treeview.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.cookie.js"></script>
+<script src="~/Scripts/jquery.treeview.js"></script>
+<script type="text/javascript" language="Javascript">
+    $(document).ready(function () {
+
+        //$("#WikiTabMenu").load("/Wiki/GetTabMenu");
+        //$("#OnBoardingTree").load("/Wiki/WikiDocumentTree", function () {
+
+        //    $('#chapterFolders').treeview({ collapsed: true });
+        //});
+
+        $("#OnBoardingTree").load("/Training/TrainingDocumentTree?folder=@ViewBag.Folder", function () {
+            $('#chapterFolders').treeview({ collapsed: true }).find('.cls_@ViewBag.Selected').prev().click();
+            
+        });
+
+    });
+</script>
+
+
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <h2>Training Materials</h2>
+        <div id="OnBoardingTree">
+            <img src="~/Images/loading_01.gif" class="loader-img" />
+        </div>
+        <!-- /.container -->
+    </section>
+</div>

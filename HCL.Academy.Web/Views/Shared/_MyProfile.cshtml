@@ -1,0 +1,111 @@
+﻿@model HCLAcademy.Models.UserManager
+
+<div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content profile-table">
+        <div class="modal-header profile-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h2 class="modal-title">My Profile</h2>
+        </div>
+        <div class="modal-body profile-pan">
+
+            <ul>
+                <li>
+                    <div class="row">
+                        <div class="col-md-3 col-sm-3 col-xs-3">Name</div>
+                        <div class="col-md-9 col-sm-9 col-xs-9"><span>@Model.UserName</span></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="row">
+                        <div class="col-md-3 col-sm-3 col-xs-3">Designation</div>
+                        <div class="col-md-9 col-sm-9 col-xs-9"><span>@Model.Designation</span></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="row">
+                        <div class="col-md-3 col-sm-3 col-xs-3">Email ID</div>
+                        <div class="col-md-9 col-sm-9 col-xs-9"><span>@Model.EmailID</span></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="row">
+                        <div class="col-md-3 col-sm-3 col-xs-3">Reporting Manager</div>
+                        <div class="col-md-9 col-sm-9 col-xs-9"><span>@Model.Manager</span></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="row">
+                        <div class="col-md-3 col-sm-3 col-xs-3"><span>Competence Level</span></div>
+                        <div class="col-md-9 col-sm-9 col-xs-9"><span>@Model.Competency</span></div>
+                    </div>
+                </li>
+            </ul>
+
+            <h3>Email address of my peers</h3>
+
+            <ul>
+                @{
+                    if (Model.Peers.Count > 0)
+                    {
+                        foreach (string name in Model.Peers)
+                        {
+                            <li>
+                                <div class="row">
+                                    @*<div class="col-md-3 col-sm-3 col-xs-3">Email</div>*@
+                                    <div class="col-md-12 col-sm-12 col-xs-12"><span>@name</span></div>
+                                </div>
+                            </li>
+                        }
+
+
+                    }
+                    else
+                    {
+                        <li>
+                            <div class="row">
+                                <div class="col-md-3 col-sm-3 col-xs-3"><span>No record found.</span></div>
+                                <div class="col-md-9 col-sm-9 col-xs-9"></div>
+                            </div>
+                        </li>
+                    }
+                }
+            </ul>
+
+            <h3>Email Address of my reportees</h3>
+
+            <ul>
+
+                @{
+                    if (Model.Reportees.Count > 0)
+                    {
+                        foreach (string name in Model.Reportees)
+                        {
+                            <li>
+                                <div class="row">
+                                    @*<div class="col-md-3 col-sm-3 col-xs-3">Email</div>*@
+                                    <div class="col-md-12 col-sm-12 col-xs-12"><span>@name</span></div>
+                                </div>
+                            </li>
+                        }
+
+
+                    }
+                    else
+                    {
+                        <li>
+                            <div class="row">
+                                <div class="col-md-3 col-sm-3 col-xs-3"><span>No record found.</span></div>
+                                <div class="col-md-9 col-sm-9 col-xs-9"></div>
+                            </div>
+                        </li>
+                    }
+                }
+
+            </ul>
+
+
+        </div>
+    </div>
+</div>

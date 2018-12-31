@@ -1,0 +1,53 @@
+﻿@model HCLAcademy.Models.UserManager
+
+<div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content profile-table">
+        <div class="modal-header profile-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h2 class="modal-title">Upload Profile</h2>
+        </div>
+        <div class="modal-body profile-pan">
+            
+            <!-- Upload profile document Start-->
+            <div id="FormContent">
+                <form id="FormUpload"
+                      enctype="multipart/form-data" method="post">
+
+                    <div class="top-mrg">
+                        <span class="pull-left fileinput-button">
+                            <input type="file" name="UploadedFile" id="UploadedFile" />
+                        </span>
+                        <button class="btn btn-primary start col-md-offset-1 pull-left"
+                                type="button" id="Submit_btn" onclick="UploadFile()">
+                            <i class="glyphicon glyphicon-upload"></i>
+                            <span>Start upload</span>
+                        </button>
+                        @*<div class="spacer"></div>*@
+                        <i class="fa fa-info-circle inf-icon" aria-hidden="true" title="Please upload file having max 5MB size and format .doc,.docx and .pdf only"></i>
+
+
+                        <a href="@Url.Action("DownloadProfile", "Home")" id="dwnProfilelink"
+                           class="btn btn-primary btn-dwn" target="_self" title="Download Profile"
+                           @Html.Raw(Model.HasAttachments == true ? "" : "style='display:none;'")>
+                            <i class="fa fa-download" aria-hidden="true" id="dwnProfile"></i>
+                        </a>
+                    </div>
+                </form>
+
+
+                <div id="lblmessage" class="alert alert-danger alert-upload" style="display:none"></div>
+                <div class="progress CustomProgress" id="progressBar" style="display:none">
+                    <div id="FileProgress"
+                         class="progress-bar " role="progressbar"
+                         aria-valuenow="00" aria-valuemin="0"
+                         aria-valuemax="100" style="width: 0%;">
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+            <!-- Upload profile document End-->
+        </div>
+    </div>
+</div>

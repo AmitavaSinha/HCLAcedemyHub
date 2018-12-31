@@ -1,0 +1,73 @@
+﻿@model HCLAcademy.Models.RedisCacheEntity
+
+
+<h2>Edit Configuration</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="table-responsive tabular-data">
+
+        <div class="modal-body">
+            <div class="container-fluid">
+                <div class="detls-panel">
+                    <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
+                       <!-- <table class="table table-striped table-bordered table-bordered">
+                            <tr style="display:none">
+                                <td class="col-md-1">@Html.LabelFor(model => model.PartitionKey, htmlAttributes: new { @class = "control-label" })</td>
+                                <td>
+                                    @Html.EditorFor(model => model.PartitionKey, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.PartitionKey, "", new { @class = "text-danger" })
+                                </td>
+                            </tr>
+                            <tr  style="display:none">
+                                <td class="col-md-1">@Html.LabelFor(model => model.RowKey, htmlAttributes: new { @class = "control-label" })</td>
+                                <td>
+                                    @Html.EditorFor(model => model.RowKey, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.RowKey, "", new { @class = "text-danger" })
+                            </td>
+                        </tr>
+                        <tr style="display:none">
+                            <td>@Html.LabelFor(model => model.Timestamp, htmlAttributes: new { @class = "control-label col-md-2" })</td>
+                            <td>
+                                @Html.EditorFor(model => model.Timestamp, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Timestamp, "", new { @class = "text-danger" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.Department, htmlAttributes: new { @class = "control-label col-md-2" })</td>
+                            <td>
+                                @Html.EditorFor(model => model.Department, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Department, "", new { @class = "text-danger" })
+                            </td>
+                        </tr>
+                            <tr>
+                                <td>@Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })</td>
+                                <td>
+                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>@Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })</td>
+                                <td>
+                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                </td>
+                            </tr>
+                            
+                        <tr><td colspan="2" align="center"><input type="submit" value="Save" class="btn btn-success" /></td></tr>
+                    </table>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+<div>
+    @Html.ActionLink("Back", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,127 @@
+﻿@model IEnumerable<HCLAcademy.Models.Skills>
+
+
+<link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+<link rel="stylesheet" href="https://glyphsearch.com/bower_components/font-awesome/css/font-awesome.min.css">
+<style>
+    .skillcomp-pan .panel-heading {
+        padding: 0;
+        margin: 0;
+    }
+
+    .skillcomp-pan .panel-title > a, .panel-title > a:active {
+        display: block;
+        padding: 10px 15px;
+        color: #555;
+        font-size: 16px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        word-spacing: 3px;
+        text-decoration: none;
+    }
+
+    .skillcomp-pan .panel-heading a:before {
+        font-family: 'FontAwesome';
+        content: "\f13a";
+        color: rgba(146, 208, 80, 1);
+        transition: all 0.5s;
+        font-size: 22px;
+        display: inline-block;
+    }
+
+    .skillcomp-pan .panel-heading.active a:before {
+        color: rgba(255, 192, 0, 1);
+        -webkit-transform: rotate(180deg);
+        -moz-transform: rotate(180deg);
+        transform: rotate(180deg);
+    }
+
+    .skillcomp-pan .table > thead > tr > th {
+        background-color: rgba(143, 170, 220, 1);
+        color: #fff;
+    }
+
+    .skillcomp-pan .table > tbody > tr > th {
+        color: rgba(127, 127, 127, 1);
+    }
+
+    .skillcomp-pan .table > tbody > tr > td {
+        color: rgba(127, 127, 127, 1);
+    }
+
+    .skillcomp-pan .table-striped > tbody > tr:nth-of-type(odd) {
+        background-color: rgba(234, 239, 247, 1);
+    }
+</style>
+
+
+<div id="body" style="padding-top:60px">
+    
+    <div class="container">
+        <div class="panel-group skillcomp-pan" id="accordion" role="tablist" aria-multiselectable="true">
+            @{int i = 1;}
+            @foreach (var Skills in Model)
+            {
+                string idCollapseHeader = "heading" + @i;
+                string idCollapseBody = "collapse" + @i;
+                string collapseHref = "#" + "collapse" + @i;
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="@idCollapseHeader">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="@collapseHref" aria-expanded="true" aria-controls="@idCollapseBody">
+                                <span></span>@Skills.skillName
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="@idCollapseBody" class="panel-collapse collapse" role="tabpanel" aria-labelledby="@idCollapseHeader">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" style="vertical-align:top;width:7%;">COMPETENCE LEVEL
+                                            </th>
+                                            <th scope="col" style="vertical-align:top;width:40%;">DESCRIPTION</th>
+                                            <th scope="col" style="vertical-align:top;width:33%;">TRAINING</th>
+                                            <th scope="col" style="vertical-align:top;width:20%;">TRAINING DESCRIPTION</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var SkillCompetencies in Skills.competences)
+                                        {
+                                            <tr>
+                                                <td scope="row">@SkillCompetencies.CompetenceName</td>
+                                                <td style="white-space: pre-line">@SkillCompetencies.Description</td>
+                                                <td>@Html.Raw(@SkillCompetencies.TrainingName)</td>
+                                                <td style="white-space: pre-line">@SkillCompetencies.TrainingDescription</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                i++;
+            }
+        </div>
+    </div>
+
+ 
+
+    <script>
+
+        $(document).ready(function () {
+            $('.skillcomp-pan .panel-collapse').on('show.bs.collapse', function () {
+                $(this).siblings('.skillcomp-pan .panel-heading').addClass('active');
+            });
+
+            $('.skillcomp-pan .panel-collapse').on('hide.bs.collapse', function () {
+                $(this).siblings('.skillcomp-pan .panel-heading').removeClass('active');
+            });
+        });
+
+        
+    </script>
+</div>

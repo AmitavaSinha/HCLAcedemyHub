@@ -1,0 +1,55 @@
+﻿@model HCLAcademy.Models.AssignUser
+@using GridMvc.Html
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="@Url.Content("~/Content/Gridmvc.css")" rel="stylesheet" />
+<script src="~/Scripts/jquery.min.1.12.4.js"></script>
+<script src="@Url.Content("~/Scripts/gridmvc.min.js")"></script>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div id="body" class="form-horizontal">
+        <section class="content-wrapper main-content clear-fix container">
+            <h2>Assign Employee to Project</h2>
+            <hr />
+            <div class="form-group">
+                <div class="col-md-12">
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <td><h4 style="font-size: 15px;">Project</h4></td>
+                            <td>
+                                @Html.DropDownListFor(model=>model.selectedProject, new SelectList(Model.lstProjects, "ID", "ProjectName"),"Select a Project", new
+                       {
+                           @class = "form-control"
+                       })@Html.ValidationMessageFor(model => model.selectedProject, "", new { @class = "text-danger" })
+                </td>
+                <td><h4 style="font-size: 15px;">Employee</h4></td>
+                <td>
+                    @Html.DropDownListFor(model => model.selectedUser, new SelectList(Model.lstUsers, "userID", "userName"), "Select an Employee",new
+           {
+               @class = "form-control"
+           })@Html.ValidationMessageFor(model => model.selectedUser, "", new { @class = "text-danger" })
+    </td>
+    <td><input type="submit" value="Assign" class="btn btn-default" /></td>
+</tr>
+</table>
+</div>
+</div>
+<div>
+    @Html.Grid(Model.lstUsers).Columns(columns =>
+{
+    columns.Add(c => c.userName).Titled("Employee").Filterable(true);
+    columns.Add(c => c.projectName).Titled("Project Name").Filterable(true);
+}).WithPaging(10).Sortable(true)
+</div>
+</section>
+</div>
+}
+
+
+@*@section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }*@

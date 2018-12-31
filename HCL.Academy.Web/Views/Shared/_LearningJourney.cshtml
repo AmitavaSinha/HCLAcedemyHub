@@ -1,0 +1,65 @@
+﻿@using HCLAcademy.HtmlHelpers;
+@model List<HCLAcademy.Models.UserSkillDetail>
+
+
+
+@{
+
+    if (Model != null && Model.Count > 0)
+    {
+        <div class="col-md-1 col-sm-1 col-xs-12">
+            <div class="start-bt">
+                Start
+            </div>
+        </div>
+        <div class="col-md-10 col-sm-10 col-xs-12">
+            <div class="dot-fluid"></div>
+            <ul>
+                @foreach (var CourseItem in Model)
+                {
+                    <li class="@CourseItem.skillStatus.bgColor">
+                        <div class="status">
+                            <span class="tool-tip">
+                                @if (CourseItem.skillStatus.isDualStatus)
+                                {
+                                    <div class="combo">
+                                        <i class="ongoing"></i>
+                                        <i class="failed"></i>
+                                    </div>
+                                }
+                                <div class="tooltiptext">
+                                    <ul>
+                                        @{string modulesCompletion = string.Empty;
+                                        foreach (var module in CourseItem.listOfTraining)
+                                        {
+
+                                            modulesCompletion = (module.TrainingName + "-" + module.status.GetDisplayName());
+                                            <li>@modulesCompletion</li>
+                                        }
+                                        }
+                                    </ul>
+                                </div>
+                            </span>
+
+                        </div>
+                        <div class="status-infrm">
+                            <h5>@CourseItem.skillName</h5>
+                            <p>Status: <span>@CourseItem.skillStatus.cStatus</span></p>
+                        </div>
+                    </li>
+
+                }
+            </ul>
+        </div>
+
+        <div class="col-md-1 col-sm-1 col-xs-12">
+            <a class="more-bt" href="~/TrainingPlan/TrainingPlan">More
+                <!--<img src="../Images/more-btn.png" alt="" />-->
+            </a>
+        </div>
+    }
+    else
+    {
+        <div style="margin-left: 20px;">No record found.</div>
+    }
+}

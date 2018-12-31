@@ -1,0 +1,259 @@
+﻿@model HCLAcademy.Models.UserOnBoarding
+@{
+    ViewBag.Title = "ProjectSkills";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    table td {
+        padding: 5px;
+    }
+
+    .pL0 {
+        padding-left: 0px !important;
+    }
+
+    .pR0 {
+        padding-right: 0px !important;
+    }
+</style>
+<script>
+    $(document).ready(function () {      
+        var projectid = getUrlVars()["projectid"];
+        if (projectid != '' && projectid != null && projectid != undefined && projectid != 'undefined') {
+            $('#projectItemId').val(projectid);
+            ShowProjectSkills();
+            
+        }
+        else {
+            alert("No Project Exists.");
+        }
+    });
+
+    function ShowProjectSkills() {
+        var PostData = {
+            projectid: $('#projectItemId').val(),
+
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/ProjectSkills/GetProjectSkills",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                console.log(result);
+                var tbodyHTML = "";
+
+                if (result != null) {
+                    $('.projectName').html(result["ProjectName"]);
+                    $('#projectItemId').val(result["ProjectId"]);
+
+                    if (result.ProjectSkill.length > 0) {
+                        $.each(result.ProjectSkill, function (key, value) {
+                            var deleteId = "delete" + value.ItemId;
+                            tbodyHTML += "<tr>" +
+                                            "<td>" + value.Skill + "</td>" +
+                                            "<td style='text-align:center'>" + "<a id='" + deleteId + "' href='javascript:void(0)' onclick='RemoveProjectSkill(\"" + value.ItemId + "\",\"" + value.ProjectId + "\",\"" + value.SkillId  + "\")'><span style='color:red;font-size:16px' class='glyphicon glyphicon-trash'></span></a>" + "</td>" +
+                                         "</tr>";
+
+                        });
+
+                        $('#tableProjectSkill tbody').html(tbodyHTML);
+                    }
+                    else {
+                        tbodyHTML += "<tr><td colspan='2' style='text-align:center'>No record found</td></tr>";
+                        $('#tableProjectSkill tbody').html(tbodyHTML);
+                    }
+                    
+                }
+                
+                $('#popup-delete-confirm').modal('hide');
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+
+    function RemoveProjectSkill(id, projectid, skillid) {
+        $('#projectSkillItemId').val(id);
+        $('#projectItemId').val(projectid);
+        $('#skillId').val(skillid);
+
+        $('#popup-delete-confirm').modal('show');
+    }
+
+    function DeleteProjectSkill(){
+        var itemtodelete = $('#projectSkillItemId').val();
+        var PostData = {
+            projectskillid: itemtodelete,
+            projectid:$('#projectItemId').val(),
+            skillid:$('#skillId').val()
+            
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/ProjectSkills/DeleteProjectSkill",
+            contentType: "application/json; charset=utf-8",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                console.log(result);
+                ShowProjectSkills();
+                $('#popup-delete-confirm').modal('hide');
+               
+            }
+        });
+    }
+
+    function AddSkillToProject() {
+        var PostData = {
+            projectid: $("#projectItemId").val(),
+            skillid: $("#ddSkillForAssmnt").val(),
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/ProjectSkills/PostProjectSkill",
+            contentType: "application/json; charset=utf-8",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {               
+                ShowProjectSkills();
+                var tbodyHTML = "";
+            }
+        });
+    }
+
+    function AddSkill() {
+        if ($("#ddSkillForAssmnt")[0].selectedIndex == 0) {
+            alert('Please select a skill.');
+            return;
+        }
+
+        var PostData = {
+            projectid: $('#projectItemId').val(),
+
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/ProjectSkills/GetProjectSkills",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                if(result != null){
+                    if (result.ProjectSkill.length > 0) {
+                        var data = jQuery.grep(result.ProjectSkill, function (n, i) {
+                            return (n.ProjectId == $('#projectItemId').val() && n.SkillId == $("#ddSkillForAssmnt").val());
+                        });
+                        if (data.length > 0) {
+                            alert("The selected skill is already assigned to this project");
+                        }
+                        else {
+                            AddSkillToProject();
+                        }
+                    }
+                    else {
+                        return AddSkillToProject();
+                    }
+                }
+               
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+
+    function getUrlVars() {
+        var url = window.location.href.toLowerCase();
+        var vars = {};
+        var parts = url.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+            vars[key] = value;
+        });
+        return vars;
+    }
+</script>
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <div class="container" style="padding-bottom:50px">
+
+            <div class="row">
+                <article>
+                    <header>
+                        <h1 style="font-size: 15px;font-weight:bolder;margin-bottom:10px">Project Name : <span class="projectName"></span></h1>
+                        <h1 style="font-size: 15px;font-weight:bolder;margin-bottom:10px">Please select a skill to add to the project</h1>
+                        <input type="hidden" id="projectItemId"/>
+                        <input type="hidden" id="projectSkillItemId" />
+                        <input type="hidden" id="skillId" />
+                        
+                    </header>
+                </article>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td><h4 style="font-size: 15px;">Skill</h4></td>
+                            <td>
+                                @Html.DropDownList("ddSkillForAssmnt", new SelectList(Model.Skills, "SkillId", "SkillName"), "Please Select Skill",
+                                                 new
+                                                 {
+                                                     @id = "ddSkillForAssmnt",
+                                                     @class = "form-control",
+                                                    
+                                                 })
+                            </td>
+                            
+                            <td>
+                                <button onclick="AddSkill()" class="sta-adminbt">Add</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row" style="margin-top:35px">
+                <article>
+                    <header>
+                        <h1 style="font-size: 15px;font-weight:bolder;margin-bottom:10px">Skills assigned to the project : <span class="projectName"></span></h1>
+
+                    </header>
+                </article>
+                <div class="col-md-12 pL0 pR0">
+                    <table class="table table-bordered table-striped" id="tableProjectSkill">
+                        <thead style="background-color:#326295;color:#fff">
+                            <tr>
+                                <th style="width:80%;text-align:center">Skill</th>
+                                <th style="width:20%;text-align:center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="2" style="text-align:center">No record found</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="popup-delete-confirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="modal-close-Adduser"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure to delete this project skill ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" style="float:right" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-default" style="float:right;margin-right:10px" onclick="DeleteProjectSkill()">Yes</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

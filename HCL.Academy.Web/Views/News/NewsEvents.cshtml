@@ -1,0 +1,229 @@
+﻿@using HCLAcademy.Models;
+
+@{
+    ViewBag.Title = "NewsEvents";
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/jquery.mCustomScrollbar.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.mCustomScrollbar.concat.min.js"></script>
+
+<div id="body">
+
+    <section class="content-wrapper main-content clear-fix container">
+        <div class="news-wrapper">
+            <div class="row">
+                @{
+                    if (ViewBag.annclst != null)
+                    {
+                        List<News> News = ViewBag.annclst;
+                        if(News.Count > 0)
+                        { 
+                        <div class="col-md-8 col-sm-7 col-xs-12">
+                            <div class="light-blue">
+                                <h3 class="news-title">News</h3>
+
+                                <div class="news-scroll mCustomScrollbar">
+                                    <ul class="news-pan">
+                                        @{
+                        int i = 0;
+                        foreach (var item in ViewBag.annclst)
+                        {
+                            var base64 = item.ImageURL;
+                            var imgSrc = String.Format("data:image;base64,{0}", base64);
+                            var itemBody = item.Body;
+                            <li>
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-4 col-xs-12"><img src="data:image;base64,@item.ImageURL" height="100" width="120" alt="Media Object" /></div>
+                                    <div class="col-md-9 col-sm-8 col-xs-12">
+                                        <ul>
+                                            <li>@item.Created</li>
+                                        </ul>
+                                        <h4>@item.Header</h4>
+                                        @*<p>@item.Body</p>*@
+                                        <p>@Html.Raw(item.Body)</p>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                                        }
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                        }
+                    }
+                }
+                <!-------------------Start Rss feed-------------------->
+                @{
+                    if (ViewBag.RssFeedVB != null)
+                    {
+                        List<RSSFeed> RsNews = ViewBag.RssFeedVB;
+                        if (RsNews.Count > 0)
+                        { 
+                        <div class="col-md-8 col-sm-7 col-xs-12">
+                            <div class="light-blue">
+
+                                @*<h3 class="news-title">Rss Feeds</h3>*@
+
+                                <div class="news-scroll mCustomScrollbar">
+                                    <ul class="news-pan">
+                                        @{
+                        foreach (var item in ViewBag.RssFeedVB)
+                        {
+                            var Header = "";
+                            var PreviousHeader = "";
+                            var URL = item.LinkNode;
+                            var Title = item.TitleNode;
+                            var Desp = item.DescriptionNode;
+                            var PubDate = item.PubDateNode;
+                            Header = item.Title;
+
+                            @*if (PreviousHeader != Header)
+                            {
+                                <h3 class="news-title">@Header</h3>
+                            }*@
+                            <li>
+                                <div class="row">
+                                    @*<div class="col-md-3 col-sm-4 col-xs-12"></div>*@
+                                    <div class="col-md-9 col-sm-8 col-xs-12" style="width:100%">
+                                        <ul>
+                                            <li><h4 style="text-decoration: underline;font-weight:bold;font-size:14px;"><a href="@URL" target="_blank">@Title</a></h4></li>
+                                            <li>@PubDate</li>
+                                        </ul>
+                                        <br />
+                                        @*<h4>@Title</h4>*@
+
+                                        <p>@Html.Raw(Desp)</p>
+                                    </div>
+                                </div>
+                            </li>
+
+                            PreviousHeader = Header;
+
+                        }
+
+                                        }
+
+                                    </ul>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        }
+                    }
+                }
+
+                <!-------------------End Rss Feed---------------------->
+                @{
+                    if (ViewBag.EventsList != null)
+                    {
+                        int i = 0; int month = 0;
+
+                        <div class="col-md-4 col-sm-5 col-xs-12">
+                            <div class="light-blue">
+                                <h3 class="news-title">Events</h3>
+                                <div class="news-scroll mCustomScrollbar">
+                                    <ul class="news-pan">
+
+
+                                        @foreach (var item in ViewBag.EventsList)
+                                        {
+                                            <li>
+                                                <div class="row">
+                                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                                        <span class="date-pan">
+                                                            @{
+                                            DateTime utcdate = item.EventDate;
+                                            var istdate = TimeZoneInfo.ConvertTimeFromUtc(utcdate, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")).Day;
+                                                            }
+                                                            <span class="date">@istdate</span>
+                                                            @{
+
+                                            month = int.Parse(item.EventDate.Month.ToString());
+                                            if (month == 1)
+                                            {
+                                                <span class="month">Jan</span>
+                                            }
+                                            if (month == 2)
+                                            {
+                                                <span class="month">Feb</span>
+                                            }
+                                            if (month == 3)
+                                            {
+                                                <span class="month">Mar</span>
+                                            }
+                                            if (month == 4)
+                                            {
+                                                <span class="month">Apr</span>
+                                            }
+                                            if (month == 5)
+                                            {
+                                                <span class="month">May</span>
+                                            }
+                                            if (month == 6)
+                                            {
+                                                <span class="month">June</span>
+                                            }
+                                            if (month == 7)
+                                            {
+                                                <span class="month">July</span>
+                                            }
+                                            if (month == 8)
+                                            {
+                                                <span class="month">August</span>
+                                            }
+                                            if (month == 9)
+                                            {
+                                                <span class="month">September</span>
+                                            }
+                                            if (month == 10)
+                                            {
+                                                <span class="month">October</span>
+                                            }
+                                            if (month == 11)
+                                            {
+                                                <span class="month">November</span>
+                                            }
+                                            if (month == 12)
+                                            {
+                                                <span class="month">December</span>
+                                            }
+
+                                                            }
+                                                            <span class="location">@item.Location</span>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-md-8 col-sm-8 col-xs-12">
+
+                                                        <h4>@item.Title</h4>
+                                                        <p>
+                                                            @{
+                                            String result = System.Text.RegularExpressions.Regex.Replace(@item.Description, @"<[^>
+                                                            ]*>", String.Empty);
+
+                                                            }
+                                                            @result
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        }
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+
+
+            </div>
+        </div>
+    </section>
+
+</div>

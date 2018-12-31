@@ -1,0 +1,101 @@
+﻿@using HCLAcademy.Utility;
+
+@{
+    ViewBag.Title = "Search Results";
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+
+
+<div id="body">
+
+    <section class="content-wrapper main-content clear-fix container">
+        <h2>Search Result</h2>
+        <div id="divPartialView">
+            <div id="grid" class="table-responsive">
+
+
+
+                <table class="table table-striped course-table" data-swhgajax="true" data-swhgcontainer="grid" data-swhgcallback="" cellpadding="2" cellspacing="2">
+                    <tr class="header">
+                        <th scope="col">Results</th>
+                        <th scope="col">Highlighted Summary</th>
+                    </tr>
+                    @{
+                        if (ViewBag.lstResults != null)
+                        {
+                            int i = 0;
+                            foreach (var item in ViewBag.lstResults)
+                            {
+                                string bgColor = "#ddd";
+                                i++;
+                                if (i % 2 == 0)
+                                {
+                                    bgColor = " #ccc";
+                                }
+                                else
+                                {
+                                    bgColor = "#ddd";
+                                }
+                                <tr style="border:none;background-color:@bgColor">
+                                    <td style="width:30%;">
+                                        <table style="border:none; border-width:0; cellspacing=" 0" cellpadding="0" class="srchresult-pan">
+                                            <tr>
+
+                                                <td colspan="2" class="font-big">
+                                                    @{
+                                string name = item.ResultName;
+
+                                                    }
+                                                    @Html.ActionLink(name, "DownloadFile", "Home", new { filePath = EncryptionHelper.Encrypt(item.ResultSource) }, new { @target = "_self" })
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Author :
+                                                </td>
+                                                <td class="description">@item.ResultAuthor</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Last Modified On :
+                                                </td>
+                                                <td class="description">@item.ResultModified</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td class="quote-summery" verticle-align="middle" style="text-wrap:normal;font:bold;color:black;font-size:larger;">
+                                        <div>
+                                            " @item.ResultHighlights "
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+
+
+                        }
+                        else
+                        {
+                            <tr style="border:none;background-color:#ddd">
+                                <td colspan="2"> No record found </td>
+                            </tr>
+
+                        }
+                    }
+
+                </table>
+
+
+
+            </div>
+        </div>
+
+    </section>
+
+</div>

@@ -1,0 +1,642 @@
+﻿@model List<HCLAcademy.Models.UserOnBoarding>
+<div class="col-md-12">
+    <div class="table-responsive">
+        <table class="table table-bordered admin-onbrdtble" id="onboard-data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>ProfileSharing</th>
+                    <th>BGVStatus</th>
+                    <th>Trainings</th>
+                    <th>Assessments</th>
+                    <th>Skills</th>
+                    <th>GEO</th>
+                    <th>Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Email</td>
+                        <td>@item.CurrentProfileSharing</td>
+                        <td>@item.CurrentBGVStatus</td>
+                        <td><a style="cursor:pointer;"><linkbutton onclick="ShowTrainings(@item.UserId,'@item.Email')">Trainings</linkbutton></a></td>
+                        <td><a style="cursor:pointer;"><linkbutton onclick="ShowAssessments(@item.UserId,'@item.Email')">Assessments</linkbutton></a></td>
+                        <td><a style="cursor:pointer;"><linkbutton onclick="ShowSkills(@item.UserId,'@item.Email')">Skills</linkbutton></a></td>
+                        <td>@item.CurrentGEO</td>
+                        <td><a style="cursor:pointer;"><linkbutton onclick="ShowRoles(@item.UserId,'@item.Email')">Roles</linkbutton></a></td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+        <div class="modal fade" id="popup-Training" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="modal-close-Adduser"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Trainings</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="userEmailTraining"></div>
+                        <table class="table table-bordered admin-onbrd-popuptble" id="tblTrainings">
+                            <thead>
+                                <tr>
+                                    <th>Training Name</th>
+                                    <th>Mandatory</th>
+                                    <th>Last Day of Completion</th>
+                                    <th>Completed</th>
+                                    <th>Completion Date</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="popup-Assessment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="modal-close-Adduser"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Assessment</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="userEmailAssessment"></div>
+                        <table class="table table-bordered admin-onbrd-popuptble" id="tblAssessments">
+                            <thead>
+                                <tr>
+                                    <th>Assessment Name</th>
+                                    <th>Mandatory</th>
+                                    <th>Last Day of Completion</th>
+                                    <th>Completed</th>
+                                    <th>Completion Date</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="popup-Skills" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="modal-close-Adduser"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Skills</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div style="float:left">Skills for User : </div><div id="userEmailSkill"></div>
+                        <input type="hidden" id="hdUserId" />
+                        <div id="dvUserId" style="display:none" />
+                        <table class="table table-bordered admin-onbrd-popuptble" id="tblSkills">
+                            <thead>
+                                <tr>
+                                    <th>Skill Name</th>
+                                    <th>Competency</th>
+                                    <th>Last Day Completion</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <table class="table table-bordered admin-onbrd-popuptble">
+                            <tr><td colspan="5">Add Skill</td></tr>
+                            <tr>
+                                <th>Skill</th>
+                                <th>Competency</th>
+                                <th>IsMandatory</th>
+                                <th>Last Day Of Completion</th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.DropDownList("ddSkillForAssmnt", new SelectList(ViewBag.Skills, "SkillId", "SkillName"), "Please Select Skill",
+                                             new
+                                             {
+                                                 @id = "ddSkillForAssmnt",
+                                                 @class = "form-control",
+                                                 @onchange = "FillCompetencePopup()"
+                                             })
+                                </td>
+                                <td>
+                                    @Html.DropDownList("ddCompetanceForAssmnt", new SelectList(Enumerable.Empty<SelectListItem>(), "CompetanceId", "CompetanceName"), "Please Select Competency Level",
+                                   new
+                                   {
+                                       @id = "ddCompetanceForAssmnt",
+                                       @class = "form-control"
+                                   })
+                                </td>
+                                <td style="text-align:center"><input id="IsMandatoryNew" type="checkbox" /></td>
+                                <td><input id="dtLastDayCompletion" type="text" class="form-control form_datetime" /></td>
+                                <td> <input id="lastDate" type="hidden" /><input type="button" id="btnAddSkill" class="sta-adminbt" onclick="AddUserSkill()" value="Add" /></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="popup-Roles" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="modal-close-Adduser"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Roles</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div style="float:left">Roles for User : </div><div id="userEmailRole"></div>
+                        <input type="hidden" id="hdUserIdRole" />
+                        <div id="dvUserIdRole" style="display:none" />
+                        <table class="table table-bordered admin-onbrd-popuptble" id="tblRoles">
+                            <thead>
+                                <tr>
+                                    <th>Role Name</th>
+                                    <th>Delete</th>
+                                 
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <table class="table table-bordered admin-onbrd-popuptble">
+                            <tr><td colspan="5">Add Role</td></tr>
+                            <tr>
+                                <th>Role</th>
+                                <th>IsMandatory</th>
+                                <th>Last Day Of Completion</th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.DropDownList("ddRoles", new SelectList(ViewBag.Roles, "Id", "Title"), "Please Select Role",
+                                             new
+                                             {
+                                                 @id = "ddRoles",
+                                                 @class = "form-control"
+                                             })
+                                </td>
+                                <td style="text-align:center"><input id="IsMandatoryRole" type="checkbox" /></td>
+                                <td><input id="dtLastDayCompletionRole" type="text" class="form-control form_datetime" /></td>
+                                <td><input type="button" id="btnAddRole" class="sta-adminbt" onclick="AddUserRole()" value="Add" /></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    #tblSkills th:nth-child(3), #tblSkills td:nth-child(3) {
+        display: none
+    }
+</style>
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+<link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
+<script>
+
+    $(document).ready(function () {       
+
+        $('#dtLastDayCompletion').datepicker({
+            format: 'yyyy-mm-dd',
+            todaybtn: true,
+            autoclose: true,
+            todayhighlight: true,
+            pickerPosition: "bottom-left"
+        });
+        $('#dtLastDayCompletionRole').datepicker({
+            format: 'yyyy-mm-dd',
+            todaybtn: true,
+            autoclose: true,
+            todayhighlight: true,
+            pickerPosition: "bottom-left"
+        });
+    });
+    function FillCompetencePopup() {
+
+        var skillId = $('#ddSkillForAssmnt').val();
+
+        $.ajax({
+
+            url: "/Admin/FillCompetence",
+
+            type: "GET",
+
+            dataType: "JSON",
+
+            data: { Id: skillId },
+
+            success: function (competencies) {
+
+                $("#ddCompetanceForAssmnt").html(""); // clear before appending new list
+                $("#ddCompetanceForAssmnt").append($('<option></option>').val('Please Select Competency Level').html('Please Select Competency Level'));
+
+                $.each(competencies, function (i, competence) {
+                    if (competence.CompetenceName != "All") {
+                        $("#ddCompetanceForAssmnt").append(
+
+                            $('<option></option>').val(competence.CompetenceId).html(competence.CompetenceName));
+                    }
+
+                });
+            }
+
+        });
+
+    }
+    function AddSkill(email) {
+        if ($("#ddCompetanceForAssmnt")[0].selectedIndex == 0 || $("#ddSkillForAssmnt")[0].selectedIndex == 0) {
+            alert('Please select skill and competence');
+            return;
+        }
+        var date = $("#dtLastDayCompletion").val();
+        $('#lastDate').val(date);
+        var PostData = {
+            competence: $("#ddCompetanceForAssmnt :selected").val(),
+            skillId: $("#ddSkillForAssmnt").val(),
+            userId: $('#dvUserId').text(),
+            email: $('#userEmailSkill').html(),
+            ismandatory: $('#IsMandatoryNew').prop('checked'),
+            lastdayofcompletion: $("#dtLastDayCompletion").val()
+
+        };
+        
+        console.log(JSON.stringify(PostData));
+        $.ajax({
+            type: "POST",
+            url: "/Admin/AddSkill",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                ShowSkills($('#dvUserId').text(), $('#userEmailSkill').html());
+            }
+        });
+
+    }
+    function ShowTrainings(id, email) {        
+        var tableBody = $('#tblTrainings tbody');
+        tableBody.html("");
+
+        $('#userEmailTraining').html("Trainings for User: " + email);
+
+        var PostData = {
+            userId: id,
+            userEmail: email
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetTrainingsForReport",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                $.each(result, function (key, value) {
+
+                    var resultStr = "<tr><td>" + value.TrainingName + "</td><td>";
+                    if (value.IsMandatory == true)
+                        resultStr = resultStr + 'Yes';
+                    else
+                        resultStr = resultStr + 'No';
+                    resultStr = resultStr + "</td><td>" + value.LastDayCompletion + "</td><td>";
+
+                    if (value.IsTrainingCompleted == true)
+                        resultStr = resultStr + 'Yes';
+                    else
+                        resultStr = resultStr + 'No';
+
+                    resultStr = resultStr + "</td><td>" + value.CompletedDate + "</td></tr>";
+                    tableBody.append(resultStr);
+                });
+                $("#popup-Training").modal('show');
+            }
+        });
+    }
+
+    function ShowAssessments(id, email) {
+        var tableBody = $('#tblAssessments tbody');
+        tableBody.html("");
+        $('#userEmailAssessment').html("Assemssments for User: " + email);
+        var PostData = {
+            userId: id,
+            userEmail: email
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetAssessmentsForReport",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                $.each(result, function (key, value) {
+
+                    var resultStr = "<tr><td>" + value.TrainingAssessment + "</td><td>";
+                    if (value.IsMandatory)
+                        resultStr = resultStr + 'Yes';
+                    else
+                        resultStr = resultStr + 'No';
+
+                    var resultStr = resultStr + "</td><td>" + value.LastDayCompletion + "</td><td>";
+                    if (value.IsAssessmentComplete)
+                        resultStr = resultStr + 'Yes';
+                    else
+                        resultStr = resultStr + 'No';
+
+                    resultStr = resultStr + "</td><td>" + value.CompletedDate + "</td></tr>";
+
+                    tableBody.append(resultStr);
+                });
+                $("#popup-Assessment").modal('show');
+            }
+        });
+
+    }
+    function ShowSkills(id, email) {
+        $('#tblSkills th:nth-child(3)').hide(); $('#tblSkills td:nth-child(3)').hide();
+        var tableBody = $('#tblSkills tbody');
+        tableBody.html("");
+        $('#userEmailSkill').html(email);
+        $('#dvUserId').html(id);
+        $('#hdUserId').html(id);
+        var PostData = {
+            userId: id,
+            userEmail: email
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetSkillsForReport",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                $.each(result, function (key, value) {
+
+                    var dropdownid = "ddlCompetencyEdit" + value.Id;
+                    var divid = "dv" + value.Id;
+                    var saveid = "save" + value.Id;
+                    var editid = "edit" + value.Id;
+                    var deleteid = "delete" + value.Id;
+                    var editdateid = "date" + value.Id;
+
+                    var competencies = value.SkillwiseCompetencies.split('|');
+                    var competencyIds = value.SkillwiseCompetencyIds.split('|');
+
+                    var resultStr = "<tr><td>" + value.Skill + "</td><td><div id='" + divid + "' data-ts='" + value.CompetenceId + "'>" + value.Competence + "</div>"
+                        + "<select id='" + dropdownid + "' style='display:none' >";
+
+                    resultStr += "<option value=''>Please Select Competency Level</option>";
+                    for (var i = 0, l = competencies.length; i < l; i++) {
+                        resultStr = resultStr + "<option value='" + competencyIds[i] + "'>" + competencies[i] + "</option>";
+                    }
+
+                    resultStr = resultStr + "</select>" + "</td>" +
+                        "<td><input style='display:none' class='completionDate' id='" + editdateid + "' type='text' class='form-control form_datetime'/></td>" +
+                        "<td>" + "<a  id='" + editid + "' href='#' onclick='ShowEdit(" + value.Id + ")'>Edit</a>" + "<a href='#' id='" + saveid + "' style='display:none'  onclick='UpdateSkill(" + value.Id + ")'>Save</a>" + "</td>" +
+                        "<td>" + "<a  id='" + deleteid + "' href='#' onclick='RemoveUserSkill(" + value.Id + ")'>Delete</a>" + "</td>" + "</tr>";
+                    tableBody.append(resultStr);
+                });
+
+                $('.completionDate').datepicker({
+                    format: 'yyyy-mm-dd',
+                    todaybtn: true,
+                    autoclose: true,
+                    todayhighlight: true,
+                    pickerPosition: "bottom-left"
+                });
+                $("#popup-Skills").modal('show');
+            }
+        });
+
+    }
+    function ShowRoles(id, email) {
+        
+        $('#tblRoles th:nth-child(3)').hide();        
+        var tableBody = $('#tblRoles tbody');
+        tableBody.html("");
+        $('#userEmailRole').html(email);
+        $('#dvUserIdRole').html(id);
+        $('#hdUserIdRole').html(id);
+        var PostData = {
+            userId: id,
+            userEmail: email
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetRolesForReport",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                $.each(result, function (key, value) {
+                    var divid = "dv" + value.RoleId;
+                    var deleteid = "delete" + value.RoleId;
+                    var resultStr = "<tr><td>" + value.RoleName + "</td>";
+                    resultStr = resultStr + "<td>" + "<a  id='" + deleteid + "' href='#' onclick='RemoveUserRole(" + value.RoleId + ")'>Delete</a>" + "</td>" + "</tr>";
+                    tableBody.append(resultStr);
+                });                
+                $("#popup-Roles").modal('show');
+            }
+        });
+
+    }
+    function UpdateSkill(id) {
+
+        var dropdownid = "ddlCompetencyEdit" + id;
+        var divid = "dv" + id;
+        var saveid = "save" + id;
+        var editid = "edit" + id;
+        var editdateid = "date" + id;
+        var isCompetenceChanged = false;
+
+        if ($('#' + editdateid).val() == null) {
+            return;
+        }
+        if ($('#' + editdateid).val() == "" || $('#' + editdateid).val() == 'undefined' || $('#' + editdateid).val() == undefined || $('#' + editdateid).val() == null) {
+            alert('Please set the last day of completion');
+            return;
+        }
+        isCompetenceChanged = $("#" + dropdownid)[0].selectedIndex == 0 ? false : true;
+        debugger;
+        console.log(isCompetenceChanged);
+        var PostData = {
+            itemId: id,
+            competence: isCompetenceChanged == true ? document.getElementById(dropdownid).value : $('#' + divid).attr("data-ts"),
+            userId: $('#dvUserId').text(),        
+            completiondate: $('#' + editdateid).val(),
+            isCompetenceChanged: isCompetenceChanged
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Admin/UpdateUserSkill",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {                
+                ShowSkills($('#dvUserId').text(), $('#userEmailSkill').html());
+            }
+        });
+    }
+    function ShowEdit(id) {
+        $('#tblSkills th:nth-child(3)').show(); $('#tblSkills td:nth-child(3)').show();
+        var dropdownid = "ddlCompetencyEdit" + id;
+        var divid = "dv" + id;
+        var saveid = "save" + id;
+        var editid = "edit" + id;
+        var editdateid = "date" + id;
+        document.getElementById(dropdownid).style.display = 'block';
+        document.getElementById(saveid).style.display = 'block';
+        document.getElementById(divid).style.display = 'none';
+        document.getElementById(editid).style.display = 'none';
+        document.getElementById(editdateid).style.display = 'block';
+    }
+
+    function AddUserSkill() {
+
+        if ($("#ddCompetanceForAssmnt")[0].selectedIndex == 0 || $("#ddSkillForAssmnt")[0].selectedIndex == 0) {
+            alert('Please select skill and competence');
+            return;
+        }
+        if ($('#dtLastDayCompletion').val() == "" || $('#dtLastDayCompletion').val() == 'undefined' || $('#dtLastDayCompletion').val() == undefined || $('#dtLastDayCompletion').val() == null) {
+            alert('Please set the last day of completion');
+            return;
+        }
+        var email = $('#userEmailSkill').html();
+        var id = $('#dvUserId').html();
+        var PostData = {
+            userId: id,
+            userEmail: email
+        };
+
+        var selectedSkill = $("#ddSkillForAssmnt").val();
+
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetSkillsForReport",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                console.log(result);
+                var result = jQuery.grep(result, function (n, i) {
+                    return (n.SkillId == selectedSkill);
+                });
+                if (result.length > 0) {
+                    alert("The skill you have selected is already assigned to user. You can only edit the competency level for this skill.");
+                }
+                else {
+                    AddSkill();
+                }
+            }
+        });
+    }
+    function AddUserRole()
+    {
+        if ($("#ddRoles")[0].selectedIndex == 0) {
+            alert('Please select role');
+            return;
+        }
+        var email = $('#userEmailRole').html();
+        var id = $('#dvUserIdRole').html();
+        var selectedRole = $("#ddRoles").val();
+        var PostData = {
+            userId: id,
+            userEmail: email
+        };
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetRolesForReport",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                console.log(result);
+                var result = jQuery.grep(result, function (n, i) {
+                    return (n.RoleId == selectedRole);
+                });
+                if (result.length > 0) {
+                    alert("The skill you have selected is already assigned to user. You can only edit the competency level for this skill.");
+                }
+                else {
+                    AddRole();
+                }
+            }
+        });
+    }
+    function AddRole() {
+        if($("#ddRoles")[0].selectedIndex == 0) {
+            alert('Please select role');
+            return;
+        }        
+        var PostData = {         
+            roleId: $("#ddRoles").val(),
+            userId: $('#dvUserIdRole').text(),
+            email: $('#userEmailRole').html(),
+            ismandatory: $('#IsMandatoryRole').prop('checked'),
+            lastdayofcompletion: $("#dtLastDayCompletionRole").val()
+        };
+        console.log(JSON.stringify(PostData));
+        $.ajax({
+            type: "POST",
+            url: "/Admin/AddRole",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                ShowRoles($('#dvUserIdRole').text(), $('#userEmailRole').html());
+            }
+        });
+    }
+    function RemoveUserSkill(id) {
+        var PostData = {
+            itemId: id,
+            userId: $('#dvUserId').text()
+        };
+        console.log(PostData);
+        $.ajax({
+            type: "POST",
+            url: "/Admin/RemoveUserSkill",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {                
+                ShowSkills($('#dvUserId').text(), $('#userEmailSkill').html());
+            }
+        });
+    }
+    function RemoveUserRole(id) {
+        var PostData = {
+            itemId: id,
+            userId: $('#dvUserIdRole').text()
+        };
+        console.log(PostData);
+        $.ajax({
+            type: "POST",
+            url: "/Admin/RemoveUserRole",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                ShowRoles($('#dvUserIdRole').text(), $('#userEmailSkillRole').html());
+            }
+        });
+    }
+</script>

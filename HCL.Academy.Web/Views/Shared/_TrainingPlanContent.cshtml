@@ -1,0 +1,95 @@
+﻿@using HCLAcademy.HtmlHelpers;
+@using HCLAcademy.Models;
+@model List<HCLAcademy.Models.TrainingPlan>
+
+@{
+    string strTitle = string.Empty;
+    string strContent = string.Empty;
+    string StrUrl = string.Empty;
+    string Strclass = string.Empty;
+
+    if (Model.Count > 0)
+    {
+        foreach (var row in Model)
+        {
+            strTitle = row.Title;
+            strContent = row.ContentBody;
+            StrUrl = row.ContentUrl;
+
+        }
+
+        if (strContent != null && strContent != string.Empty)
+        {
+            Strclass = "";
+        }
+        else
+        {
+
+            Strclass = "";
+        }
+
+        <div class="@Strclass">
+
+            <h2>@strTitle</h2>
+
+            <div>
+
+                
+                @if (strContent != null && strContent != string.Empty)
+                {
+                    @Html.Raw(strContent)
+                }
+                else
+                {
+                    var ss = @StrUrl;
+
+                    <iframe src="@StrUrl" width="830" height="400"></iframe>
+                @*<iframe src="http://ing-training.kramarao.com/ing-training/" width="830" height="400"></iframe>*@
+                }
+
+            </div>
+
+        </div>
+
+    }
+    
+    }
+
+
+                @*<div style="padding-left: 10px;">
+                    @{
+        if (Model.Count > 0)
+        {
+            foreach (var row in Model)
+            {
+    <h2>@row.Title</h2>
+
+            }
+        }
+                    }
+
+                    <div>
+
+
+                        @{
+            if (Model.Count > 0)
+            {
+                foreach (var row in Model)
+                {
+                    if (row.ContentBody != null && row.ContentBody != String.Empty)
+                    {
+        @Html.Raw(@row.ContentBody)
+                    }
+                    else
+                    {
+   
+        <iframe src="" width="850" height="400"></iframe>
+                    }
+                }
+            }
+                        }
+
+                    </div>
+
+                </div>*@
+

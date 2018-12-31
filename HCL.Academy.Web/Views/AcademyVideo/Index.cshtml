@@ -1,0 +1,138 @@
+﻿
+@model List<HCLAcademy.Models.AcademyVideo>
+
+<!-- Body Start -->
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <h2>Academy Videos</h2>
+
+
+        <div id="divPartialView">
+            <div id="grid" class="table-responsive">
+
+                <table class="table table-striped course-table" data-swhgajax="true" data-swhgcontainer="grid" data-swhgcallback="" cellpadding="2" cellspacing="2">
+                    <tr class="header">
+                        <th scope="col">Title</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Play</th>
+                    </tr>
+                    @{
+                        if (Model != null)
+                        {
+
+                            int i = 0;
+                            foreach (var item in Model)
+                            {
+                                string bgColor = "#ddd";
+                                i++;
+                                if (i % 2 == 0)
+                                {
+                                    bgColor = " #ccc";
+                                }
+                                else
+                                {
+                                    bgColor = "#ddd";
+                                }
+                                <tr style="border:none;background-color:@bgColor">
+                                    <td verticle-align="middle" style="text-wrap:normal; font:bold;color:black;font-size:larger;">
+
+                                        @item.Title
+
+                                    </td>
+                                    <td  verticle-align="middle" style="text-wrap:normal;">
+                                        <div>
+                                            @item.Description
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="javascript:void(0);" class="downl-bt tip-right" title="Play" data-toggle="tooltip"
+                                           onclick="showVideo('@item.Url', '@item.IsLink', '@item.ExternalLink', '@item.Title'); return false;">
+                                            <i class="fa fa-play-circle-o" aria-hidden="true" style="font-size: 20px;"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr style="border:none;background-color:#ddd">
+                                <td colspan="2"> No record found </td>
+                            </tr>
+
+                        }
+                    }
+
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+<!-- Body End -->
+<!-- Modal Start -->
+<div class="modal fade" id="popup-video" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" 
+     data-backdrop="static" data-keyboard="false">
+    <img src="~/Images/loading_01.gif" class="loader-img loader-position" />
+   
+</div>
+<div id="responceDiv"></div>
+<!-- Modal End -->
+
+
+<script type="text/javascript" language="Javascript">
+
+    function showVideo(Url, isLink, externallink, videoTitle) {
+
+        if (isLink != "Yes") {
+
+            var url = {
+                url: Url,
+                videoTitle: videoTitle
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/AcademyVideo/GetVideoWindow",
+                contentType: "application/json;",
+                dataType: "",
+                data: JSON.stringify(url),
+                success: function (response) {
+                    $("#popup-video").modal('show').html(response);
+                   // $("#responceDiv").html(response);
+                    //$("#popup-video").html(response);
+
+                   // $("#myModalLabel").html(videoTitle);
+
+                    //var videoElement = document.getElementById('vid');
+                    //videoElement.play();
+                    //videoElement.src = url;
+                    //videoElement.load();
+
+                    //$("#onlineVideo").load();
+                    //$("video")[0].play();
+
+                },
+                failure: function (response) {
+                    alert("Failed");
+                }
+            });
+
+
+            
+        }
+        else {
+            //var link = link;
+            window.open(externallink, '_blank');
+        }
+    }
+
+    //function cleanModal() {
+
+    //    var videoElement = document.getElementById('vid');
+    //    videoElement.pause();
+    //    videoElement.src = ""; // empty source
+    //    videoElement.load();
+
+    //}
+
+</script>
+

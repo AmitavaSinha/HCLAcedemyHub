@@ -1,0 +1,265 @@
+/*.ing-bg{
+	background-color:#50a5c2;
+}*/
+.onboard-pan{	
+	padding:10px;
+	max-width:1156px;
+	margin:0 auto;
+    border:1px solid #dddddd;
+}
+.onboard-main{
+	background:url(../images/onboard-bg.png) no-repeat 0 100% #e1e1e1;
+	padding:0 16px 20px;
+	height:100%;
+	overflow:hidden;
+}
+.onboard-main .mCustomScrollBox{
+	padding-bottom:30px;
+}
+.onboard-main h3{
+	text-align:center;
+	font-weight:600;
+	font-family:'Open Sans', sans-serif;
+	text-transform:uppercase;
+	color:#0a1d5a;
+	font-size:20px;
+	padding:10px 0 20px;
+	margin:0;
+}
+.onboard-box{
+	width:161px;	
+	float:left;
+	margin-right:100px;
+}
+.nomrg-rgt{
+	margin-right:0;
+}
+.onboard-checktop{background:url(../images/yellw-bar.png) no-repeat 0 0;}
+.onboard-checkbot{background:url(../images/yellw-barbot.png) no-repeat 0 0;}
+.onboard-box ul{
+	list-style-type:none;
+	padding:6px 20px 3px;
+	margin:0;
+}
+.onboard-box ul li{
+	font-weight:800;
+	font-family:'Open Sans', sans-serif;
+	color:#ffffff;
+	font-size:29px;
+	line-height:47px;
+	background:url(../images/divider.png) no-repeat 100% 0;
+	display:inline-block;
+	padding-right:25px;
+	margin-right:15px;
+}
+.onboard-box ul li:last-child{
+	background:none;
+	padding-right:0;
+	margin-right:0;
+}
+.onboard-txt{
+	background-color:#ffffff;
+	padding:10px;
+	position:relative;
+	min-height:108px;
+}
+.onboard-txt:after{
+	background:url(../images/bottoma-arrow.png) no-repeat 0 0;
+	position:absolute;
+	content:"";
+	display:block;
+	width:48px;
+	height:34px;
+	right:0;
+	bottom:-34px;
+}
+.arrw-top:after{
+	display:none;
+}
+.arrw-top:before{
+	background:url(../images/top-arrow.png) no-repeat 0 0;
+	position:absolute;
+	content:"";
+	display:block;
+	width:48px;
+	height:34px;
+	left:0;
+	top:-34px;
+}
+.onboard-txt h4{
+	color:#091c5a;
+	font-size:12px;
+	border-bottom:1px solid #c4c4c4;
+	padding-bottom:5px;
+	font-family:'Open Sans', sans-serif;
+	font-weight:700;
+	text-transform:uppercase;
+	margin:0 0 5px;
+}
+.onboard-txt p{
+	color:#666666;
+	font-family:'Open Sans', sans-serif;
+	font-weight:400;
+	font-size:12px;
+	margin:0;
+}
+/*---- Checkbox ----*/
+
+.Checkbox {
+  width: 36px;
+  height: 37px;
+  position: relative;
+  padding-top:8px;
+}
+.Checkbox > * {
+  position: absolute;
+}
+.Checkbox-visible { 
+  width: 36px;
+  height: 37px;
+  background:url(../images/checkbox-bg.png) no-repeat 0 0;
+}
+.Checkbox > input {
+  z-index: 1;
+  opacity: 0;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translatex(-50%) translatey(-50%);
+          transform: translatex(-50%) translatey(-50%);
+  display: block;
+  cursor: pointer;
+  width: 36px;
+  height: 37px;
+}
+.Checkbox > input:checked + .Checkbox-visible {
+  background: url(../images/tick-bg.png) no-repeat 0 0;
+}
+.Checkbox > input:hover + .Checkbox-visible {
+  border-color: #cccccc;
+}
+.Checkbox > input:hover:checked + .Checkbox-visible {
+  border-color: #0ca750;
+}
+.Checkbox > input:focus + .Checkbox-visible {
+  border-color: #59cb59;
+}
+.btn-update{
+    background-color: rgb(255,98,0);
+    color:#fff;
+    margin:30px auto 0;
+    display:inline-block;
+}
+.btn-update:hover{
+    color:#fff;
+}
+.onbrd-checked {
+    background: url(../images/tick-bg.png) no-repeat 0 0;
+    }
+/*---- Checkbox ----*/
+
+.onboard-toplist{
+	/*height:100%;
+	overflow:hidden;*/
+	padding-bottom:45px;
+}
+.onboard-botlist{
+	/*height:100%;
+	overflow:hidden;*/
+	padding-top:45px;
+	margin-left:190px;
+}
+.spacer {
+    font-size:0;
+    line-height:0;
+    clear:both;
+}
+.onboard-main .mCSB_container{
+    overflow:inherit;
+}
+.onboard-main .mCustomScrollBox{
+    overflow:inherit;
+}
+.onboard-box .popover-title{
+    font-size:12px !important;
+    text-transform: inherit !important;
+    padding: 5px !important;
+    font-weight: 400;
+}
+.onboard-box .popover{
+    width:315px;
+}
+.onboard-box .confirmation-buttons{
+    padding-bottom:5px;
+}
+.onboard-box .btn-group>.btn:first-child:not(:last-child):not(.dropdown-toggle){
+    border-radius:3px;
+}
+.onboard-box .btn-group a{
+    margin-right:10px;
+}
+.onboard-box .btn-group > .btn:last-child:not(:first-child), .btn-group > .dropdown-toggle:not(:first-child) {
+    border-radius:3px;
+}
+.status-onboard{
+	overflow:hidden;
+}
+.points{
+	list-style-type:none;
+	padding:0;
+	margin:0 0 0 90px;
+	background:url(../images/points-line.png) repeat-x 0 50%;
+	float:left;
+}
+.points li{
+	width:41px;
+	height:41px;
+	background-color:#091c5a;
+	float:left;
+	border-radius:50%;
+	-moz-border-radius:50%;
+	-ms-border-radius:50%;
+	-webkit-border-radius:50%;
+	-o-border-radius:50%;
+	margin-right:90px;
+	padding-top:9px;
+}
+.points li:last-child{
+	margin-right:0;
+}
+.points li span{
+	display:block;
+	width:23px;
+	height:22px;
+	background-color:#22336b;
+	margin:0 auto;
+	border-radius:50%;
+	-moz-border-radius:50%;
+	-ms-border-radius:50%;
+	-webkit-border-radius:50%;
+	-o-border-radius:50%;
+}
+.points li.green span{
+	background-color:#009933;
+}
+.points li.red span{
+	background-color:#ff0000;
+}
+.points li.blue span{
+	background-color:#3a497b;
+}
+
+.onboard-main .mCSB_scrollTools.mCSB_scrollTools_horizontal .mCSB_dragger .mCSB_dragger_bar {
+    width: 100%;
+    height: 9px;
+    margin: 4px auto;
+}
+.onboard-main .mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar{
+   background-color: #fff;
+}
+.onboard-main .mCSB_scrollTools.mCSB_scrollTools_horizontal .mCSB_draggerRail {
+    height: 4px;
+    margin: 7px 0;
+}
+.onboard-main .mCSB_scrollTools .mCSB_draggerRail {
+    background-color: #333;
+}

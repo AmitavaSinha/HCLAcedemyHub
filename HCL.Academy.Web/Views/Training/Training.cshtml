@@ -1,0 +1,125 @@
+﻿@using HCLAcademy.HtmlHelpers;
+@using HCLAcademy.Models;
+@using HCL.Academy.Web.DAL;
+
+@model List<HCLAcademy.Models.TrainingCourses>
+
+@{
+    ViewBag.Title = "Training";
+}
+<link href="~/Content/learning.css" rel="stylesheet" />
+<link href="~/Content/jquery.mCustomScrollbar.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.mCustomScrollbar.concat.min.js"></script>
+<script>
+    (function ($) {
+        $(window).on("load", function () {
+
+            $(".training-hrscroll").mCustomScrollbar({
+                axis: "x",
+                autoExpandScrollbar: true,
+                advanced: { autoExpandHorizontalScroll: true }
+            });
+
+
+
+        });
+    })(jQuery);
+</script>
+
+<div id="body">
+
+    <section class="content-wrapper main-content clear-fix container">
+        <div class="righttop-btn">
+            <h2>Training</h2>
+            <a class="btn back-top no-mrg" href="/Training/OPSTraining"><button class="sta-adminbt">OPS TRAINING PLAN</button></a>
+            <a class="btn back-top no-mrg" href="/Training/OracleApplicationExpressTraining"><button class="sta-adminbt">ORACLE APPLICATION EXPRESS TRAINING</button></a>
+            <a class="btn back-top no-mrg" href="/Training/PolymerTraining"><button class="sta-adminbt">UI - POLYMER TRAINING PLAN</button></a>
+            <a class="btn back-top no-mrg" href="/Training/ScalaTraining"><button class="sta-adminbt">UI - SCALA TRAINING PLAN</button></a>
+            <a class="btn back-top no-mrg" href="/Training/TIBCOTraining"><button class="sta-adminbt">TIBCO TRAINING PLAN</button></a>
+            <a class="btn back-top no-mrg" href="/Training/FullStackDevelopmentTranning"><button class="sta-adminbt">JAVA FULLSTACK DEVELOPMENT TRAINING PLAN</button></a>
+        </div>
+        <iframe src="http://ing-training.kramarao.com/ing-training/" width="1158" height="400"></iframe>
+
+        <div style="height:10px;"></div>
+        @*<img src="~/Images/Trainning_Cutting.png" />*@
+
+        <!--- training panel start --->
+
+        <div class="training-hld">
+            <div class="row">
+
+                @{
+                    if (Model.Count > 0)
+                    {
+                        int i = 0; int complete;
+                        foreach (var course in Model)
+                        {
+                            complete = 0;
+
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="training-main">
+                                    <h3>@course.courseName</h3>
+                                    <div id="content-1" class="content horizontal-images light training-hrscroll">
+                                        @if (course.listOfTraining.Count > 0)
+                                        {
+                                            i = 0;
+                                            <ul>
+                                                @foreach (var training in course.listOfTraining)
+                                                {
+                                                    ++i;
+                                                    <li class="@training.bgColor">
+                                                        <div class="blue-pan">
+                                                            <span></span>
+                                                            <p>@i</p>
+                                                        </div>
+                                                        <div class="status-infrm" title="@training.ModuleNames">
+                                                                <h5>@Utilities.Truncate(training.ModuleNames, 25)</h5>
+                                                                <p>Status: <span>@training.status.GetDisplayName()</span></p>
+                                                                @if (training.status.ToString().Equals("Completed"))
+                                                                {
+                                                                    complete++;
+                                                                }
+                                                            </div>                                                        
+                                                    </li>
+
+
+                                                }
+
+                                            </ul>
+
+                                        }
+                                    </div>
+                                    <ul>
+                                        <li class="complete">
+                                            <div class="stat-comp"></div>
+                                            @{
+                                                string perc = string.Empty;
+                                                if (complete < i)
+                                                {
+                                                    int percentComplete = (int)Math.Round((double)(100 * complete) / i);
+                                                    perc = percentComplete.ToString() + "%";
+                                                }
+                                                else
+                                                {
+                                                    perc = "100%";
+                                                }
+
+                                                <p>Complete<span>@perc</span></p>
+                                            }
+
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        }
+                    }
+                }
+
+            </div>
+        </div>
+
+        <!--- training panel end --->
+    </section>
+</div>
+

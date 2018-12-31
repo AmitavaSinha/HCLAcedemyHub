@@ -1,0 +1,503 @@
+﻿@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string showTrainingHelpMessage = ConfigurationManager.AppSettings["ShowTrainingHelpMessage"].ToString();
+}
+@using HCLAcademy.Utility;
+@using System.Configuration;
+@model List<HCLAcademy.Models.TrainingPlan>
+
+
+@helper jstree(List<HCLAcademy.Models.TrainingPlan> modelItems)
+{
+    if (Model != null)
+    {
+
+        <ul>
+            @foreach (var boardingItem in modelItems)
+            {
+                if (!boardingItem.IsFolder)
+                {
+                    <li data-jstree='{"icon":"glyphicon glyphicon-leaf"}'><a href="/TrainingPlan/TrainingContents/@boardingItem.Id">@boardingItem.Title</a></li>
+                }
+                else
+                {
+                    <li>
+                        <a href="#">@boardingItem.Title</a>
+                        @if (boardingItem.TrainingChild.Count > 0)
+                        {
+                            @*<ul>*@
+                            @jstree(boardingItem.TrainingChild)
+
+                            @*</ul>*@
+                        }
+
+                    </li>
+
+                }
+            }
+
+        </ul>
+    }
+
+}
+
+
+
+<script src="~/dist/jstree.min.js"></script>
+<link href="~/dist/themes/default/style.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.cookie.js"></script>
+
+@Styles.Render("~/Content/scrollBarCss");
+@Scripts.Render("~/bundles/scrillBarJs");
+<script src="~/Scripts/bootstrap-confirmation.min.js"></script>
+
+
+<script type="text/javascript" language="Javascript">
+    $(document).ready(function () {
+
+        $('#html1').jstree();
+
+        @*$("#OnBoardingTree").load("/TrainingPlan/TrainingPlanTree", function () {
+            $('#chapterFolders').treeview({ collapsed: true }).find('.cls_@ViewBag.Selected').prev().click();
+        });*@
+
+
+
+        $('#html1').on("activate_node.jstree", function (e, data) {
+            console.log(data);
+            if (data.node) {
+                if (data.node.a_attr) {
+
+                    if (data.node.a_attr.href == '#') {
+
+                        return false;
+                    }
+                    else {
+                        ShowContents(data.node.a_attr.href);
+                    }
+
+                }
+
+            }
+        });
+
+
+
+
+        function ShowContents(path) {
+
+            $("#LeafContents").empty();
+            $("#LeafContents").html("<img src='/Images/loading_01.gif' class='loader-img loader-position' />");
+
+            $.ajax({
+                url: path,
+                type: 'GET',
+                //Options to tell jQuery not to process data or worry about content-type.
+                cache: false,
+                //contentType: html,
+                processData: false,
+                //beforeSend: $("#Container").empty(),
+                //Ajax events
+                success: function (responce) {
+                    // $("#Container").empty();
+                    $("#LeafContents").html(responce);
+
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            });
+        }
+
+        function updateOnBoarding() {
+            console.log('save training status.');
+            var j = 0;
+             
+            var arrayOfTrainings = [];
+            $('.cls_update_Status').each(function (i, value) {
+                if ($(value).find("input[type='checkbox']").is(":checked")) {
+                    var obj = new Object;
+                    j = 1;
+                    obj.Id = $(value).attr('data-id');
+                    obj.OnboardingType = $(value).attr('data-type');
+                    obj.BoardingInternalName = $(value).attr('data-title');
+                    arrayOfTrainings.push(obj);
+                }
+            });                    
+            if (arrayOfTrainings.length > 0) {                
+                jQuery.ajax({
+                    type: "POST",
+                    url: '/Onboard/OnBoardingStatusUpdate',
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(arrayOfTrainings),
+                    success: function (data) {                    
+                        $("#popup-Training").modal('hide');
+                        $('#' + data[1]).replaceWith('<img src="/Images/tick-bg.png" />');
+
+                        $("#popup-DisplayMsg").modal('show');
+                        $("#myModalLabel").html("Success");
+                        $("#modal-body-DisplayMsg").html("Checklist Updated !!");
+                        window.location.reload();
+                    },
+                    failure: function (errMsg) {
+                        $("#popup-DisplayMsg").modal('show');
+                        $("#myModalLabel").html("Error");
+                        $("#modal-body-DisplayMsg").html(errMsg);
+                        console.log(errMsg);
+                    }
+                });
+            }
+           /* $('.cls_update_Status').each(function (i, value) {
+                if ($(value).find("input[type='checkbox']").is(":checked")) {
+                    var obj = {};
+                    j = 1;
+                    obj.Id = $(value).attr('data-id');
+                    obj.OnboardingType = $(value).attr('data-type');
+                    obj.BoardingInternalName = $(value).attr('data-title');
+                    //obj.SendEmail = sendEmail;
+                    console.log(obj);
+                    $.ajaxSetup({ async: false });
+                    $.post("/Onboard/OnBoardingStatusUpdate", obj).done(function (data) {
+                        $("#popup-Training").modal('hide');
+                        $('#' + data[1]).replaceWith('<img src="/Images/tick-bg.png" />');
+
+                        $("#popup-DisplayMsg").modal('show');
+                        $("#myModalLabel").html("Success");
+                        $("#modal-body-DisplayMsg").html("Checklist Updated !!");
+                        window.location.reload();
+                        //window.location.href = "/TrainingPlan/TrainingPlan";
+                    }).fail(function (err) {
+                        //alert(err);
+                        $("#popup-DisplayMsg").modal('show');
+                        $("#myModalLabel").html("Error");
+                        $("#modal-body-DisplayMsg").html(err);
+                        console.log(err);
+                    });
+                }
+                //$.ajaxSetup({ async: true });
+
+            });*/
+            if (j == 0) {
+                //alert("No Changes made..!!");
+                $("#popup-DisplayMsg").modal('show');
+                $("#myModalLabel").html("Warning");
+                $("#modal-body-DisplayMsg").html("No Changes made..!!");
+            }
+        }
+
+        function updateEmailField() {
+            $.post("/Onboard/OnBoardingStatusEmail").done(function (data) {
+                console.log("Email Field Updated Successfully")
+                $("#popup-Training").modal('hide');
+                $("#popup-DisplayMsg").modal('show');
+                $("#myModalLabel").html("Success");
+                $("#modal-body-DisplayMsg").html("Email has been sent successfully to PMO");
+
+                //window.location.href = "/Onboard/OnBoarding";
+            }).fail(function (err) {
+                $("#popup-DisplayMsg").modal('show');
+                $("#myModalLabel").html("Error");
+                $("#modal-body-DisplayMsg").html(err);
+                console.log(err);
+            });
+        }
+
+        $.ajax({
+            type: "GET",
+            url: "/TrainingPlan/Training",
+            async: true,
+            cache: true,
+            success: function (response) {
+                $("#Training").html(response);
+                //$("#Content").text(response.d);
+            },
+            failure: function (response) {
+                alert(response.d);
+            }
+        });
+
+        $('[data-toggle=trainingConfirmation]').confirmation({
+            rootSelector: '[data-toggle=trainingConfirmation]',
+            //title: '@User.Identity.Name' + ' certify that I have read all the document(s) related to '+ $(this).data("item") +
+            //  ' I am aware of the specific ING requirements mentioned in the document(s)',
+            popout: true,
+            btnOkLabel: 'Yes',
+            btnCancelLabel: 'No',
+            onConfirm: function () {
+                $(this).prop('checked', true);
+                $(this).siblings(".Checkbox-visible").addClass("onbrd-checked");
+                return true;
+            },
+            onCancel: function () {
+                $(this).siblings(".Checkbox-visible").removeClass("onbrd-checked");
+                $(this).prop('checked', false);
+                return false;
+            }
+        });
+
+        $('.btn-save').click(function () {
+
+            updateOnBoarding();
+        });
+        $('.btn-update-email').click(function () {
+            updateEmailField();
+        });
+
+        $('#btnLrnCheckList').unbind('click');
+        $('#btnLrnCheckList').on('click', function () {
+
+            var PostData = {
+                userId: 398,
+                userEmail: "jitendra-b@hcl.com"
+            };
+            var popUpHtml = "";
+            var OnboardingStatus = {
+                "NotStarted": 0,
+                "OnGoing": 1,
+                "Completed": 2,
+                "Rejected": 3,
+                "OverDue": 4,
+                "Failed": 5
+            };
+
+            var OnboardingItemType = {
+                "Default" : 0,
+                "Assessment" : 1,
+                "Training": 2,
+                "RoleTraining":3
+            };
+
+            $.ajax({
+                type: "POST",
+                //url: "/TrainingPlan/GetTrainingsForReport",
+                url: "/TrainingPlan/GetTrainingsFoPopUp",
+                contentType: "application/json;",
+                dataType: "",
+                //data: JSON.stringify(PostData),
+                success: function (result) {
+                    console.log(result);
+                    var slno = 0;
+                    //$.each(result, function (key, value) {
+                    //    popUpHtml += "<div class='onboard-box' data-id='TrainingCourseId' data-type='TrainingCourseId'>"+
+                    //            "<div class='onboard-checktop'>"+
+                    //                "<ul>"+
+                    //                    "<li>" + ++slno + "</li>" +
+                    //                "</ul>"+
+                    //            "</div>"+
+                    //            "<div class='onboard-txt'>"+
+
+                    //                    "<h4>"+
+                    //                       value.TrainingModule+
+                    //                    "</h4>"+
+
+                    //                "<p>" + value.TrainingModule + "</p>" +
+                    //            "</div>"+
+                    //    "</div>";
+
+                    //});
+                    $.each(result, function (key, value) {
+                        var boardingType = "";
+                        var imgSrc = "";
+                        var declHTML = "";
+                        if ((value.BoardingStatus == OnboardingStatus.NotStarted) ||
+                                    (value.BoardingStatus == OnboardingStatus.OnGoing))
+                        {
+                            if (value.BoardingType == OnboardingItemType.Training
+                                || value.BoardingType == OnboardingItemType.RoleTraining
+                                || value.BoardingItemName.toLowerCase().trim() == "bgv initiated"
+                                || value.BoardingItemName.toLowerCase().trim() == "work permit readiness"){
+                                imgSrc += "<div class='Checkbox cls_update_Status' id='" + value.BoardingItemId + "' data-id='" + value.BoardingItemId + "' data-type='" + value.BoardingType + "'" +
+                                                 "data-title='"+value.BoardingInternalName+"'>"+
+                                                "<input type='checkbox' data-toggle='trainingConfirmation' data-placement='bottom' data-singleton='true'"+
+                                                       "data-title='########### certify that I have read all the document(s) related to '"+ value.BoardingItemName+"' I am aware of the specific requirements mentioned in the document(s)' />"+
+                                                "<div class='Checkbox-visible'></div>"+
+                                           "</div>";
+                             }
+                             else{
+                                imgSrc = "<img src='/Images/checkbox-bg.png' />";
+                             }
+                        }
+                        else if (value.BoardingStatus == OnboardingStatus.Completed){
+                            imgSrc = "<img src='/Images/tick-bg.png' />";
+                        }
+                        else if ((value.BoardingStatus == OnboardingStatus.Rejected)
+                                        || (value.BoardingStatus == OnboardingStatus.Failed)
+                                        || (value.BoardingStatus == OnboardingStatus.OverDue)) {
+                            imgSrc = "<img src='/Images/cross-bg.png' />";
+                        }
+
+                        popUpHtml += "<div style='min-height:230px;' class='onboard-box check-popup' data-id='"+value.BoardingItemId+"' data-type='"+value.BoardingType+"'>" +
+                                        "<div class='onboard-checktop'>"+
+                                                "<ul>"+
+                                                    "<li>"+ ++slno +"</li>"+
+                                                    "<li>" + imgSrc +"</li>" +
+                                                "</ul>"+
+                                         "</div>" +
+                                         "<div class='onboard-txt'>"+
+                                            "<h4>" + value.BoardingItemName + "</h4>" +
+                                            //"<p>" + value.BoardingItemDesc + "</p>" +
+                                         "</div>"+
+                                    "</div>";
+                    });
+
+                    $("#myModalLabel").html("Learning Checklist");
+                    $("#popup-Training .modal-body .onboard-toplist").html(popUpHtml);
+
+                    $("#popup-Training").modal('show');
+                }
+            });
+
+        });
+    });
+</script>
+
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        @*-----start-------*@
+        <div class="row">
+
+            @*<div class="col-md-4 col-sm-5 col-xs-12">
+                    <h2>Training Plan</h2>
+                    <div style="height:30px"></div>
+
+                    <div id="OnBoardingTree" class="col-md-3 col-sm-3">
+                        <div id="html1">
+                            @jstree(Model)
+                        </div>
+                        @if (Model == null)
+                        {
+
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12">No Training plan to show.</div>
+                            </div>
+
+                        }
+                    </div>
+                </div>*@
+
+
+            <div class="col-md-8 col-sm-7 col-xs-12">
+                <div id="LeafContents">
+                    <h2>Trainings Assigned:</h2>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-sm-5 col-xs-12 align-right">
+                <div id="ButtonContainer">
+                    <a id="btnLrnCheckList" href="#" class="sta-adminbt">Learning Checklist</a>
+                </div>
+            </div>
+
+        </div>
+
+        @*-----end--------*@
+        
+        <div class="row" style="@(showTrainingHelpMessage.ToLower() == "yes" ? "display:block" : "display:none");padding-right: 15px;padding-left: 15px;">
+            <div class="col-md-12" style="background: #f5faff;border: 1px solid #b0d9ff;border-radius: 4px;padding: 8px;color: #777;font-size: 11px;float: left;">
+                <span colspan="5" style="font-size:12px;font-style:italic">
+                    <span style="font-weight:bold">Note :</span>For the trainings which point user to MyHCL,user needs to search for each Course name/Item Id in My HCL ->  iSuccess Learning -> Learning->Find Learning -> Browse All Courses -> "Enter the <span style="font-weight:bold">course name/Item ID</span>"-> Click on "Go" -> Click on “Start Course”
+                </span>
+             </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div id="Training">
+                    <img src="../Images/loading_01.gif" class="loader-img" style="width:50px" />
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <div class="modal fade" id="popup-Training" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header profile-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="modal-close-Adduser"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Learning Checklist</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="onboard-pan ing-bg">
+                        <div class="onboard-main" style="padding-top: 15px;">
+                            <div class="onboard-toplist">
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div id="userEmailTraining"></div>
+                    <table class="table table-bordered admin-onbrd-popuptble" id="tblTrainings">
+                        <thead>
+                            <tr>
+                                <th>Training Name</th>
+                                <th>IsMandatory</th>
+                                <th>LastDayCompletion</th>
+                                <th>IsCompleted</th>
+                                <th>CompletedDate</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>-->
+                </div>
+                <div class="modal-footer">
+                    <div style="text-align:center;">
+
+
+                        <input type="button" class="btn btn-update btn-save" value="Save" style="margin-right:10px;" />
+                        <input type="button" class="btn btn-update" value="Close" style="margin-right:10px;" data-dismiss="modal" aria-label="Close" />
+                       
+
+                        <input type="button" class="btn btn-update btn-update-email" tooltip="Mail Sent to PMO, Please save your information to send email again" disabled="disabled" value="Send Email" style="display:none;" />
+
+                        <input type="button" class="btn btn-update btn-update-email" value="Send Email" style="margin-right:10px;display:none;" />
+
+
+                        @*<a class="btn btn-update"><i class="fa fa-info-circle" aria-hidden="true"></i> Information</a>*@
+                        @*<a class="btn btn-update" data-toggle="modal" data-target="#myModal" onclick="getInformation(); return false;"><i class="fa fa-info-circle" aria-hidden="true"></i> Information</a>*@
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="popup-DisplayMsg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="modal-close-Adduser"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel" style="min-height:50px;"></h4>
+            </div>
+            <div class="modal-body" id="modal-body-DisplayMsg" style="text-align:center; font-size:18px; padding:15px 0 20px;">
+                ...
+            </div>
+        </div>
+    </div>
+</div>
+@{
+    string StrTheme = ConfigurationManager.AppSettings["Theme"].ToString();
+    string styleLink = "~/Content/Theme/theme-" + @StrTheme + ".css";
+
+}
+
+@*<link href="~/Content/learning.css" rel="stylesheet" />*@
+<link href="~/Content/jquery.mCustomScrollbar.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.mCustomScrollbar.concat.min.js"></script>
+<script>
+    (function ($) {
+        $(window).on("load", function () {
+
+            $(".training-hrscroll").mCustomScrollbar({
+                axis: "x",
+                autoExpandScrollbar: true,
+                advanced: { autoExpandHorizontalScroll: true }
+            });
+
+
+
+        });
+    })(jQuery);
+</script>

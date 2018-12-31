@@ -1,0 +1,839 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{769AC549-8A69-44DF-8451-112D3BDA556B}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HCL.Academy.Web</RootNamespace>
+    <AssemblyName>HCL.Academy.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <TargetFrameworkProfile />
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.8.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.8.1\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus, Version=4.5.2.1, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.5.2.1\lib\net40\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelDataReader, Version=3.4.2.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.3.4.2\lib\net45\ExcelDataReader.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelDataReader.DataSet, Version=3.4.2.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.DataSet.3.4.2\lib\net35\ExcelDataReader.DataSet.dll</HintPath>
+    </Reference>
+    <Reference Include="GridMvc, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Grid.Mvc.3.0.0\lib\net40\GridMvc.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlRenderer, Version=1.5.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlRenderer.Core.1.5.0.6\lib\net45\HtmlRenderer.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlRenderer.PdfSharp, Version=1.5.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLLs\HtmlRenderer.PdfSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Humanizer, Version=2.5.0.0, Culture=neutral, PublicKeyToken=979442b78dfc278e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Humanizer.Core.2.5.16\lib\netstandard2.0\Humanizer.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.0.0.999, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.1.0.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.KeyVault.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.3.0.1\lib\net452\Microsoft.Azure.KeyVault.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IdentityModel, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.6.1.7600.16394\lib\net35\Microsoft.IdentityModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Extensions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=69c3241e6f0468ca, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Identity.Model.Extensions.2.0.1459.0\lib\Microsoft.IdentityModel.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Client.Policy, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.8210.1200\lib\net45\Microsoft.Office.Client.Policy.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Client.TranslationServices, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.8210.1200\lib\net45\Microsoft.Office.Client.TranslationServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.SharePoint.Tools, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.8210.1200\lib\net45\Microsoft.Office.SharePoint.Tools.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Online.SharePoint.Client.Tenant, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.8210.1200\lib\net45\Microsoft.Online.SharePoint.Client.Tenant.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ProjectServer.Client, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.8210.1200\lib\net45\Microsoft.ProjectServer.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.8210.1200\lib\net45\Microsoft.SharePoint.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.DocumentManagement, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.8210.1200\lib\net45\Microsoft.SharePoint.Client.DocumentManagement.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Publishing, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.8210.1200\lib\net45\Microsoft.SharePoint.Client.Publishing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.8210.1200\lib\net45\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Runtime.Windows, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.8210.1200\lib\net45\Microsoft.SharePoint.Client.Runtime.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Search, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.8210.1200\lib\net45\Microsoft.SharePoint.Client.Search.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Search.Applications, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.8210.1200\lib\net45\Microsoft.SharePoint.Client.Search.Applications.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Taxonomy, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.8210.1200\lib\net45\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.UserProfiles, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.8210.1200\lib\net45\Microsoft.SharePoint.Client.UserProfiles.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.WorkflowServices, Version=16.1.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.8210.1200\lib\net45\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.ServiceRuntime, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLLs\Microsoft.WindowsAzure.ServiceRuntime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=9.3.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WindowsAzure.Storage.9.3.2\lib\net45\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="MigraDoc.DocumentObjectModel, Version=1.32.4334.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLLs\MigraDoc.DocumentObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="MigraDoc.Rendering, Version=1.32.4334.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>DLLs\MigraDoc.Rendering.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp.Charting, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.Charting.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="System" />
+    <Reference Include="System.AppContext, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.AppContext.4.3.0\lib\net46\System.AppContext.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Console, Version=4.0.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Console.4.3.1\lib\net46\System.Console.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.3.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.5.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Globalization.Calendars, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Globalization.Calendars.4.3.0\lib\net46\System.Globalization.Calendars.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Compression.4.3.0\lib\net46\System.IO.Compression.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.IO.Compression.ZipFile, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Compression.ZipFile.4.3.0\lib\net46\System.IO.Compression.ZipFile.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.4.3.0\lib\net46\System.IO.FileSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=4.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.4.5.0\lib\net46\System.IO.Packaging.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Sockets, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Sockets.4.3.0\lib\net46\System.Net.Sockets.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.1\lib\net461\System.Security.Cryptography.Algorithms.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.2\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Channels" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DataVisualization" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.6\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.6\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml.ReaderWriter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Xml.ReaderWriter.4.3.1\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Serialization">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Common\" />
+    <Folder Include="Scripts\lib\" />
+    <Folder Include="Views\Base\" />
+    <Folder Include="Views\Default\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AssessmentController.cs" />
+    <Compile Include="Controllers\AssignmentController.cs" />
+    <Compile Include="Controllers\AuthorizeController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CareerProgressionController.cs" />
+    <Compile Include="Controllers\ChartsController.cs" />
+    <Compile Include="Controllers\FAQController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\AcademyVideoController.cs" />
+    <Compile Include="Controllers\ImportProjectsController.cs" />
+    <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\OnboardController.cs" />
+    <Compile Include="Controllers\ProjectAvailableResourceController.cs" />
+    <Compile Include="Controllers\ProjectController.cs" />
+    <Compile Include="Controllers\ProjectExpectedResourceController.cs" />
+    <Compile Include="Controllers\ProjectResourceController.cs" />
+    <Compile Include="Controllers\ProjectSkillsController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Controllers\SkillHeatMapController.cs" />
+    <Compile Include="Controllers\SkillsController.cs" />
+    <Compile Include="Controllers\TrainingAssessmentStatusController.cs" />
+    <Compile Include="Controllers\TrainingController.cs" />
+    <Compile Include="Controllers\TrainingPlanController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\TrainingReportController.cs" />
+    <Compile Include="Controllers\WikiController.cs" />
+    <Compile Include="CustomFilters\CustomAuthorizationFilter.cs" />
+    <Compile Include="DAL\AzureStorageTableOperations.cs" />
+    <Compile Include="DAL\DALFactory.cs" />
+    <Compile Include="DAL\DataHelper.cs" />
+    <Compile Include="DAL\IDAL.cs" />
+    <Compile Include="DAL\LogHelper.cs" />
+    <Compile Include="DAL\SharePointDAL.cs" />
+    <Compile Include="DAL\SqlSvrDAL.cs" />
+    <Compile Include="DAL\Utilities.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="HtmlHelpers\HtmlHelperExtensions.cs" />
+    <Compile Include="HtmlHelpers\HtmlHelpers.cs" />
+    <Compile Include="Models\AcademyHome.cs" />
+    <Compile Include="Models\AcademyJoinersCompletion.cs" />
+    <Compile Include="Models\AcademyVideo.cs" />
+    <Compile Include="Models\AllResources.cs" />
+    <Compile Include="Models\AssignUser.cs" />
+    <Compile Include="Models\Banners.cs" />
+    <Compile Include="Models\HeatMapProjectDetail.cs" />
+    <Compile Include="Models\LogEntity.cs" />
+    <Compile Include="Models\logos.cs" />
+    <Compile Include="Models\AcademyEvent.cs" />
+    <Compile Include="Models\News.cs" />
+    <Compile Include="Models\Assessments.cs" />
+    <Compile Include="Models\ClaimsWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Models\OnBoardingCheckList.cs" />
+    <Compile Include="Models\OnboardingHelp.cs" />
+    <Compile Include="Models\Project.cs" />
+    <Compile Include="Models\ProjectData.cs" />
+    <Compile Include="Models\ProjectResources.cs" />
+    <Compile Include="Models\ProjectSkill.cs" />
+    <Compile Include="Models\Resource.cs" />
+    <Compile Include="Models\RSSFeed.cs" />
+    <Compile Include="Models\SharePointAuthAutho.cs" />
+    <Compile Include="Models\SkillCompetencyLevelTraining.cs" />
+    <Compile Include="Models\SkillResource.cs" />
+    <Compile Include="Models\Skills.cs" />
+    <Compile Include="Models\SkillSetDetails.cs" />
+    <Compile Include="Models\CourseStatus.cs" />
+    <Compile Include="Models\Modules.cs" />
+    <Compile Include="Models\MsOnlineClaimsHelper.cs" />
+    <Compile Include="Models\OnBoarding.cs" />
+    <Compile Include="Models\OnBoardingColumns.cs" />
+    <Compile Include="Models\OnBoardingViewModel.cs" />
+    <Compile Include="Models\Question.cs" />
+    <Compile Include="Models\Result.cs" />
+    <Compile Include="Models\SessionExpiry.cs" />
+    <Compile Include="Models\SiteMenu.cs" />
+    <Compile Include="Models\StorageOperations.cs" />
+    <Compile Include="Models\TrainingCourses.cs" />
+    <Compile Include="Models\TrainingModules.cs" />
+    <Compile Include="Models\TrainingPlan.cs" />
+    <Compile Include="Models\TrainingPlanDocuments.cs" />
+    <Compile Include="Models\TrainingReport.cs" />
+    <Compile Include="Models\Trainings.cs" />
+    <Compile Include="Models\TrainingStatus.cs" />
+    <Compile Include="Models\UserCheckList.cs" />
+    <Compile Include="Models\UserCompetancy.cs" />
+    <Compile Include="Models\UserManager.cs" />
+    <Compile Include="Models\UserOnBoarding.cs" />
+    <Compile Include="Models\Users.cs" />
+    <Compile Include="Models\WcfClientContracts.cs" />
+    <Compile Include="Models\WikiDocuments.cs" />
+    <Compile Include="Models\WikiPolicies.cs" />
+    <Compile Include="Models\WikiPolicyDocuments.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\angular-growl.min.css" />
+    <Content Include="Content\animate.css" />
+    <Content Include="Images\Banner\DNB_banner1.jpg" />
+    <Content Include="Images\Banner\DNB_banner2.jpeg" />
+    <Content Include="Images\Banner\DNB_banner2.jpg" />
+    <Content Include="Images\Banner\DNB_banner3.jpg" />
+    <Content Include="Images\Banner\DNB_banner4.jpg" />
+    <Content Include="Images\Banner\Volvo_banner1.png" />
+    <Content Include="Images\Logo\DNB.JPG" />
+    <Content Include="Images\Logo\olin.jpg" />
+    <Content Include="Images\Logo\volvo.jpg" />
+    <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Content\bootstrap-datepicker.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\checklist.css" />
+    <Content Include="Content\css\competence.css" />
+    <Content Include="Content\css\style.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\Gridmvc.css" />
+    <Content Include="Content\jquery.mCustomScrollbar.css" />
+    <Content Include="Content\jquery.treeview.css" />
+    <Content Include="Content\js\bootstrap.min.js" />
+    <Content Include="Content\js\jquery.mCustomScrollbar.concat.min.js" />
+    <Content Include="Content\learning.css" />
+    <Content Include="Content\onboarding.css" />
+    <Content Include="Content\screen.css" />
+    <Content Include="Content\templatemo-main.css" />
+    <Content Include="Content\templatemo-misc.css" />
+    <Content Include="Content\Theme\theme-blue.css" />
+    <Content Include="Content\Theme\theme-darkblue-bnsf.css" />
+    <Content Include="Content\Theme\theme-darkblue-db.css" />
+    <Content Include="Content\Theme\theme-darkblue.css" />
+    <Content Include="Content\Theme\theme-green.css" />
+    <Content Include="Content\Theme\theme-grey.css" />
+    <Content Include="Content\Theme\theme-lightblue.css" />
+    <Content Include="Content\Theme\theme-lightblueAPTOS.css" />
+    <Content Include="Content\Theme\theme-orange.css" />
+    <Content Include="Content\Theme\theme-red.css" />
+    <Content Include="dist\jstree.js" />
+    <Content Include="dist\jstree.min.js" />
+    <Content Include="dist\themes\default-dark\32px.png" />
+    <Content Include="dist\themes\default-dark\40px.png" />
+    <Content Include="dist\themes\default-dark\style.css" />
+    <Content Include="dist\themes\default-dark\style.min.css" />
+    <Content Include="dist\themes\default-dark\throbber.gif" />
+    <Content Include="dist\themes\default\32px.png" />
+    <Content Include="dist\themes\default\40px.png" />
+    <Content Include="dist\themes\default\style.css" />
+    <Content Include="dist\themes\default\style.min.css" />
+    <Content Include="dist\themes\default\throbber.gif" />
+    <Content Include="DLLs\EPPlus.dll" />
+    <Content Include="DLLs\HtmlRenderer.dll" />
+    <Content Include="DLLs\HtmlRenderer.PdfSharp.dll" />
+    <Content Include="DLLs\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="DLLs\Microsoft.WindowsAzure.Diagnostics.dll" />
+    <Content Include="DLLs\Microsoft.WindowsAzure.ServiceRuntime.dll" />
+    <Content Include="DLLs\Microsoft.WindowsAzure.StorageClient.dll" />
+    <Content Include="DLLs\MigraDoc.DocumentObjectModel.dll" />
+    <Content Include="DLLs\MigraDoc.Rendering.dll" />
+    <Content Include="DLLs\Sharepoint2013\Microsoft.SharePoint.Client.dll" />
+    <Content Include="DLLs\Sharepoint2013\Microsoft.SharePoint.Client.Runtime.dll" />
+    <Content Include="DLLs\Sharepoint2016\Microsoft.SharePoint.Client.dll" />
+    <Content Include="DLLs\Sharepoint2016\Microsoft.SharePoint.Client.Runtime.dll" />
+    <Content Include="DLLs\Sharepoint2016\Microsoft.SharePoint.Client.Search.dll" />
+    <Content Include="DLLs\Sharepoint2016\Microsoft.SharePoint.Client.UserProfiles.dll" />
+    <Content Include="DLLs\Sharepoint2016\Microsoft.SharePoint.Client.WorkflowServices.dll" />
+    <Content Include="DLLs\SharepointOnline\Microsoft.SharePoint.Client.dll" />
+    <Content Include="DLLs\SharepointOnline\Microsoft.SharePoint.Client.Runtime.dll" />
+    <Content Include="DLLs\SharepointOnline\Microsoft.SharePoint.Client.Search.dll" />
+    <Content Include="DLLs\SharepointOnline\Microsoft.SharePoint.Client.UserProfiles.dll" />
+    <Content Include="DLLs\SharepointOnline\Microsoft.SharePoint.Client.WorkflowServices.dll" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Images\Banner\BNSF_banner1.png" />
+    <Content Include="Images\Banner\BNSF_banner2.png" />
+    <Content Include="Images\Banner\BNSF_banner3.png" />
+    <Content Include="Images\Banner\Fedex_banner1.png" />
+    <Content Include="Images\Banner\Fedex_banner2.png" />
+    <Content Include="Images\Banner\Fedex_banner3.png" />
+    <Content Include="Images\Banner\JLT_banner1.png" />
+    <Content Include="Images\Banner\Microsoft_banner1.png" />
+    <Content Include="Images\Banner\Microsoft_banner2.png" />
+    <Content Include="Images\Banner\Microsoft_banner3.png" />
+    <Content Include="Images\Banner\NETS_banner1.png" />
+    <Content Include="Images\Banner_ING_01.png" />
+    <Content Include="Images\Banner_ING_02.png" />
+    <Content Include="Images\blue-arrow.png" />
+    <Content Include="Images\blue-circle.png" />
+    <Content Include="Images\bottoma-arrow.png" />
+    <Content Include="Images\Car.png" />
+    <Content Include="Images\checkbox-bg.png" />
+    <Content Include="Images\competence-bg.png" />
+    <Content Include="Images\Competency-Definition_cutting.png" />
+    <Content Include="Images\cross-bg.png" />
+    <Content Include="Images\digital-analytics-img.png" />
+    <Content Include="Images\divider.png" />
+    <Content Include="Images\dot-round.png" />
+    <Content Include="Images\EF.png" />
+    <Content Include="Images\ep-ico.png" />
+    <Content Include="Images\favicon.png" />
+    <Content Include="Images\favicon_academy.png" />
+    <Content Include="Images\green-circle.png" />
+    <Content Include="Images\green-complete.png" />
+    <Content Include="Images\HCL-ING-Aceademy-Hub.png" />
+    <Content Include="Images\HCL-ING-Aceademy-Hub_Login.png" />
+    <Content Include="Images\HCLLogo3.png" />
+    <Content Include="Images\HCLLogo4.png" />
+    <Content Include="Images\HCLLogosmall.png" />
+    <Content Include="Images\HCL_Duetsche-Bank_logo.png" />
+    <Content Include="Images\Header\LandingPageHeaderImg_ADM.PNG" />
+    <Content Include="Images\Header\LandingPageHeaderImg_APTOS.PNG" />
+    <Content Include="Images\Header\LandingPageHeaderImg_BNSF.png" />
+    <Content Include="Images\Header\LandingPageHeaderImg_DNB.PNG" />
+    <Content Include="Images\Header\LandingPageHeaderImg_EDF.PNG" />
+    <Content Include="Images\Header\LandingPageHeaderImg_RaboBank.png" />
+    <Content Include="Images\Header\LoginPageHeaderImg_ADM.PNG" />
+    <Content Include="Images\Header\LoginPageHeaderImg_APTOS.PNG" />
+    <Content Include="Images\Header\LoginPageHeaderImg_BNSF.png" />
+    <Content Include="Images\Header\LoginPageHeaderImg_DNB.PNG" />
+    <Content Include="Images\Header\LoginPageHeaderImg_EDF.PNG" />
+    <Content Include="Images\Header\LoginPageHeaderImg_RaboBank.png" />
+    <Content Include="Images\Header\LoginPageHeaderImg_STATESTREET.png" />
+    <Content Include="Images\Header\LoginPageHeaderImg_BOEING.png" />
+    <Content Include="Images\Header\LandingPageHeaderImg_BOEING.png" />
+    <Content Include="Images\Header\LandingPageHeaderImg_DB.png" />
+    <Content Include="Images\Header\LandingPageHeaderImg_PJI.png" />
+    <Content Include="Images\Header\LandingPageHeaderImg_STATESTREET.png" />
+    <Content Include="Images\Header\LoginPageHeaderImg_DB.png" />
+    <Content Include="Images\Header\LoginPageHeaderImg_PJI.png" />
+    <Content Include="Images\img-1.png" />
+    <Content Include="Images\img-2.png" />
+    <Content Include="Images\ing-logo.png" />
+    <Content Include="Images\learn-white-bg.png" />
+    <Content Include="Images\loading_01.gif" />
+    <Content Include="Images\logo.png" />
+    <Content Include="Images\Logo\BNSF.jpg" />
+    <Content Include="Images\Logo\FEDEX.jpg" />
+    <Content Include="Images\Logo\MICROSOFT.jpg" />
+    <Content Include="Images\Logo\PROJECTNELSON.jpg" />
+    <Content Include="Images\more-btn.png" />
+    <Content Include="Images\My-Learning-Journey.png" />
+    <Content Include="Images\noimage.png" />
+    <Content Include="Images\onboard-bg.png" />
+    <Content Include="Images\Onboarding_Cutting.png" />
+    <Content Include="Images\orange-circle.png" />
+    <Content Include="Images\points-line.png" />
+    <Content Include="Images\Poster_01_FENIX.png" />
+    <Content Include="Images\Poster_02_Vision,-Mission-and-Values.png" />
+    <Content Include="Images\Poster_03_Agile-Manifesto.png" />
+    <Content Include="Images\red-circle.png" />
+    <Content Include="Images\red-pointer.png" />
+    <Content Include="Images\stand-bg.png" />
+    <Content Include="Images\tick-bg.png" />
+    <Content Include="Images\top-arrow.png" />
+    <Content Include="Images\Trainning_Cutting.png" />
+    <Content Include="Images\tree\ajax-loader.gif" />
+    <Content Include="Images\tree\file.gif" />
+    <Content Include="Images\tree\folder-closed.gif" />
+    <Content Include="Images\tree\folder.gif" />
+    <Content Include="Images\tree\minus.gif" />
+    <Content Include="Images\tree\plus.gif" />
+    <Content Include="Images\tree\treeview-black-line.gif" />
+    <Content Include="Images\tree\treeview-black.gif" />
+    <Content Include="Images\tree\treeview-default-line.gif" />
+    <Content Include="Images\tree\treeview-default.gif" />
+    <Content Include="Images\tree\treeview-famfamfam-line.gif" />
+    <Content Include="Images\tree\treeview-famfamfam.gif" />
+    <Content Include="Images\tree\treeview-gray-line.gif" />
+    <Content Include="Images\tree\treeview-gray.gif" />
+    <Content Include="Images\tree\treeview-red-line.gif" />
+    <Content Include="Images\tree\treeview-red.gif" />
+    <Content Include="Images\underconstruction.jpg" />
+    <Content Include="Images\WIP_Animated.gif" />
+    <Content Include="Images\yellw-bar.png" />
+    <Content Include="Images\yellw-barbot.png" />
+    <Content Include="Scripts\angular\controller\ctrl-assessment.js" />
+    <Content Include="Scripts\angular\controller\ctrl-userTraningStatus.js" />
+    <Content Include="Scripts\angular\library\angular-animate.min.js" />
+    <Content Include="Scripts\angular\library\angular-growl.min.js" />
+    <Content Include="Scripts\angular\library\angular.js" />
+    <Content Include="Scripts\angular\library\angular.min.js" />
+    <Content Include="Scripts\angular\module\mod-assessment.js" />
+    <Content Include="Scripts\angular\module\mod-ingacademy.js" />
+    <Content Include="Scripts\angular\module\mod-userTraningStatus.js" />
+    <Content Include="Scripts\bootstrap-confirmation.min.js" />
+    <Content Include="Scripts\bootstrap-datepicker.js" />
+    <Content Include="Scripts\bootstrap-waitingfor.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\common-ui.js" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Scripts\custom.js" />
+    <Content Include="Scripts\dropdowns-enhancement.min.js" />
+    <Content Include="Scripts\gridmvc.js" />
+    <Content Include="Scripts\gridmvc.lang.ru.js" />
+    <Content Include="Scripts\gridmvc.min.js" />
+    <Content Include="Scripts\home.js" />
+    <None Include="Properties\PublishProfiles\bnsfacademy - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\bnsfacademy - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\dnbacademyhub - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\dnbacademyhub - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\fedexacademy - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\fedexacademy - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\HCLAcademyHubNew - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\HCLAcademyHubNew - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\hcltacademy - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\hcltacademy - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\JLTAcademyHub - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\JLTAcademyHub - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\msacademy - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\msacademy - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\OlinAcademy - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\OlinAcademy - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\tstacademy - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\tstacademy - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\vanguardacademy - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\vanguardacademy - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\volvoacademy - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\volvoacademy - Web Deploy.pubxml" />
+    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.3.1.js" />
+    <Content Include="Scripts\jquery-3.3.1.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
+    <Content Include="Scripts\jquery.cookie.js" />
+    <Content Include="Scripts\jquery.lightbox.js" />
+    <Content Include="Scripts\jquery.mCustomScrollbar.concat.min.js" />
+    <Content Include="Scripts\jquery.mCustomScrollbar.js" />
+    <Content Include="Scripts\jquery.min.1.12.4.js" />
+    <Content Include="Scripts\jquery.treeview.js" />
+    <Content Include="Scripts\modernizr.js" />
+    <Content Include="Scripts\pagination.js" />
+    <Content Include="Scripts\plugins.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\Home.cshtml" />
+    <Content Include="Views\Authorize\Login.cshtml" />
+    <Content Include="Views\Search\Search.cshtml" />
+    <Content Include="Views\Shared\_Login.cshtml" />
+    <Content Include="Views\Shared\_Layout -Original.cshtml" />
+    <Content Include="Views\Shared\_Trainings.cshtml" />
+    <Content Include="Views\Shared\_Policy.cshtml" />
+    <Content Include="Views\Wiki\WikiPolicy.cshtml" />
+    <Content Include="Views\ErrorLog\Create.cshtml" />
+    <Content Include="Views\ErrorLog\Edit.cshtml" />
+    <Content Include="Views\ErrorLog\Index.cshtml" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="App_Browsers\generic.browser" />
+    <Content Include="Content\Sample.xlsx" />
+    <Content Include="fonts\Roboto-Black.ttf" />
+    <Content Include="fonts\Roboto-BlackItalic.ttf" />
+    <Content Include="fonts\Roboto-Bold.ttf" />
+    <Content Include="fonts\Roboto-BoldCondensed.ttf" />
+    <Content Include="fonts\Roboto-BoldCondensedItalic.ttf" />
+    <Content Include="fonts\Roboto-BoldItalic.ttf" />
+    <Content Include="fonts\Roboto-Condensed.ttf" />
+    <Content Include="fonts\Roboto-CondensedItalic.ttf" />
+    <Content Include="fonts\Roboto-Italic.ttf" />
+    <Content Include="fonts\Roboto-Light.ttf" />
+    <Content Include="fonts\Roboto-LightItalic.ttf" />
+    <Content Include="fonts\Roboto-Medium.ttf" />
+    <Content Include="fonts\Roboto-MediumItalic.ttf" />
+    <Content Include="fonts\Roboto-Regular.ttf" />
+    <Content Include="fonts\Roboto-Thin.ttf" />
+    <Content Include="fonts\Roboto-ThinItalic.ttf" />
+    <Content Include="Content\ProjectData.xlsx" />
+    <Content Include="Grid.mvc.readme" />
+    <Content Include="Views\Shared\_Assessments.cshtml" />
+    <Content Include="Views\Wiki\Wiki.cshtml" />
+    <Content Include="Views\Training\Training.cshtml" />
+    <Content Include="Views\FAQ\FAQ.cshtml" />
+    <Content Include="Views\Onboard\Onboarding.cshtml" />
+    <Content Include="Views\Shared\_Events.cshtml" />
+    <Content Include="Views\Shared\_News.cshtml" />
+    <Content Include="Views\News\NewsEvents.cshtml" />
+    <Content Include="Views\FAQ\FAQ.cshtml" />
+    <Content Include="Views\Shared\_WikiTabMenu.cshtml" />
+    <Content Include="Views\Shared\_WikiDocumentTree.cshtml" />
+    <Content Include="Views\Shared\_OnBoarding.cshtml" />
+    <Content Include="Views\Assessment\StartAssessment.cshtml" />
+    <Content Include="Views\Shared\_LearningJourney.cshtml" />
+    <Content Include="Views\Training\Index.cshtml" />
+    <Content Include="Views\CareerProgression\Career.cshtml" />
+    <Content Include="Views\Shared\_UserCompetancy.cshtml" />
+    <Content Include="Views\Onboard\NLWorkPermit.cshtml" />
+    <Content Include="Views\Shared\_MyProfile.cshtml" />
+    <Content Include="Views\Shared\_UploadProfile.cshtml" />
+    <Content Include="Views\AcademyVideo\Index.cshtml" />
+    <Content Include="Views\Shared\_Menu.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Shared\_AcademyVideoModel.cshtml" />
+    <Content Include="Views\Admin\OnBoardAdmin.cshtml" />
+    <Content Include="Views\Admin\_UserOnBoarding.cshtml" />
+    <Content Include="Views\Admin\_UserOnBoardingReport.cshtml" />
+    <Content Include="Views\Admin\_UserTrainingAndAssessment.cshtml" />
+    <Content Include="Views\Authorize\SiteMaintanance.cshtml" />
+    <Content Include="Views\Training\OPSTraining.cshtml" />
+    <Content Include="Views\Training\PolymerTraining.cshtml" />
+    <Content Include="Views\Training\ScalaTraining.cshtml" />
+    <Content Include="Views\Training\OracleApplicationExpressTraining.cshtml" />
+    <Content Include="Views\Training\TrainingMaterials.cshtml" />
+    <Content Include="Views\Training\_TrainingMaterials.cshtml" />
+    <Content Include="Views\Training\TIBCOTraining.cshtml" />
+    <Content Include="Views\Training\FullStackDevelopmentTranning.cshtml" />
+    <Content Include="Views\Shared\_Banners.cshtml" />
+    <Content Include="Views\TrainingPlan\TrainingPlan.cshtml" />
+    <Content Include="Views\Shared\_TrainingPlanTree.cshtml" />
+    <Content Include="Views\Shared\_TrainingPlanContent.cshtml" />
+    <Content Include="Views\Home\UnAuthorized.cshtml" />
+    <Content Include="Views\TrainingPlan\_TrainingPanel.cshtml" />
+    <Content Include="Views\Shared\_RssFeed.cshtml" />
+    <Content Include="Views\Shared\_OnboardingHelp.cshtml" />
+    <Content Include="Views\Skills\Skills.cshtml" />
+    <Content Include="Views\TrainingReport\TrainingReport.cshtml" />
+    <Content Include="Views\TrainingAssessmentStatus\Index.cshtml" />
+    <Content Include="Views\ProjectExpectedResource\Create.cshtml" />
+    <Content Include="Views\ProjectSkills\ProjectSkills.cshtml" />
+    <Content Include="Views\Project\AddProject.cshtml" />
+    <Content Include="Views\Project\DeleteProject.cshtml" />
+    <Content Include="Views\Project\EditProjects.cshtml" />
+    <Content Include="Views\Project\Index.cshtml" />
+    <Content Include="Views\Project\ManageSkills.cshtml" />
+    <Content Include="Views\ProjectAvailableResource\Create.cshtml" />
+    <Content Include="Views\ProjectResource\ResourceDetails.cshtml" />
+    <Content Include="Views\SkillHeatMap\Details.cshtml" />
+    <Content Include="Views\Assignment\Index.cshtml" />
+    <Content Include="Views\ImportProjects\ImportProjects.cshtml" />
+    <Content Include="Views\Shared\_GridPager.cshtml" />
+    <Content Include="Views\Shared\_Grid.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HCL.Academy.Report\HCL.Academy.Report.csproj">
+      <Project>{b87e9180-8a8f-41b9-a41a-137f060ab5a1}</Project>
+      <Name>HCL.Academy.Report</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HCL.Academy.Util\HCL.Academy.Util.csproj">
+      <Project>{3b139ce5-9907-4b13-82d8-80c84bd1c068}</Project>
+      <Name>HCL.Academy.Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="netstandard" />
+  </ItemGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>62515</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:61000/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Web.WebJobs.Publish.2.0.0\build\Microsoft.Web.WebJobs.Publish.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Web.WebJobs.Publish.2.0.0\build\Microsoft.Web.WebJobs.Publish.targets'))" />
+    <Error Condition="!Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets'))" />
+  </Target>
+  <Import Project="..\packages\Microsoft.Web.WebJobs.Publish.2.0.0\build\Microsoft.Web.WebJobs.Publish.targets" Condition="Exists('..\packages\Microsoft.Web.WebJobs.Publish.2.0.0\build\Microsoft.Web.WebJobs.Publish.targets')" />
+  <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

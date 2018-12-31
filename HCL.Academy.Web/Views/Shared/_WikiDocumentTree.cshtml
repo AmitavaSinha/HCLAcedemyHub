@@ -1,0 +1,52 @@
+﻿@using HCLAcademy.Utility;
+
+@model List<HCLAcademy.Models.WikiDocuments>
+
+@helper TreeView(List<HCLAcademy.Models.WikiDocuments> modelItems)
+{
+    foreach (var boardingItem in modelItems)
+    {
+        <li>
+            @if (!boardingItem.IsFolder)
+            {
+                <span class="leaf topic" id="item_@boardingItem.ID">
+                    @*@Html.ActionLink(boardingItem.DocumentName, "DownloadFile", "On Boarding", new { filePath = boardingItem.DocumentURL }, new { @target = "_blank" })*@
+                    @Html.ActionLink(boardingItem.DocumentName, "DownloadWikiFile", "Wiki", new { filePath = EncryptionHelper.Encrypt(boardingItem.DocumentURL) }, new { @target = "_self" })
+                </span>
+
+            }
+            else
+            {
+                <span class="folder cls_@boardingItem.DocumentName.Replace(" ","")"><i class="fa fa-folder-open" aria-hidden="true"></i>@boardingItem.DocumentName</span>
+
+
+                if (boardingItem.WikiChild != null)
+                {
+                    <ul>
+                        @TreeView(boardingItem.WikiChild)
+                    </ul>
+                }
+
+            }
+        </li>
+    }
+
+}
+
+
+<ul id="chapterFolders" class="filetree treeview-famfamfam">
+    @if (Model != null)
+    {
+        @TreeView(Model)
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-sm-12 col-xs-12">No Wiki to show.</div>
+        </div>
+
+    }
+
+</ul>
+
+

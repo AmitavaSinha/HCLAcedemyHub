@@ -1,0 +1,71 @@
+﻿@{
+    ViewBag.Title = "StartAssessment";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Styles.Render("~/Content/angularCss");
+@Scripts.Render("~/bundles/angularJs");
+
+
+<div class="notificationBar">
+    Please do not close or refresh the page otherwise you will lose an attempt.
+</div>
+<div id="body" style="top:130px">
+    <section class="content-wrapper main-content clear-fix container">
+        <div ng-app="assessmentModule">
+            <div ng-controller="assessmentCtrl" id="{{assessmentDetails.AssessmentId}}">
+
+                <!--Template for growl notification-->
+                <div growl="" class="ng-isolate-scope"><div class="growl-container growl-fixed top-right" ng-class="wrapperClasses()"><!-- ngRepeat: message in growlMessages.directives[referenceId].messages --><div class="growl-item alert ng-scope alert-info icon alert-dismissable" ng-repeat="message in growlMessages.directives[referenceId].messages" ng-class="alertClasses(message)" ng-click="stopTimeoutClose(message)"><button type="button" class="close" data-dismiss="alert" aria-hidden="true" ng-click="growlMessages.deleteMessage(message)" ng-show="!message.disableCloseButton">×</button><button type="button" class="close ng-binding ng-hide" aria-hidden="true" ng-show="showCountDown(message)"></button><h4 class="growl-title ng-binding" ng-show="message.title" ng-bind="message.title">Info!</h4><div class="growl-message ng-binding" ng-bind-html="message.text">This is an info mesage.</div></div><!-- end ngRepeat: message in growlMessages.directives[referenceId].messages --></div></div>
+                <!--End-->
+                <h2>
+                    {{assessmentDetails.AssessmentName}}
+
+
+                </h2>
+                <div id="timeTicker" style="position:fixed; top:170px; right:8px;z-index:2;background-color:#000000;padding:10px;text-align:center;font-size:20px;font-weight:600;float:right;display:inline;color:#ffffff">
+                </div>
+
+                <div class="assesment-poppan" style="font-size: 1em">
+
+                    <div class="assesmentquestion" ng-repeat="item in answers">
+                        <div ng-class="item.cssClass" class="ques"> {{$index+1}}. {{item.questionDetail.QuestionTitle}}</div>
+                        <ul style="margin-top: 1pt" class="horizontal">
+                            <li ng-if="item.questionDetail.Option1!=null && item.questionDetail.Option1!=''">
+                                <input type="radio" ng-disabled="finalSubmit" name="{{item.questionDetail.QuestionID}}" value="{{item.questionDetail.Option1}}" ng-model="item.selectedoption" ng-change="verify($index)" />{{item.questionDetail.Option1}}
+                            </li>
+                            <li ng-if="item.questionDetail.Option2!=null && item.questionDetail.Option2!=''">
+                                <input type="radio" ng-disabled="finalSubmit" name="{{item.questionDetail.QuestionID}}" value="{{item.questionDetail.Option2}}" ng-model="item.selectedoption" ng-change="verify($index)" />{{item.questionDetail.Option2}}
+                            </li>
+                            <li ng-if="item.questionDetail.Option3!=null && item.questionDetail.Option3!=''">
+                                <input type="radio" ng-disabled="finalSubmit" name="{{item.questionDetail.QuestionID}}" value="{{item.questionDetail.Option3}}" ng-model="item.selectedoption" ng-change="verify($index)" />{{item.questionDetail.Option3}}
+                            </li>
+                            <li ng-if="item.questionDetail.Option4!=null && item.questionDetail.Option4!=''">
+                                <input type="radio" ng-disabled="finalSubmit" name="{{item.questionDetail.QuestionID}}" value="{{item.questionDetail.Option4}}" ng-model="item.selectedoption" ng-change="verify($index)" />{{item.questionDetail.Option4}}
+                            </li>
+                            <li ng-if="item.questionDetail.Option5!=null && item.questionDetail.Option5!=''">
+                                <input type="radio" ng-disabled="finalSubmit" name="{{item.questionDetail.QuestionID}}" value="{{item.questionDetail.Option5}}" ng-model="item.selectedoption" ng-change="verify($index)" />{{item.questionDetail.Option5}}
+                            </li>
+                        </ul>
+                        <br>
+                    </div>
+
+
+                    @*<div class="alert alert-success" id="successAlert" ng-show="resultStatus && finalSubmit">
+                            <strong>Passed</strong> <p></p>
+                        </div>
+                        <div class="alert alert-danger" id="failureAlert" ng-show="!resultStatus && finalSubmit">
+                            <strong>Failed!</strong> <p></p>
+                        </div>*@
+                    <input type="button" value="Get score" class="btn btn-primary" ng-disabled="finalSubmit" ng-click="getScore()">
+                    <input type="reset" value="Clear answers" class="btn btn-primary" ng-disabled="finalSubmit" ng-click="reset()">
+
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </section>
+</div>

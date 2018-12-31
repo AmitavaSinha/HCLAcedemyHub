@@ -1,0 +1,166 @@
+﻿@using HCLAcademy.Utility;
+@model List<HCLAcademy.Models.UserTrainingDetail>
+<script>
+
+    /******* POP UP Window ******/
+    function popupExternalContent(url, title, w, h) {
+        var left = (screen.width/2)-(w/2);
+        var top = (screen.height/2)-(h/2);
+        return window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + top +', left='+left);
+    }
+
+</script>
+<style>
+    .pR5{padding-right:5px !important}
+    .pL5{padding-left:5px !important}
+</style>
+
+<div id="Mandatory" class="tab-pane fade in active">
+    <div class="row">
+        <div class="tagline col-md-12 col-sm-12">
+            <div class="table-responsive">
+                <div style="font-size: 20px;">
+                    <div class="grid col-md-12 col-sm-12 col-xs-12 text-left">
+                        <div class="row tagline tabber-heading">
+                            @*<div class="col-sm-3 col-xs-3 pL5 pR5">Skill/Role</div>*@
+                            <div class="col-sm-6 col-xs-6 pL5 pR5">Training</div>
+                            <div class="col-sm-4 col-xs-4 pL5 pR5">Last Date</div>
+                            <div class="col-sm-2 col-xs-2 pL5 pR5" style="text-align:center">Action</div>
+                        </div>
+                        <div id="trainingMandatory" class="listItems">
+                            @{
+                                int i = 1;
+                                string bgColor = "background : #ddd";
+                                bool mandatoryTraining = false;
+                                foreach (var item in Model)
+                                {
+                                    if (item.Mandatory)
+                                    {
+                                        mandatoryTraining = true;
+
+                                        if (i % 2 == 0)
+                                        {
+                                            bgColor = "background : #ccc";
+                                        }
+                                        else
+                                        {
+                                            bgColor = "background : #ddd";
+                                        }
+
+
+                            <div class="row itemRows">
+                                @*<div class="col-sm-3 col-xs-3 pL5 pR5">@Html.DisplayFor(modelItem => item.CourseNames)</div>*@
+                                <div class="col-sm-6 col-xs-6 pL5 pR5">@Html.DisplayFor(modelItem => item.TrainingName)</div>
+                                <div class="col-sm-4 col-xs-4 pL5 pR5">@Html.DisplayFor(modelItem => item.LastDayToComplete)</div>
+                                @if (item.IsLink)
+                                {
+                                    @*<div class="col-sm-3 col-xs-3"><a href="@item.LinkUrl" target="_blank" style="font-size: 18px;margin-top: 5px;display: inline-block;"><i class="fa fa-link" aria-hidden="true"></i></a></div>*@
+                                    <div class="col-sm-2 col-xs-2 pL5 pR5" style="text-align:center"><a onclick="popupExternalContent('@item.LinkUrl', 'best window',1000,550);" href="javascript:void(0);" style="font-size: 18px;margin-top: 5px;display: inline-block;"><i class="fa fa-link" aria-hidden="true"></i></a></div>
+                                }
+                                else //if(item.IsWikiLink)
+                                {
+                                    <div class="col-sm-2 col-xs-2 pL5 pR5" style="text-align:center">
+                                        @*@Html.ActionLink("Link", "TrainingMaterials", "Training", new { Selected = item.ModuleNames }, new { @target = "_blank" })*@
+                                        @*@Html.ActionLink("", "Wiki", "Wiki", new { Selected = item.ModuleNames }, new { @target = "_blank", @class = "fa fa-link", @style = "font-size: 18px;margin - top: 5px;display: inline - block" })*@
+                                        @*<a href="@Url.Action("Wiki", "Wiki",new { Selected = item.ModuleNames })" style="font-size: 18px;margin-top: 5px;display: inline-block;" target="_blank">
+                    <i class="fa fa-link" aria-hidden="true"></i>
+                </a>*@
+                                        <a target="_self" href="@Url.Action("DownloadFile", "Home",new { filePath = EncryptionHelper.Encrypt(item.DocumentUrl)  })" style="font-size: 18px;margin-top: 5px;display: inline-block;" target="_blank">
+                                            <i class="fa fa-link" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                }
+
+                                @*else
+        {
+            <div class="col-sm-3 col-xs-3">@Html.ActionLink("Download", "DownloadFile", "Home", new { filePath = EncryptionHelper.Encrypt(item.DocumentUrl) }, new { @target = "_self" })</div>
+        }*@
+                            </div>
+                                        i++;
+                                    }
+                                }
+                                if (!mandatoryTraining)
+                                {
+                                    <div class="row">
+                                        <div class="col-sm-12 col-xs-12">No Mandatory Training to show.</div>
+                                    </div>
+                                }
+                            }
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="center" id="trainingMandatoryPagination"></div>
+</div>
+<div id="Suggested" class="tab-pane fade">
+    <div class="row">
+        <div class="tagline col-md-12 col-sm-12">
+            <div class="table-responsive">
+                <div style="font-size: 20px;">
+                    <div class="grid col-md-12 col-sm-12 col-xs-12 text-left">
+                        <div class="row tagline tabber-heading">
+                            @*<div class="col-sm-3 col-xs-3" style="padding-left:0px;padding-right:5px">Skill/Role</div>*@
+                            <div class="col-sm-6 col-xs-6 module-pad pL5 pR5">Training</div>
+                            <div class="col-sm-4 col-xs-4 pL5 pR5">Last Date</div>
+                            <div class="col-sm-2 col-xs-2 pL5 pR5" style="text-align:center">Action</div>
+                        </div>
+                        <div id="trainingSuggested" class="listItems">
+                            @{
+                                int j = 1;
+                                string bgColor1 = "background : #ddd";
+                                bool suggesstedTraining = false;
+                                foreach (var item in Model)
+                                {
+                                    if (!item.Mandatory)
+                                    {
+                                        suggesstedTraining = true;
+                                        if (j % 2 == 0)
+                                        {
+                                            bgColor1 = "background : #ccc";
+                                        }
+                                        else
+                                        {
+                                            bgColor1 = "background : #ddd";
+                                        }
+
+
+                            <div class="row itemRows">
+                                @*<div class="col-sm-3 col-xs-3" style="padding-left:0px;padding-right:0px">@Html.DisplayFor(modelItem => item.CourseNames)</div>*@
+                                <div class="col-sm-6 col-xs-6 pL5 pR5">@Html.DisplayFor(modelItem => item.TrainingName)</div>
+                                <div class="col-sm-4 col-xs-4 pL5 pR5">@Html.DisplayFor(modelItem => item.LastDayToComplete)</div>
+                                @if (item.IsLink)
+                                {
+                                    <div class="col-sm-2 col-xs-2 pL5 pR5" style="text-align:center"><a href="@item.LinkUrl" target="_blank">Link</a></div>
+                                }
+                                else
+                                {
+                                    <div class="col-sm-2 col-xs-2 pL5 pR5" style="text-align:center">
+                                        @Html.ActionLink("Link", "TrainingMaterials", "Training", new { Selected = item.TrainingName }, new { @target = "_blank" })</div>
+                                                                        @*@Html.ActionLink("Link", "Wiki", "Wiki", new { Selected = item.ModuleNames }, new { @target = "_blank" })*@
+                                                                        }
+                                                                    </div>
+                                        j++;
+                                    }
+                                }
+                                if (!suggesstedTraining)
+                                {
+                                    <div class="row">
+                                        <div class="col-sm-12 col-xs-12">No Suggested Training to show.</div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="center" id="trainingSuggestedPagination"></div>
+</div>
+
+

@@ -1,0 +1,124 @@
+﻿.chart-main {
+    /*max-width: 540px;*/
+    /*margin-top: 120px;*/   
+}
+
+.chart-hld {
+    border-bottom: 1px solid #7f7f7f;
+    border-left: 1px solid #7f7f7f;
+    min-height: 350px;
+    font-family: 'Roboto', sans-serif;
+    padding: 15px 20px 0;
+    position:relative;
+}
+
+    .chart-hld ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        position: absolute;
+        bottom: 0;
+    }
+
+        .chart-hld ul li {
+            margin-right: 20px;
+            display: inline-block;
+            vertical-align: bottom;
+            box-shadow: 2px 1px 5px rgba(0, 0, 0, 0.3);
+        }
+
+            .chart-hld ul li:last-child {
+                margin-right: 0;
+            }
+
+.box {
+    width: 100px;
+    height: 70px;
+    color: #fff;
+    position: relative;
+    font-size: 16px;
+    padding: 10px;
+    box-sizing: border-box;
+    font-weight: 600;
+}
+
+    .box span {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+.green {
+    background-color: rgba(76, 199, 132, 0.9);
+}
+
+.blue {
+    background-color: rgba(75, 200, 244, 0.9);
+}
+
+.orange {
+    background-color: rgba(215, 139, 89, 0.9);
+}
+
+.yellow {
+    background-color: rgba(255, 211, 76, 0.9);
+}
+.red {
+    background-color: rgba(255,0,0, 0.9);
+}
+.skills-pan {
+    padding: 0 20px;
+    font-family: 'Roboto', sans-serif;
+}
+.skills-pan ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+    .skills-pan ul li {
+        display: inline-block;
+        width: 100px;
+        text-align: center;
+        margin-right: 20px;
+        color: #837e78;
+        font-size: 14px;
+        font-weight: 600;
+        position: relative;
+        padding-top: 40px;
+        vertical-align: top;
+    }
+    .skills-pan ul li:last-child{
+        margin-right:0;
+    }
+        .skills-pan ul li:before {
+            background-color: #837e78;
+            content:'';
+            display:block;
+            width:17px;
+            height:26px;
+            position:absolute;
+            top:0;
+            left:50%;
+            transform:translateX(-50%);
+        }
+        .skills-pan ul li:after {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 9px solid #837e78;
+            /*bottom: 22px;*/
+            top:26px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+
+
+
+

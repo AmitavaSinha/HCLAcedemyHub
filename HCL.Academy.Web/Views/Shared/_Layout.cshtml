@@ -1,0 +1,351 @@
+﻿@using HCLAcademy.HtmlHelpers;
+<!DOCTYPE html>
+<html>
+<head>
+    @using System.Configuration;
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@Html.GetPageTitle()</title>
+    <meta name="description" content="">
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,400i,700,700i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oswald:300,400,700" rel="stylesheet">
+
+    @*<link rel="icon" type="image/x-icon" href="~/Images/favicon.png" />
+        <link rel="shortcut icon" type="image/x-icon" href="~/Images/favicon.png" />*@
+
+
+    @Styles.Render("~/Content/bootstrapCss")
+    @Styles.Render("~/Content/customCss")
+    <!-- Myprofile Modal End -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrapJs")
+    @Scripts.Render("~/bundles/customJs")
+    @Scripts.Render("~/bundles/modernizr")
+    @*@RenderSection("scripts", required: false)*@
+
+    <!--[if lt IE 8]>
+    <div style=' clear: both; text-align:center; position: relative;'>
+            <a href="http://www.microsoft.windows/internet-explorer/default.aspx?ocid=ie6_countdown_bannercode"><img src="http://storage.ie6countdown.assets/100/images/banners/warning_bar_0000_us.jpg" border="0" alt="" /></a>
+        </div>
+    <![endif]-->
+    <style>
+        .menu .horizontal .dropdown ul:hover {
+            display: block;
+        }
+
+        .navbar-collapse ul li:last-child {
+            display: flex;
+        }
+    </style>
+
+    <style>
+        .logoatheader {
+            color: white;
+            font-size: 25px;
+        }
+
+        .hcllogo {
+            font-size: 25px;
+            font-style: italic;
+            font-family: Helvetica;
+            font-weight: bolder;
+            font-stretch: ultra-expanded;
+            margin-right: 7px;
+        }
+
+        .customerlogo {
+            font-size: 20px;
+            font-style: normal;
+            font-family: monospace;
+            text-transform: uppercase;
+        }
+        .modal-backdrop.in{display:none !important;}
+    </style>
+    @*<script type="text/javascript">
+        var appInsights=window.appInsights||function(a){
+          function b(a){c[a]=function(){var b=arguments;c.queue.push(function(){c[a].apply(c,b)})}}var c={config:a},d=document,e=window;setTimeout(function(){var b=d.createElement("script");b.src=a.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js",d.getElementsByTagName("script")[0].parentNode.appendChild(b)});try{c.cookie=d.cookie}catch(a){}c.queue=[];for(var f=["Event","Exception","Metric","PageView","Trace","Dependency"];f.length;)b("track"+f.pop());if(b("setAuthenticatedUserContext"),b("clearAuthenticatedUserContext"),b("startTrackEvent"),b("stopTrackEvent"),b("startTrackPage"),b("stopTrackPage"),b("flush"),!a.disableExceptionTracking){f="onerror",b("_"+f);var g=e[f];e[f]=function(a,b,d,e,h){var i=g&&g(a,b,d,e,h);return!0!==i&&c["_"+f](a,b,d,e,h),i}}return c
+          }({
+              instrumentationKey:"@RequestTelemtry.Context.InstrumentationKey"
+          });
+
+        window.appInsights=appInsights,appInsights.queue&&0===appInsights.queue.length&&appInsights.trackPageView();
+        </script>*@
+</head>
+<body>
+    <div id="home">
+        <div class="site-header">
+            <div class="top-header">
+                <div class="container">
+                    <div class="row">
+                        <div class="left-header col-md-4 col-sm-4 col-xs-12">
+                            @{
+                                var clientName = Convert.ToString(Session["ClientName"]);
+                                <div>
+                                    <p class="logoatheader">
+                                        <span class="hcllogo" style="margin-right: 7px;"><img src="~/Images/HCLLogosmall.png" align="middle" /> |</span> <span style="color:white;font-size:16px;font-weight:700;text-transform:capitalize;">@clientName ACADEMY</span>
+                                    </p>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="right-header col-md-8 col-sm-8 col-xs-12">
+                            <div class="dropdown user-drop btn-group">
+                                <span data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-user fa-2x"></i>
+                                    <span id="lblUser">
+                                        @{
+                                            bool val1 = (User != null) && Request.IsAuthenticated;
+                                            if (val1)
+                                            {
+                                                @User.Identity.Name;
+                                            }
+
+                                        }
+                                    </span>
+                                </span>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dLabel">
+                                    <span><a href="#" data-toggle="modal" data-target="#myModal" onclick="getMyProfile(); return false;">My Profile</a></span>
+                                    <span><a href="~/Authorize/Logout">Log out</a></span>
+                                </div>
+                            </div>
+
+
+                            @using (Html.BeginForm("Search", "Search", FormMethod.Post))
+                            {
+                                <div class="input-group search">
+                                    <input type="text" id="keyword" style="color: rgb(95, 106, 114);" class=" form-control" name="keyword" placeholder="Search term...">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="submit" id="btnSearch"><i class="fa fa-search"></i></button>
+                                    </span>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="main-header">
+                <div class="container">
+                    <div class="row">
+                        <div class="logo pull-left col-md-1 col-sm-1">
+                            <a href="/Home/Home">
+                                @{var img = Convert.ToString(Session["LogoBase64Image"]);
+                                    @*<img id="imgLogo" title="Customer Logo" src="data:image;base64,@img" alt="customer logo" />*@
+                                    <img id="imgLogo" title="Customer Logo" src="~/Images/Logo/@img" alt="customer logo" />
+                                }
+                                @*<img id="imgLogo" title="Customer Logo" src="~/Images/ING-Logo.png" alt="customer logo" />*@
+                            </a>
+                        </div> <!-- /.logo -->
+
+                        <div class="navbar-right col-md-11 col-sm-11">
+                            <nav role="navigation" class="navbar navbar-static" id="navbar-example">
+                                <div>
+                                    <div class="navbar-header">
+                                        <button data-target=".bs-example-js-navbar-collapse" data-toggle="collapse" type="button" class="navbar-toggle">
+                                            <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
+                                            <span class="icon-bar"></span> <span class="icon-bar"></span>
+                                        </button>
+                                    </div>
+                                    <div class="navbar-collapse bs-example-js-navbar-collapse collapse pull-right" aria-expanded="false" style="height: 1px;">
+                                        @Html.Partial("_Menu")
+                                    </div>
+                                    <!-- /.nav-collapse -->
+                                </div>
+                                <!-- /.container-fluid -->
+                            </nav>
+                        </div>
+                        <!-- /.menu -->
+                    </div> <!-- /.row -->
+                </div> <!-- /.container -->
+            </div> <!-- /.header -->
+        </div> <!-- /.site-header -->
+    </div>  <!-- /#home -->
+    @RenderBody()
+
+
+    @Html.Partial("_Footer")
+
+
+    <!-- Myprofile Modal Start -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <img src="~/Images/loading_01.gif" class="loader-img loader-position" />
+    </div>
+
+
+    <script>
+        //$("#floatbar").click(function (e) {
+        //    e.preventDefault();
+        //    $(this).find(".popup").fadeIn("slow");
+        //});
+
+        function getInformation() {
+            $("#myModal").html(" <img src='/Images/loading_01.gif' class='loader-img loader-position' />");
+            $('#myModal').load("/Onboard/GetInformation");
+
+            //$('#myModal').load("/Onboard/GetInformation", function () {
+            //    $('#myModal').on('hidden.bs.modal', function () {
+            //        $(this).find('form').trigger('reset');
+            //    });
+
+            //    $("#Submit_btn").attr('disabled', true);
+            //});
+
+        }
+
+        function getUploadProfile() {
+            $("#myModal").html(" <img src='/Images/loading_01.gif' class='loader-img loader-position' />");
+
+            $('#myModal').load("/Onboard/GetUploadProfile", function () {
+                $('#myModal').on('hidden.bs.modal', function () {
+                    $(this).find('form').trigger('reset');
+                });
+
+                $("#Submit_btn").attr('disabled', true);
+
+                $('#FormUpload input[name=UploadedFile]').change(function (evt) { singleFileSelected(evt); });
+            });
+
+        }
+
+        function getMyProfile() {
+            $("#myModal").html(" <img src='/Images/loading_01.gif' class='loader-img loader-position' />");
+            $('#myModal').load("/Home/GetMyProfile");
+
+        }
+
+        function singleFileSelected(evt) {
+
+            //reste lbl message and  Progress bar
+            $("#lblmessage").removeClass("alert-danger").removeClass("alert-success").html("");
+            $("#FileProgress").css("width", '0%').attr('aria-valuenow', 0);
+            $('#FileProgress span').text("");
+            $("#progressBar").hide();
+
+            //  var status = false;
+            var selectedFile = ($("#UploadedFile"))[0].files[0];
+
+            if (ValidateExtension(selectedFile) && validateFileSize(selectedFile.size)) {
+                // status = true;
+                $("#Submit_btn").attr('disabled', false);
+            }
+            else {
+                $("#Submit_btn").attr('disabled', true);
+            }
+        }
+
+        function validateFileSize(fileSize) {
+
+            if (fileSize > 5242880) //More than 10 MB =10485760
+            {
+                $("#lblmessage").show();
+                $("#lblmessage").addClass("alert-danger").html("Invalid File Size.");
+
+                setTimeout(function () {
+                    $('#lblmessage').hide();
+                }, 10000);
+                return false;
+            };
+
+            return true;
+        };
+
+        function ValidateExtension(selectedFile) {
+
+            var allowedFiles = [".doc", ".docx", ".pdf"];
+
+            var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(" + allowedFiles.join('|') + ")$");
+            if (!regex.test(selectedFile.name.toLowerCase())) {
+                // alert("Invalid Image");
+
+                $("#lblmessage").show();
+                $("#lblmessage").addClass("alert-danger").html("Please upload files having extensions:<strong>" + allowedFiles.join(', ') + "</strong> only.");
+
+                setTimeout(function () {
+                    $("#lblmessage").hide();
+                }, 10000);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        function progressHandlingFunction(e) {
+            if (e.lengthComputable) {
+                var percentComplete = Math.round(e.loaded * 100 / e.total);
+                $("#FileProgress").css("width",
+                    percentComplete + '%').attr('aria-valuenow', percentComplete);
+                $('#FileProgress span').text(percentComplete + "%");
+            }
+            else {
+                $('#FileProgress span').text('unable to upload');
+            }
+
+            setTimeout(function () {
+                $('#progressBar').hide();
+            }, 10000);
+        }
+
+
+        function successHandler(data) {
+            // alert(data.message);
+
+            if (data.status) {
+                $("#lblmessage").removeClass("alert-danger").addClass("alert-success").html(data.message);
+            }
+            else {
+                $("#lblmessage").removeClass("alert-success").addClass("alert-danger").html(data.message);
+            }
+
+            $("#Submit_btn").attr('disabled', true);
+
+
+            $('#myModal').on('hidden.bs.modal', function () {
+                $(this).find('form').trigger('reset');
+            });
+
+            $("#dwnProfilelink").show();
+            setTimeout(function () {
+                $('#lblmessage').hide();
+            }, 10000);
+
+        }
+
+        function UploadFile() {
+
+            $("#lblmessage").show();
+            $("#progressBar").show();
+
+            var form = $('#FormUpload')[0];
+            var dataString = new FormData(form);
+            $.ajax({
+                url: '/Onboard/UploadProfile',
+                type: 'POST',
+                xhr: function () {
+                    var myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) { // Check if upload property exists
+                        //myXhr.upload.onprogress = progressHandlingFunction
+                        myXhr.upload.addEventListener('progress', progressHandlingFunction,
+                            false); // For handling the progress of the upload
+                    }
+                    return myXhr;
+                },
+                //Ajax events
+                success: successHandler,
+                // error: errorHandler,
+                // complete: completeHandler,
+                // Form data
+                data: dataString,
+                //Options to tell jQuery not to process data or worry about content-type.
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        }
+
+
+    </script>
+</body>
+</html>

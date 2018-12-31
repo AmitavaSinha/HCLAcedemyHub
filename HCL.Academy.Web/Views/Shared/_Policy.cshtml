@@ -1,0 +1,57 @@
+﻿@using HCLAcademy.Utility;
+@model List<HCLAcademy.Models.WikiPolicies>
+
+<nav role="navigation" class="navbar navbar-static" id="navbar-example">
+    <div class="faq-tabber">
+        @{
+            if (Model == null)
+            {
+                <div> No record found.</div>
+            }
+            <ul class="nav nav-tabs">
+                @if (Model != null && Model.Count > 0)
+                {
+                    <li class="active"><a data-toggle="tab" href="#All">All</a></li>
+                }
+
+                @foreach (var PolicyOwner in Model.Select(c => c.PolicyOwner).Distinct().ToList())
+                {
+                    if (!string.IsNullOrEmpty(PolicyOwner))
+                    {
+                        var policyname = "#" + PolicyOwner.Replace(" ", string.Empty);
+                        <li><a data-toggle="tab" href="@policyname">@PolicyOwner</a></li>
+                    }
+                }
+            </ul>
+            <div class="tab-content">
+                <ul id="All" class="tab-pane fade in active">
+                    @foreach (var Policy in Model)
+                    {
+                        string name = Policy.DocumentName;
+                        <li>
+                            @Html.ActionLink(name, "DownloadFile", "Home", new { filePath = EncryptionHelper.Encrypt(Policy.DocumentURL) }, new { @target = "_self" })
+                        </li>
+                    }
+                </ul>
+                @foreach (var PolicyOwner in Model.Select(c => c.PolicyOwner).Distinct().ToList())
+                {
+                    if (!string.IsNullOrEmpty(PolicyOwner))
+                    {
+                        <ul id="@PolicyOwner.Replace(" ", string.Empty)" class="tab-pane fade">
+                            @foreach (var Policy in Model)
+                            {
+                                if (Policy.PolicyOwner.Equals(PolicyOwner))
+                                {
+                                    string name = Policy.DocumentName;
+                                    <li>
+                                        @Html.ActionLink(name, "DownloadFile", "Home", new { filePath = EncryptionHelper.Encrypt(Policy.DocumentURL) }, new { @target = "_self" })
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    }
+                }
+            </div>
+        }
+    </div>
+</nav>

@@ -1,0 +1,13 @@
+﻿@model HCLAcademy.Models.WikiPolicyDocuments
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="body">
+    <div id="divPartialView">
+        <section class="content-wrapper main-content clear-fix container">
+            <h2>Wiki & Policies</h2>
+            @Html.Partial("_Policy", Model.ListOfWiki)
+        </section> 
+    </div>
+</div>

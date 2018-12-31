@@ -1,0 +1,966 @@
+﻿@model HCLAcademy.Models.UserOnBoarding
+@using HCLAcademy.Models;
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="body">
+
+    <section class="content-wrapper main-content clear-fix container">
+        <h2>Onboarding Admin</h2>
+        <div class="faq-tabber">
+            <ul class="nav nav-tabs">
+                <li class="active" id="OnBoardUser"><a style="cursor:pointer;"><linkbutton onclick="ShowOnBoardUser()">Onboard User</linkbutton></a></li>
+                <li id="Report"><a style="cursor:pointer;"><linkbutton onclick="ShowReport()">View Report</linkbutton></a></li>
+                @*<li id="TrainingAndAssessment"><a style="cursor:pointer;"><linkbutton onclick="ShowTrainingAndAssessment()">Assign Training Or Assessment</linkbutton></a></li>*@
+            </ul>
+
+
+
+            <div class="tab-content">
+
+                <div id="divOnBoardUser">
+                    <ul class="nav nav-tabs no-bdr-pad">
+                        <li class="active" id="SingleUser"><a style="cursor:pointer;"><linkbutton onclick="ShowOnBoardSingleUser()">Onboard Single User</linkbutton></a></li>
+                        <li id="BulkUser"><a style="cursor:pointer;"><linkbutton onclick="ShowOnBoardBulkUser()">Onboard Bulk User</linkbutton></a></li>
+                    </ul>
+                    <div class="row onbrd-form" id="divOnBoardSingleUser">
+                        <div class="form-group col-md-2 col-sm-2 col-xs-12">
+                            <span class="entr-emailonbrd">Please Enter User Email</span>
+                        </div>
+                        <div class="form-group col-md-5 col-sm-5 col-xs-12">
+                            <input id="txtUserEmail" name="txtUserEmail" type="email" class="form-control" value="" placeholder="Email"
+                                   onkeydown="if (event.keyCode == 13) $('#icnSearchUser').click()">
+                            <span class="error" id="EmailError" style="display:none; margin-left: 10px;">Please Enter Valid Email</span>
+                            <span class="error" id="EmailNotFound" style="display:none; margin-left: 10px;">User not found</span>
+                            <span class="error" id="EmailNotAdded" style="display:none; margin-left: 10px;">Please Add User First</span>
+                        </div>
+                        <div class="col-md-5 col-sm-5 col-xs-2 check">
+                            @*<i class="fa fa-plus-circle btn-adminonbrd" aria-hidden="true" onclick="CheckUser('OnBoard')"></i>*@
+                            <a href="javascript:void(0);"> <i class="fa fa-search btn-adminonbrd" id="icnSearchUser" aria-hidden="true" onclick="CheckUser('OnBoard')"></i> </a>
+                            @*<i class="fa fa-plus-circle" aria-hidden="true" id="btnSearch" ></i>*@
+                        </div>
+
+
+                    </div>
+                    <div class="row" id="divAcademyOnboarding"></div>
+
+                    <div id="divOnBoardBulk">
+
+                        <div id="FormContent">
+                            <form id="FormUpload" enctype="multipart/form-data" method="post">
+
+                                <div class="top-mrg">
+                                    <span class="pull-left fileinput-button" style="color:#ff6200;">
+                                        <input type="file" name="UploadedFile" id="UploadedFile" />
+                                    </span>
+                                    <button class="btn btn-primary start col-md-offset-1 pull-left" type="button" id="Submit_btn" onclick="UploadOnboardingFile()">
+                                        <i class="glyphicon glyphicon-upload"></i>
+                                        <span>Start upload</span>
+                                    </button>
+                                    <span class="pull-left fileinput-button" style="color:#fff; margin-left:50px">
+                                        <a href="~/Content/Sample.xlsx" title="Download Sample"><i class="fa fa-download fa-2x" aria-hidden="true"></i></a>
+                                    </span>
+                                    <div class="spacer"></div>
+                                </div>
+                            </form>
+
+
+                        </div>
+                        <div id="lblmessage" style="display:none"></div>
+
+
+                    </div>
+
+                </div>
+                <div class="row" id="divStartUpload"></div>
+
+
+
+                <div id="divOnBoardReport">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="onbrd-form">
+                                <span class="entr-emailonbrd">Please Select Status: </span>
+                                <select id="status">
+                                    <option value="">--- Select Status ---</option>
+                                    <option value="OnBoarded">OnBoarded</option>
+                                    <option value="InProgress">InProgress</option>
+                                    <option value="Selected">Selected</option>
+                                </select>
+
+                                <select id="project">
+                                    <option value="0"> All Projects </option>
+                                    @foreach (Project proj in Model.Projects)
+                                    {
+                                        <option value=@proj.ID>@proj.ProjectName</option>
+                                    }
+                                </select>
+                                <button onclick="GetOnBoardReport()" class="sta-adminbt">Get Report</button>
+                                @*<button onclick="DownloadReport()" class="sta-adminbt">Download To Excel</button>*@
+                                <a href="#" id="downloadLink" target="_self" class="sta-adminbt">Download To Excel</a>
+                                <a href="#" id="downloadPdf" target="_self" class="sta-adminbt">Download To PDF</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="divAcademyOnboardingReports"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+@*<script src="~/Scripts/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>*@
+@*<script src="~/Scripts/jquery.min.1.12.4.js"></script>*@
+@*<link href="~/Scripts/lib/bootstrap-datepicker.css" rel="stylesheet" />
+    <script src="~/Scripts/lib/bootstrap-datepicker.js"></script>*@
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
+<link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
+<script type="text/javascript">
+    function FillCompetenceAllTrain() {
+
+        var skillId = $('#ddSkill').val();
+
+        $.ajax({
+
+            url: "/Admin/FillCompetence",
+
+            type: "GET",
+
+            dataType: "JSON",
+
+            data: { Id: skillId },
+
+            success: function (competencies) {
+
+                $("#ddCompetance").html(""); // clear before appending new list
+                $("#ddCompetance").append($('<option></option>').val('Please Select Competency Level').html('Please Select Competency Level'));
+
+                $.each(competencies, function (i, competence) {
+                    if (competence.CompetenceName != "All") {
+                        $("#ddCompetance").append(
+
+                            $('<option></option>').val(competence.CompetenceId).html(competence.CompetenceName));
+                    }
+                });
+            }
+
+        });
+
+    }
+    function FillCompetencePopupAssessment() {
+
+        var skillId = $('#ddSkillForAssmnt').val();
+
+        $.ajax({
+
+            url: "/Admin/FillCompetence",
+
+            type: "GET",
+
+            dataType: "JSON",
+
+            data: { Id: skillId },
+
+            success: function (competencies) {
+
+                $("#ddCompetanceForAssmnt").html(""); // clear before appending new list
+                $("#ddCompetanceForAssmnt").append($('<option></option>').val('Please Select Competency Level').html('Please Select Competency Level'));
+
+                $.each(competencies, function (i, competence) {
+                    if (competence.CompetenceName!="All") {
+                        $("#ddCompetanceForAssmnt").append(
+
+                            $('<option></option>').val(competence.CompetenceId).html(competence.CompetenceName));
+                    }
+                });
+            }
+
+        });
+
+    }
+
+    var tableBody = $('#tblUser tbody');
+    $(document).ready(function () {
+        $('#OnBoardUser').show();
+        $('#divOnBoardReport').hide();
+        $('#divTrainingAndAssessment').hide();
+        $('#divOnBoardBulk').hide();
+        $('#divAssignAssessmentToAll').hide();
+        $('#divTrainingAndAssessmentToSingle').hide();
+
+        $('#downloadLink').click(function (e) {
+
+            var status = $("#status").val();
+            if (status != "") {
+
+                $('#myModal').modal('show');
+                e.preventDefault();
+
+                var status = $("#status").val();
+
+                var url = '@Url.Action("DownloadReportToExcel","Admin")?status=' + status;
+
+
+
+                $.get("/Admin/FakeAjaxCall", function () {
+
+                    window.location.href = url;
+                })
+                .done(function () {
+                    window.setTimeout(function () {
+                        $('#myModal').modal('hide');
+                    }, 2000);
+                });
+            }
+            else {
+                alert("Please select status");
+                $("#status").focus();
+                return false;
+            }
+
+        });
+
+        $('#downloadPdf').click(function (e) {
+
+            var status = $("#status").val();
+            if (status != "") {
+
+                $('#myModal').modal('show');
+                e.preventDefault();
+
+                var status = $("#status").val();
+
+                var url = '@Url.Action("DownloadReportToPDF", "Admin")?status=' + status;
+
+
+
+                $.get("/Admin/FakeAjaxCall", function () {
+
+                    window.location.href = url;
+                })
+                .done(function () {
+                    window.setTimeout(function () {
+                        $('#myModal').modal('hide');
+                    }, 2000);
+                });
+            }
+            else {
+                alert("Please select status");
+                $("#status").focus();
+                return false;
+            }
+
+        });
+
+
+
+        //$('#btnSubmit').blur(function () {
+        //    $('#divCongratesPan').hide();
+        //});
+        //$("#btnSubmit").attr('disabled', 'disabled');
+
+        // Validate Email
+        $("#txtUserEmail").on('input', function () {
+            var input = $(this);
+            var is_location = input.val();
+            var regex = /^([a-zA-Z0-9_.+-])+\@@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+            $('#divCongratesPan').hide();
+
+            if (regex.test(is_location)) {
+                input.removeClass("invalid").addClass("valid");
+                input.css('border', '2px solid green');
+                $("#EmailError").css('display', 'none');
+                $("#EmailNotFound").css('display', 'none');
+                $("#EmailNotAdded").css('display', 'none');
+            }
+            else {
+                input.removeClass("valid").addClass("invalid");
+                input.css('border', '2px solid red');
+                $("#EmailError").css('display', 'block');
+                $("#EmailNotFound").css('display', 'none');
+                $("#EmailNotAdded").css('display', 'none');
+            }
+        });
+
+        $("#txtUserEmailAssignments").on('input', function () {
+            var input = $(this);
+            var is_location = input.val();
+            var regex = /^([a-zA-Z0-9_.+-])+\@@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+            $('#divCongratesPan').hide();
+
+            if (regex.test(is_location)) {
+                input.removeClass("invalid").addClass("valid");
+                input.css('border', '2px solid green');
+                $("#EmailErrorAssignments").css('display', 'none');
+                $("#EmailNotFoundAssignments").css('display', 'none');
+                $("#EmailNotAddedAssignments").css('display', 'none');
+            }
+            else {
+                input.removeClass("valid").addClass("invalid");
+                input.css('border', '2px solid red');
+                $("#EmailErrorAssignments").css('display', 'block');
+                $("#EmailNotFoundAssignments").css('display', 'none');
+                $("#EmailNotAddedAssignments").css('display', 'none');
+            }
+        });
+
+        // Validate Skill for Training and Assessment
+        $("#ddSkill").on("change", function () {
+            var input = $(this);
+            var is_name = input.val();
+            if (is_name) {
+                input.removeClass("invalid").addClass("valid");
+                input.css('border', '2px solid green');
+                $("#SkillError").css('display', 'none');
+            }
+            else {
+                input.removeClass("valid").addClass("invalid");
+                input.css('border', '2px solid red');
+                $("#SkillError").css('display', 'block');
+            }
+        });
+
+        $("#ddSkillForAssmnt").on("change", function () {
+            var input = $(this);
+            var is_name = input.val();
+            if (is_name) {
+                input.removeClass("invalid").addClass("valid");
+                input.css('border', '2px solid green');
+                $("#SkillForAssmntError").css('display', 'none');
+            }
+            else {
+                input.removeClass("valid").addClass("invalid");
+                input.css('border', '2px solid red');
+                $("#SkillForAssmntError").css('display', 'block');
+            }
+        });
+
+        // Validate Training
+        $("#ddTraining").on("change", function () {
+            var input = $(this);
+            var is_name = input.val();
+            if (is_name) {
+                input.removeClass("invalid").addClass("valid");
+                input.css('border', '2px solid green');
+                $("#TrainingError").css('display', 'none');
+            }
+            else {
+                input.removeClass("valid").addClass("invalid");
+                input.css('border', '2px solid red');
+                $("#TrainingError").css('display', 'block');
+            }
+        });
+
+        // Validate Assessment
+        $("#ddAssessmentForAssmnt").on("change", function () {
+            var input = $(this);
+            var is_name = input.val();
+            if (is_name) {
+                input.removeClass("invalid").addClass("valid");
+                input.css('border', '2px solid green');
+                $("#AssessmentForAssmntError").css('display', 'none');
+            }
+            else {
+                input.removeClass("valid").addClass("invalid");
+                input.css('border', '2px solid red');
+                $("#AssessmentForAssmntError").css('display', 'block');
+            }
+        });
+
+        // Validate Last Date of Training and Assessment
+        $("#dtLastDayCompletionForAssmnt").on("input change", function () {
+            var input = $(this);
+            var is_name = input.val();
+            if (is_name) {
+                input.removeClass("invalid").addClass("valid");
+                input.css('border', '2px solid green');
+                $("#LastDayCompletionForAssmtError").css('display', 'none');
+            }
+            else {
+                input.removeClass("valid").addClass("invalid");
+                input.css('border', '2px solid red');
+                $("#LastDayCompletionForAssmtError").css('display', 'block');
+            }
+        });
+
+        $("#dtLastDayCompletion").on("input change", function () {
+            var input = $(this);
+            var is_name = input.val();
+            if (is_name) {
+                input.removeClass("invalid").addClass("valid");
+                input.css('border', '2px solid green');
+                $("#LastDayCompletionError").css('display', 'none');
+            }
+            else {
+                input.removeClass("valid").addClass("invalid");
+                input.css('border', '2px solid red');
+                $("#LastDayCompletionError").css('display', 'block');
+            }
+        });
+
+        // Validate AssignTo for Training and Assessment
+        $("#ddAssignedTo").on("change", function () {
+            var input = $(this);
+            var is_name = input.val();
+            if (is_name) {
+                input.removeClass("invalid").addClass("valid");
+                input.css('border', '2px solid green');
+                $("#AssignToError").css('display', 'none');
+            }
+            else {
+                input.removeClass("valid").addClass("invalid");
+                input.css('border', '2px solid red');
+                $("#AssignToError").css('display', 'block');
+            }
+        });
+
+        $("#ddAssignedToForAssmnt").on("change", function () {
+            var input = $(this);
+            var is_name = input.val();
+            if (is_name) {
+                input.removeClass("invalid").addClass("valid");
+                input.css('border', '2px solid green');
+                $("#AssignToForAssmntError").css('display', 'none');
+            }
+            else {
+                input.removeClass("valid").addClass("invalid");
+                input.css('border', '2px solid red');
+                $("#AssignToForAssmntError").css('display', 'block');
+            }
+        });
+
+
+        $('#ddAssignedTo').append($('<option>', { value: 0 }).text("All"));
+        $('#ddAssignedToForAssmnt').append($('<option>', { value: 0 }).text("All"));
+
+    });
+
+    $('#dtLastDayCompletion').datepicker({
+        format: 'yyyy-mm-dd',
+        todaybtn: true,
+        autoclose: true,
+        todayhighlight: true,
+        orientation: "auto"
+    });
+
+    $('#dtLastDayCompletionForAssmnt').datepicker({
+        format: 'yyyy-mm-dd',
+        todaybtn: true,
+        autoclose: true,
+        todayhighlight: true,
+        orientation: "auto"
+    });
+
+
+    function ShowOnBoardUser() {
+        $('#divOnBoardUser').show();
+        $('#divOnBoardReport').hide();
+        $('#divTrainingAndAssessment').hide();
+
+        $('#OnBoardUser').addClass("active");
+        $('#Report').removeClass("active");
+        $('#TrainingAndAssessment').removeClass("active");
+
+        $('#divAcademyOnboardingReports').html("");
+    }
+
+    function ShowOnBoardSingleUser() {
+        $('#divOnBoardSingleUser').show();
+        $('#divOnBoardBulk').hide();
+
+        $('#SingleUser').addClass("active");
+        $('#BulkUser').removeClass("active");
+    }
+
+    function ShowOnBoardBulkUser() {
+        $('#divOnBoardSingleUser').hide();
+        $('#divOnBoardBulk').show();
+
+        $('#divAcademyOnboarding').html("");
+
+        $('#SingleUser').removeClass("active");
+        $('#BulkUser').addClass("active");
+    }
+
+    function ShowReport() {
+        $('#divOnBoardUser').hide();
+        $('#divOnBoardReport').show();
+        $('#divTrainingAndAssessment').hide();
+
+        $('#divAcademyOnboarding').html("");
+        $('#divAcademyOnboardingReports').html("");
+
+        $('#OnBoardUser').removeClass("active");
+        $('#Report').addClass("active");
+        $('#TrainingAndAssessment').removeClass("active");
+    }
+
+    function ShowTrainingAndAssessment() {
+        $('#divOnBoardUser').hide();
+        $('#divOnBoardReport').hide();
+        $('#divTrainingAndAssessment').show();
+
+        $('#divAcademyOnboarding').html("");
+        $('#divAcademyOnboardingReports').html("");
+
+        $('#OnBoardUser').removeClass("active");
+        $('#Report').removeClass("active");
+        $('#TrainingAndAssessment').addClass("active");
+    }
+
+    function ShowAssignAll() {
+        $('#divOnBoardUser').hide();
+        $('#divOnBoardReport').hide();
+        $('#divTrainingAndAssessment').show();
+
+        $('#divAcademyOnboarding').html("");
+        $('#divAcademyOnboardingReports').html("");
+
+        $('#OnBoardUser').removeClass("active");
+        $('#Report').removeClass("active");
+        $('#TrainingAndAssessment').addClass("active");
+    }
+
+    function ShowAssignTrainingAll() {
+        $('#divAssignTrainingToAll').show();
+        $('#divAssignAssessmentToAll').hide();
+        $('#divTrainingAndAssessmentToSingle').hide();
+
+        $('#AssignTrainingAll').addClass("active");
+        $('#AssignAssessmentAll').removeClass("active");
+        $('#AssignSingle').removeClass("active");
+    }
+
+    function ShowAssignAssessmentAll() {
+        $('#divAssignTrainingToAll').hide();
+        $('#divAssignAssessmentToAll').show();
+        $('#divTrainingAndAssessmentToSingle').hide();
+
+        $('#AssignTrainingAll').removeClass("active");
+        $('#AssignAssessmentAll').addClass("active");
+        $('#AssignSingle').removeClass("active");
+    }
+
+    function ShowAssignSingle() {
+        $('#divAssignTrainingToAll').hide();
+        $('#divAssignAssessmentToAll').hide();
+        $('#divTrainingAndAssessmentToSingle').show();
+
+        $('#AssignTrainingAll').removeClass("active");
+        $('#AssignAssessmentAll').removeClass("active");
+        $('#AssignSingle').addClass("active");
+    }
+
+
+    function UploadOnboardingFile() {
+
+        //$("#lblmessage").show();
+        //$("#progressBar").show();
+
+        $("#divStartUpload").html(" <img src='/Images/loading_01.gif' class='loader-img loader-position' />");
+
+        var form = $('#FormUpload')[0];
+        var dataString = new FormData(form);
+        $.ajax({
+            url: '/Admin/UploadOnboardFile',
+            type: 'POST',
+            data: dataString,
+            //Options to tell jQuery not to process data or worry about content-type.
+            cache: false,
+            contentType: false,
+            processData: false,
+            //Ajax events
+            success: function (responce) {
+                $("#divStartUpload").html("");
+                $("#lblmessage").show().html(responce.message);
+            },
+            failure: function (response) {
+                alert(responce.message);
+            }
+        });
+    }
+
+
+    function CheckUser() {
+
+        var textboxvalue = $("#txtUserEmail").val();
+
+        $("#divAcademyOnboarding").html(" <img src='/Images/loading_01.gif' class='loader-img loader-position' />");
+
+        var isValid = true;
+
+        var valid1 = $("#txtUserEmail").hasClass("valid");
+        if (!valid1) {
+            isValid = false;
+            $("#txtUserEmail").css('border', '2px solid red');
+            $("#EmailError").css('display', 'block');
+            $("#EmailNotAdded").css('display', 'none');
+            $("#divAcademyOnboarding").html("");
+        }
+
+        if (isValid) {
+            $.ajax({
+                type: "POST",
+                url: "/Admin/EmailSearch",
+                data: {
+                    keyword: textboxvalue
+                },
+                success: function (result) {
+                    $("#EmailError").css('display', 'none');
+                    $("#EmailNotFound").css('display', 'none');
+                    $("#EmailNotAdded").css('display', 'none');
+                    $("#txtUserEmail").css('border', 'none');
+                    //var resultStr = "<tr class='data-Added-person-row'><td>" + result.Name + "</td><td class='data-Added-person-email'>" + result.Email +
+                    //                    "</td><td class='delete-bt'><i class='fa fa-times' aria-hidden='true'></i></td></tr>";
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/Admin/UserOnBoarding",
+                        data: {
+                            user: result
+                        },
+                        success: function (result1) {
+                            $("#divAcademyOnboarding").html(result1);
+                            //$("#txtUserEmail").val(textboxvalue);
+                        }
+                    })
+
+                    //   $("#txtUserEmail").val("");
+
+                },
+                error: function () {
+                    $("#txtUserEmail").css('border', '2px solid red');
+                    $("#EmailNotFound").css('display', 'block');
+                    $("#EmailError").css('display', 'none');
+                    $("#EmailNotAdded").css('display', 'none');
+                    $("#divAcademyOnboarding").html("");
+                }
+            });
+        }
+    }
+
+
+
+    function GetAssignmentsForUser() {
+
+        var textboxvalue = $("#txtUserEmailAssignments").val();
+
+        var isValid = true;
+
+        var valid1 = $("#txtUserEmailAssignments").hasClass("valid");
+        if (!valid1) {
+            isValid = false;
+            $("#txtUserEmailAssignments").css('border', '2px solid red');
+            $("#EmailErrorAssignments").css('display', 'block');
+            $("#EmailNotAddedAssignments").css('display', 'none');
+        }
+
+        if (isValid) {
+            $.ajax({
+                type: "POST",
+                url: "/Admin/EmailSearch",
+                data: {
+                    keyword: textboxvalue
+                },
+                success: function (result) {
+                    $("#EmailErrorAssignments").css('display', 'none');
+                    $("#EmailNotFoundAssignments").css('display', 'none');
+                    $("#EmailNotAddedAssignments").css('display', 'none');
+                    $("#txtUserEmailAssignments").css('border', 'none');
+                    //var resultStr = "<tr class='data-Added-person-row'><td>" + result.Name + "</td><td class='data-Added-person-email'>" + result.Email +
+                    //                    "</td><td class='delete-bt'><i class='fa fa-times' aria-hidden='true'></i></td></tr>";
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/Admin/UserTrainingAndAssessment",
+                        data: {
+                            user: result
+                        },
+                        success: function (result1) {
+                            $("#divUserAssignments").html(result1);
+                        }
+                    })
+
+                    $("#txtUserEmailAssignments").val("");
+
+                },
+                error: function () {
+                    $("#txtUserEmailAssignments").css('border', '2px solid red');
+                    $("#EmailNotFoundAssignments").css('display', 'block');
+                    $("#EmailErrorAssignments").css('display', 'none');
+                    $("#EmailNotAddedAssignments").css('display', 'none');
+                }
+            });
+        }
+    }
+
+
+    function GetOnBoardReport() {
+
+        $("#divAcademyOnboardingReports").html(" <img src='/Images/loading_01.gif' class='loader-img loader-position' />");
+        var status = $('#status').val();
+        var project = $('#project').val();
+        if (status != "") {
+            $.ajax({
+                type: "POST",
+                url: "/Admin/UserOnBoardingReport",
+                data: {
+                    status: status,
+                    project: project
+                },
+                success: function (result) {
+                    $("#divAcademyOnboardingReports").html(result);
+                }
+            })
+        }
+        else {
+            alert("Please Select Status");
+        }
+    }
+
+
+    function GetDownloadExcelUrl() {
+        //  $("#myModal").show();
+
+        var status = $("#status").val();
+
+        var url = '@Url.Action("DownloadReportToExcel","Admin")?status=' + status;
+        //downloadLink
+        // $("#downloadLink").attr("href",url);
+
+        // window.location = url;
+        //setTimout(function () {
+        //    window.location.href = url;
+        //}, 20);
+
+    }
+
+
+
+    function DownloadReport() {
+        var status = $('#status').val();
+        if (status != "") {
+            $.ajax({
+                type: "POST",
+                url: "/Admin/DownloadReportToExcel",
+                data: {
+                    status: status
+                },
+                success: function (result) {
+                }
+            });
+        }
+        else {
+            alert("Please Select Status");
+        }
+    }
+
+
+    function getHtmlBody(msg1, msg2) {
+        var html = "<div class='col-md-6'><div class='congrats-pan'><h4>" + msg1 + "</h4><h5>" + msg2 + "</h5></div></div>"
+        return html;
+    }
+
+
+    // Training And Assessment Assignment to All User
+    function GetTraining() {
+
+        var skill = $("#ddSkill").val();
+        var competence = $("#ddCompetance :selected").text();
+        var competenceId = $("#ddCompetance").val();
+
+        if (competenceId == "") {
+            competenceId = 0
+        }
+
+        var PostData = {
+            competence: competence,
+            competenceId: competenceId,
+            skillId: skill
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetTrainingOnSkillAndCompetence",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                var $select = $('#ddTraining');
+                $select.find('option').remove();
+                $('<option>').text("Please Select Training").appendTo($select);
+                $.each(result, function (key, value) {
+
+                    $('<option>').val(value.TrainingId).text(value.TrainingName).appendTo($select);
+                });
+
+            }
+        });
+    }
+
+    function SaveTraining() {
+        var isValid = true;
+
+        var valid1 = $("#ddSkill").hasClass("valid");
+        if (!valid1) {
+            isValid = false;
+            $("#ddSkill").css('border', '2px solid red');
+            $("#SkillError").css('display', 'block');
+        }
+
+        var valid2 = $("#ddTraining").hasClass("valid");
+        if (!valid2) {
+            isValid = false;
+            $("#ddTraining").css('border', '2px solid red');
+            $("#TrainingError").css('display', 'block');
+        }
+
+        var valid3 = $("#ddAssignedTo").hasClass("valid");
+        if (!valid3) {
+            isValid = false;
+            $("#ddAssignedTo").css('border', '2px solid red');
+            $("#AssignToError").css('display', 'block');
+        }
+
+        var valid4 = $("#dtLastDayCompletion").hasClass("valid");
+        if (!valid4) {
+            isValid = false;
+            $("#dtLastDayCompletion").css('border', '2px solid red');
+            $("#LastDayCompletionError").css('display', 'block');
+        }
+
+
+        if (isValid) {
+            $('#myModal').modal('show');
+            var objTraining = {
+                SKillId: $("#ddSkill").val(),
+                TrainingId: $("#ddTraining").val(),
+                IsMandatory: $("#IsMandatory").is(':checked'),
+                IsIncludeOnBoarding: $("#IsIncludeOnBoarding").is(':checked'),
+                LastDayCompletion: $("#dtLastDayCompletion").val()
+            }
+
+            var PostData = {
+                assignedGroup: $("#ddAssignedTo").val(),
+                training: objTraining
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/Admin/AssignTrainingsToAllUser",
+                contentType: "application/json;",
+                dataType: "",
+                data: JSON.stringify(PostData),
+                success: function (result) {
+                    $('#myModal').modal('hide');
+                    $(".statusMessage").html("Training Assigned Successfully.");
+                }
+            });
+        }
+    }
+
+    // For Assessment
+    function GetAssessment() {
+
+        var skill = $("#ddSkillForAssmnt").val();
+        var competence = $("#ddCompetanceForAssmnt :selected").text();
+        var competenceId = $("#ddCompetanceForAssmnt").val();
+        if (competenceId == "") {
+            competenceId = 0
+        }
+
+        var PostData = {
+            competence: competence,
+            competenceId: competenceId,
+            skillId: skill
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetAssessmentOnSkillAndCompetence",
+            contentType: "application/json;",
+            dataType: "",
+            data: JSON.stringify(PostData),
+            success: function (result) {
+                var $select = $('#ddAssessmentForAssmnt');
+
+                $select.find('option').remove();
+                $('<option>').text("Please Select Assessment").appendTo($select);
+                $.each(result, function (key, value) {
+
+                    $('<option>').val(value.AssessmentId).text(value.AssessmentName).appendTo($select);
+                });
+
+            }
+        });
+    }
+
+    function SaveAssessment() {
+
+        var isValid = true;
+
+        var valid1 = $("#ddSkillForAssmnt").hasClass("valid");
+        if (!valid1) {
+            isValid = false;
+            $("#ddSkillForAssmnt").css('border', '2px solid red');
+            $("#SkillForAssmntError").css('display', 'block');
+        }
+
+        var valid2 = $("#ddAssessmentForAssmnt").hasClass("valid");
+        if (!valid2) {
+            isValid = false;
+            $("#ddAssessmentForAssmnt").css('border', '2px solid red');
+            $("#AssessmentForAssmntError").css('display', 'block');
+        }
+
+        var valid3 = $("#ddAssignedToForAssmnt").hasClass("valid");
+        if (!valid3) {
+            isValid = false;
+            $("#ddAssignedToForAssmnt").css('border', '2px solid red');
+            $("#AssignToForAssmntError").css('display', 'block');
+        }
+
+        var valid4 = $("#dtLastDayCompletionForAssmnt").hasClass("valid");
+
+        if (!valid4) {
+            isValid = false;
+            $("#dtLastDayCompletionForAssmnt").css('border', '2px solid red');
+            $("#LastDayCompletionForAssmtError").css('display', 'block');
+        }
+
+        if (isValid) {
+            $('#myModal').modal('show');
+            var objAssessment = {
+                TrainingCourseId: $("#ddSkillForAssmnt").val(),
+                TrainingAssessmentId: $("#ddAssessmentForAssmnt").val(),
+                TrainingAssessment: $("#ddAssessmentForAssmnt :selected").text(),
+                IsMandatory: $("#IsMandatoryForAssmnt").is(':checked'),
+                IsIncludeOnBoarding: $("#IsIncludeOnBoardingForAssmnt").is(':checked'),
+                LastDayCompletion: $("#dtLastDayCompletionForAssmnt").val()
+            }
+
+            var PostData = {
+                assignedGroup: $("#ddAssignedToForAssmnt").val(),
+                assessment: objAssessment
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/Admin/AssignAssessmentsToAllUser",
+                contentType: "application/json;",
+                dataType: "",
+                data: JSON.stringify(PostData),
+                success: function (result) {
+
+                    $('#myModal').modal('hide');
+                    $(".statusMessage").html("Assesment Assigned Successfully.");
+
+                }
+            });
+        }
+    }
+
+</script>

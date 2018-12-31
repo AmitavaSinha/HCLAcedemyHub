@@ -1,0 +1,29 @@
+﻿@model List<HCLAcademy.Models.WikiPolicies>
+
+
+<nav role="navigation" class="navbar navbar-static" id="navbar-example">
+    <div class="faq-tabber">
+
+        @{
+            <ul class="nav nav-tabs">
+                @if (Model != null && Model.Count > 0)
+                {
+
+                    <li class="active"><a data-toggle="tab" href="#All">All</a></li>
+                }
+
+                @foreach (var PolicyOwner in Model.Select(c => c.PolicyOwner).Distinct().ToList())
+                {
+                    if (!string.IsNullOrEmpty(PolicyOwner))
+                    {
+                        var policyname = "#" + PolicyOwner;
+                        <li><a data-toggle="tab" href="@policyname">@PolicyOwner</a></li>
+                    }
+                }
+            </ul>            
+        }
+
+
+    </div>
+    <!-- /.container-fluid -->
+</nav>

@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.Title = "ProjectAdmin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .bold{
+        font-weight: bolder;
+        font-size: 14px;
+    }
+    .success{
+        color:green;
+    }
+    .error{
+        color:red
+    }
+</style>
+<script>
+    function UploadProjectFile() { 
+        console.log("Upload Begins");
+        $("#lblmessage").html("");
+        $("#divStartUpload").html(" <img src='/Images/loading_01.gif' class='loader-img loader-position' />");
+
+        var form = $('#FormUpload')[0];
+        var dataString = new FormData(form);
+        $.ajax({
+            //url: '/Project/UploadProjectDataFile',
+            url: '/ImportProjects/UploadProjectDataFile',
+            type: 'POST',
+            data: dataString,
+            //Options to tell jQuery not to process data or worry about content-type.
+            cache: false,
+            contentType: false,
+            processData: false,
+            //Ajax events
+            success: function (responce) {
+                $("#divStartUpload").html("");
+                //$("#lblStatus").html(responce.status == true ? "<span class='success'>Operation completed successfully</span>": "<span class='error'>Failed to import project details</span>");
+                $("#lblmessage").show().html(responce.message);
+            },
+            failure: function (response) {
+                alert(responce.message);
+            }
+        });
+    }
+</script>
+
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container" style="min-height:438px">
+        <h2>Import Projects</h2>
+        <div id="divOnBoardUser">
+            <!--<ul class="nav nav-tabs no-bdr-pad">
+                <li class="active" id="BulkProject"><a style="cursor:pointer;background-color:#337ab7;color:#fff;"><linkbutton>Upload Bulk Project</linkbutton></a></li>
+            </ul>-->
+
+            <div id="divProjectBulk">
+                <div id="FormContent">
+                    <form id="FormUpload" enctype="multipart/form-data" method="post">
+
+                        <div class="top-mrg">
+                            <span class="pull-left fileinput-button" style="color:#ff6200;">
+                                <input type="file" name="UploadedFile" id="UploadedFile" />
+                            </span>
+                            <button class="btn btn-primary start col-md-offset-1 pull-left" type="button" id="Submit_btn" onclick="UploadProjectFile()">
+                                <i class="glyphicon glyphicon-upload"></i>
+                                <span>Start upload</span>
+                            </button>
+                            <span class="pull-left fileinput-button" style="color:#fff; margin-left:50px">
+                                <a href="~/Content/ProjectData.xlsx" title="Download ProjectData Template"><i class="fa fa-download fa-2x" aria-hidden="true"></i></a>
+                            </span>
+                            <span class="pull-left fileinput-button" style="color:red; margin-left:15px;font-style: italic;">
+                                Download ProjectData template here
+                            </span>
+                            <div class="spacer"></div>
+                        </div>
+                    </form>
+                </div>
+                <div id="lblStatus"></div>
+                <div id="lblmessage" style="display:none"></div>
+            </div>
+        </div>
+        <div class="row" id="divStartUpload"></div>
+    </section>
+</div>
+

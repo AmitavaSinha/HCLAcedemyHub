@@ -1,0 +1,103 @@
+﻿@using HCLAcademy.Models;
+@using System.Text.RegularExpressions;
+
+<ul class="nav navbar-nav">
+    @{
+        string currentController = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+
+        List<SiteMenu> siteMenu = (List<SiteMenu>)HttpContext.Current.Session["UserSiteMenu"];
+        List<int> userrole = (List<int>)HttpContext.Current.Session["UserRole"];
+        List<SiteMenu> parentMenus = siteMenu.Where(s => s.ParentItemId == 0).OrderBy(m => m.ItemOrdering).ToList();
+        foreach (HCLAcademy.Models.SiteMenu sitem in parentMenus)
+        {
+
+            bool showParentMenu = false;
+
+            if (sitem.ItemName.ToLower() == "admin")
+            {
+                showParentMenu = true;
+
+            }
+            else
+            {
+                if (sitem.UserRole != null && sitem.UserRole.Count() > 0)
+                {
+                    foreach (UserRole urole in sitem.UserRole)
+                    {
+
+                        if (urole.RoleName.ToLower() == "default")
+                        {
+                            showParentMenu = true;
+                            break;
+                        }
+                        if (userrole.Contains(urole.RoleId) == true)
+                        {
+                            showParentMenu = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+
+
+            string[] URLsVal = Regex.Split(sitem.ItemURL, "/");
+            List<SiteMenu> childMenus = siteMenu.Where(s => s.ParentItemId == Convert.ToInt32(sitem.ItemId)).OrderBy(m => m.ItemOrdering).ToList();
+            if (childMenus != null && childMenus.Count > 0)
+            {
+                <li class="@(currentController.ToLower() == Convert.ToString(URLsVal[0]).ToLower() ? "active" : "")" style="@(showParentMenu == true ? "display:block" : "display:none")">
+                    <a href='@Convert.ToString(sitem.ItemURL)' class="dropdown-toggle" data-toggle="dropdown">
+                        @Convert.ToString(sitem.ItemName)@*<div class="submenu dropdown-toggle" data-toggle="dropdown">*@<b class="caret"></b>@*</div>*@
+                                                                                                                         <ul class="dropdown-menu">
+                                                                                                                             @{foreach (HCLAcademy.Models.SiteMenu cItem in childMenus)
+                                                                                                                                 {
+                                                                                                                                     bool showChildMenu = false;
+                                                                                                                                     if (sitem.ItemName.ToLower() == "admin")
+                                                                                                                                     {
+                                                                                                                                         showChildMenu = true;
+                                                                                                                                     }
+                                                                                                                                     else
+                                                                                                                                     {
+                                                                                                                                         if (cItem.UserRole != null && cItem.UserRole.Count() > 0)
+                                                                                                                                         {
+                                                                                                                                             foreach (UserRole uRole in cItem.UserRole)
+                                                                                                                                             {
+
+                                                                                                                                                 if (uRole.RoleName.ToLower() == "default")
+                                                                                                                                                 {
+                                                                                                                                                     showChildMenu = true;
+                                                                                                                                                     break;
+                                                                                                                                                 }
+                                                                                                                                                 if (userrole.Contains(uRole.RoleId) == true)
+                                                                                                                                                 {
+                                                                                                                                                     showChildMenu = true;
+                                                                                                                                                     break;
+                                                                                                                                                 }
+                                                                                                                                             }
+                                                                                                                                         }
+                                                                                                                                     }
+                                                                                                                                     if (cItem.ItemTarget == "_blank")
+                                                                                                                                     {
+                                                                                                                                         <li style="@(showChildMenu == true ? "display:block" : "display:none")"><a href='@Convert.ToString(cItem.ItemURL)' target="@Convert.ToString(cItem.ItemTarget)">@Convert.ToString(cItem.ItemName)</a></li>
+                                                                                                                                     }
+                                                                                                                                     else
+                                                                                                                                     {
+                                                                                                                                         <li style="@(showChildMenu == true ? "display:block" : "display:none")"><a href='@Convert.ToString(cItem.ItemURL)' >@Convert.ToString(cItem.ItemName)</a></li>
+                                                                                                                                     }
+                                                                                                                                 }
+                                                                                                                             }
+                                                                                                                         </ul>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="@(currentController.ToLower() == Convert.ToString(URLsVal[1]).ToLower() ? "active" : "")" style="@(showParentMenu == true ? "display:block" : "display:none")">
+                    <a href='@Convert.ToString(sitem.ItemURL)'>@Convert.ToString(sitem.ItemName)</a>
+                </li>
+            }
+
+        }
+    }
+</ul>
+

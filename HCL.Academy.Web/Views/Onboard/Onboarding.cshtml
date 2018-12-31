@@ -1,0 +1,458 @@
+﻿@using HCLAcademy.Models;
+@using HCLAcademy.Common;
+@using System.Configuration;
+
+@model HCLAcademy.Models.OnBoardingViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string StrTheme = ConfigurationManager.AppSettings["Theme"].ToString();
+    string themeLink = "~/Content/Theme/theme-" + @StrTheme + ".css";
+    < link href = themeLink rel="stylesheet" />
+}
+@Styles.Render("~/Content/scrollBarCss");
+@Scripts.Render("~/bundles/scrillBarJs");
+<script src="~/Scripts/bootstrap-confirmation.min.js"></script>
+
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <div style="overflow:hidden;">
+            <div class="pull-right">
+                <input type="button" class="btn btn-update btn-save" value="Save" style="margin-right:10px; margin-top:0; margin-bottom:0;" />
+                @if (Model.sendEmail)
+                {
+                    <input type="button" class="btn btn-update btn-update-email" tooltip="Mail Sent to PMO, Please save your information to send email again" disabled="disabled" value="Send Email" style="margin-right:10px; margin-top:0; margin-bottom:0;display:none;" />
+                }
+                else
+                {
+                    <input type="button" class="btn btn-update btn-update-email" value="Send Email" style="margin-right:10px; margin-top:0; margin-bottom:0;display:none;" />
+
+                }
+                <a class="btn btn-update" style="margin-top: 0; margin-bottom: 0;" data-toggle="modal" data-target="#myModal" onclick="getInformation(); return false;"><i class="fa fa-info-circle" aria-hidden="true"></i> Information</a>
+            </div>
+            <h2>On Boarding</h2>           
+        </div>
+
+        <div class="onboard-pan ing-bg">
+            <div class="onboard-main">
+                <h3>Onboarding Checklist for you</h3>
+                <div class="demo-x">
+                    <div class="onboard-toplist">
+
+                        @{
+                            int i = 1;
+                            if (Model.TopRowList != null)
+                            {
+                                foreach (var item in Model.TopRowList)
+                                {
+                                    <div class="onboard-box" data-id="@item.BoardingItemId" data-type="@item.BoardingType">
+                                        <div class="onboard-checktop">
+                                            <ul>
+                                                <li>@i</li>
+                                                <li>
+                                                    @{
+                                    if ((item.BoardingStatus == OnboardingStatus.NotStarted) ||
+                                    (item.BoardingStatus == OnboardingStatus.OnGoing))
+                                    {
+                                        if (item.BoardingType == OnboardingItemType.Training || item.BoardingType == OnboardingItemType.RoleTraining)
+                                        {
+                                            <div class="Checkbox cls_update_Status" id="@item.BoardingItemId" data-id="@item.BoardingItemId" data-type="@item.BoardingType"
+                                                 data-title="@item.BoardingInternalName">
+                                                <input type="checkbox" data-toggle="trainingConfirmation" data-placement="bottom" data-singleton="true"
+                                                       data-title="@User.Identity.Name  certify that I have read all the document(s) related to @item.BoardingItemName I am aware of the specific requirements mentioned in the document(s)" />
+                                                <div class="Checkbox-visible"></div>
+                                            </div>
+                                        }
+                                        else if (item.BoardingType == OnboardingItemType.Default)
+                                        {
+                                            <div class="Checkbox cls_update_Status" id="@item.BoardingItemId" data-id="@item.BoardingItemId" data-type="@item.BoardingType"
+                                                    data-title="@item.BoardingInternalName">
+                                                <input type="checkbox" data-toggle="trainingConfirmation" data-placement="bottom" data-singleton="true"                                                        
+                                                        data-title="Please confirm" />
+                                                <div class="Checkbox-visible"></div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Images/checkbox-bg.png" />
+                                                            }
+                                                        }
+                                                        else if (item.BoardingStatus == OnboardingStatus.Completed)
+                                                        {
+                                        <img src="~/Images/tick-bg.png" />
+                                    }
+                                    else if ((item.BoardingStatus == OnboardingStatus.Rejected)
+                                    || (item.BoardingStatus == OnboardingStatus.Failed)
+                                    || (item.BoardingStatus == OnboardingStatus.OverDue))
+                                    {
+                                        <img src="~/Images/cross-bg.png" />
+                                    }
+                                                    }
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="onboard-txt">                                           
+
+                                            @if (!item.IsWikiLink && !string.IsNullOrEmpty(item.BoardingItemLink))
+                                            {
+                                                <h4><a href="@item.BoardingItemLink" target="_blank">@item.BoardingItemName</a></h4>
+                                            }
+                                            else if (item.IsWikiLink)
+                                            {
+                                                <h4>
+                                                    @Html.ActionLink(item.BoardingItemName, "Wiki", "Wiki", new { Selected = item.BoardingItemName }, new { @target = "_blank" })
+                                                </h4>
+                                            }
+                                            else
+                                            {
+                                                <h4>
+                                                    @if (item.BoardingItemName.ToLower().Trim() == "Selected Profile".ToLower())
+                                                    {
+                                                        <a href="#" data-toggle="modal" data-target="#myModal" onclick="getUploadProfile(); return false;">@item.BoardingItemName</a>
+                                                    }
+                                                    else if (item.BoardingItemName.ToLower().Trim() == "Domain Assessment".ToLower())
+                                                    {
+                                                        ViewBag.DomainAssessmentId = item.BoardingItemId;
+                                                        <a href="#" data-toggle="modal" data-target="#DomainModal">@item.BoardingItemName</a>
+                                                    }                                                   
+                                                    else if (item.BoardingType == OnboardingItemType.Assessment)
+                                                    {                                                     
+                                                        @Html.ActionLink(item.BoardingItemName, "Index", "Assessment",
+                                                                        new { id = item.BoardingItemId },
+                                                                        new { @target = "_blank", @data_toggle = "confirmation", @data_singleton = "true", @data_placement = "top" })
+                                                    }
+                                                    else
+                                                    {
+                                                        @item.BoardingItemName
+
+                                                    }
+                                                </h4>
+                                            }
+                                            <p>@item.BoardingItemDesc</p>                                          
+                                        </div>
+                                    </div>
+                                            i = i + 2;
+                                }
+                            }
+                        }
+
+
+                        <div class="spacer"></div>
+
+                    </div>
+
+                    <div class="status-onboard">
+                        <ul class="points">
+                            @{
+                                if (Model.bgColorList != null)
+                                {
+                                    foreach (var bColor in Model.bgColorList)
+                                    {
+                                        <li class="@bColor"><span></span></li>
+                                    }
+                                }
+                            }
+
+                        </ul>
+                    </div>
+                    <div class="onboard-botlist">
+                        @{
+                            int j = 2;
+                            if (Model.BottomRowList != null)
+                            {
+                                foreach (var item in Model.BottomRowList)
+                                {
+
+                                    <div class="onboard-box" data-id="@item.BoardingItemId" data-type="@item.BoardingType">
+                                        <div class="onboard-txt arrw-top">                                            
+                                            @if (!item.IsWikiLink && !string.IsNullOrEmpty(item.BoardingItemLink))
+                                            {
+                                                <h4><a href="@item.BoardingItemLink" target="_blank">@item.BoardingItemName</a></h4>
+                                            }
+                                            else if (item.IsWikiLink)
+                                            {
+                                                <h4>
+                                                    @Html.ActionLink(item.BoardingItemName, "Wiki", "Wiki", new { Selected = item.BoardingItemName }, new { @target = "_blank" })
+                                                </h4>
+                                            }
+                                            else
+                                            {
+                                                <h4>
+                                                    @if (item.BoardingItemName.ToLower().Trim() == "Selected Profile".ToLower())
+                                                    {
+                                                        <a href="#" data-toggle="modal" data-target="#myModal">@item.BoardingItemName</a>
+                                                    }
+                                                    else if (item.BoardingItemName.ToLower().Trim() == "Domain Assessment".ToLower())
+                                                    {
+                                                        ViewBag.DomainAssessmentId = item.BoardingItemId;
+                                                        <a href="#" data-toggle="modal" data-target="#DomainModal">@item.BoardingItemName</a>
+                                                    }
+                                                    else if (item.BoardingItemName.ToLower().Trim() == "work permit readiness")
+                                                    {
+                                                        @Html.ActionLink(item.BoardingItemName, "NLWorkPermit", "Onboard")
+                                                    }
+                                                    else if (item.BoardingType == OnboardingItemType.Assessment)
+                                                    {
+                                                        @Html.ActionLink(item.BoardingItemName, "Index", "Assessment",
+                                                                        new { id = item.BoardingItemId },
+                                                                        new { @target = "_blank", @data_toggle = "confirmation", @data_singleton = "true", @data_placement = "top" })
+
+                                                    }
+                                                    else
+                                                    {
+
+                                                        @item.BoardingItemName
+
+                                                    }
+                                                </h4>
+                                            }
+                                            <p>@item.BoardingItemDesc</p>                                            
+                                        </div>
+                                        <div class="onboard-checkbot">
+                                            <ul>
+                                                <li>@j</li>
+                                                <li>
+                                                    @{
+                                                        if ((item.BoardingStatus == OnboardingStatus.NotStarted) ||
+                                                        (item.BoardingStatus == OnboardingStatus.OnGoing))
+                                                        {
+                                                            if (item.BoardingType == OnboardingItemType.Training || item.BoardingType == OnboardingItemType.RoleTraining || item.BoardingItemName.ToLower().Trim() == "onsite travel readiness"
+                                                            || item.BoardingItemName.ToLower().Trim() == "work permit readiness")
+                                                            {
+                                            <div class="Checkbox cls_update_Status" id="@item.BoardingItemId" data-id="@item.BoardingItemId" data-type="@item.BoardingType"
+                                                 data-title="@item.BoardingInternalName">
+                                                <input type="checkbox" data-toggle="trainingConfirmation"
+                                                       data-title="@User.Identity.Name  certify that I have read all the document(s) related to @item.BoardingItemName I am aware of the specific requirements mentioned in the document(s)"
+                                                       data-placement=" top" data-singleton="true" />
+                                                <div class="Checkbox-visible"></div>
+                                            </div>
+                                        }
+                                        else if (item.BoardingType == OnboardingItemType.Default)
+                                        {
+                                            <div class="Checkbox cls_update_Status" id="@item.BoardingItemId" data-id="@item.BoardingItemId" data-type="@item.BoardingType"
+                                                    data-title="@item.BoardingInternalName">
+                                                <input type="checkbox" data-toggle="trainingConfirmation" data-placement="bottom" data-singleton="true" data-title="Please confirm" />
+                                                 <div class="Checkbox-visible"></div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Images/checkbox-bg.png" />
+                                        }
+                                    }
+                                    else if (item.BoardingStatus == OnboardingStatus.Completed)
+                                    {
+                                        <img src="~/Images/tick-bg.png" />
+                                    }
+                                    else if ((item.BoardingStatus == OnboardingStatus.Rejected) ||
+                                    (item.BoardingStatus == OnboardingStatus.Failed) ||
+                                    (item.BoardingStatus == OnboardingStatus.OverDue))
+                                    {
+                                        <img src="~/Images/cross-bg.png" />
+                                    }
+                                                    }
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+
+                                    j = j + 2;
+                                }
+                            }
+                        }
+                        <div class="spacer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align:center;">
+            <input type="button" class="btn btn-update btn-save" value="Save" style="margin-right:10px;" />
+            @if (Model.sendEmail)
+            {
+                <input type="button" class="btn btn-update btn-update-email" tooltip="Mail Sent to PMO, Please save your information to send email again" disabled="disabled" value="Send Email" style="display:none;"/>
+            }
+            else
+            {
+                <input type="button" class="btn btn-update btn-update-email" value="Send Email" style="margin-right:10px;display:none;" />
+
+            }
+            @*<a class="btn btn-update"><i class="fa fa-info-circle" aria-hidden="true"></i> Information</a>*@
+            <a class="btn btn-update" data-toggle="modal" data-target="#myModal" onclick="getInformation(); return false;"><i class="fa fa-info-circle" aria-hidden="true"></i> Information</a>
+        </div>
+
+
+    </section>
+    <div class="modal fade bs-example-modal-sm" id="DomainModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+
+            <!-- Modal content-->
+            <div class="modal-content profile-table">
+                <div class="modal-header profile-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2 class="modal-title">Business Domain</h2>
+                </div>
+                <div class="modal-body profile-pan">
+
+                    <ul class="domain-list">
+                        <li class="drop">
+                            <i class="fa fa-chevron-circle-right" aria-hidden="true"></i><a href="#">Retail Banking</a>
+                            <ul style="display:none;">
+                                <li>
+                                    @*<a href="#">Business Landing</a>*@
+                                    @Html.ActionLink("Business Landing", "Index", "Assessment", new { id = ViewBag.DomainAssessmentId }, new { @target = "_blank" })
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+                            <a href="#">Wholesale Banking</a>
+                        </li>
+                        @*<li>
+                                <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+                                <a href="#">Group Services</a>
+                            </li>*@
+
+                        <li class="drop">
+                            <i class="fa fa-chevron-circle-right" aria-hidden="true"></i><a href="#">Group Services</a>
+                            @{
+
+                                if (ViewBag.showMarketRiskLink)
+                                {
+                                <ul style="display:none;">
+                                    <li>
+                                        @*<a href="#">Business Landing</a>*@
+                                        @Html.ActionLink("Market Risk", "Index", "Assessment", new { id = ViewBag.MarketRiskLinkID }, new { @target = "_blank" })
+                                    </li>
+                                </ul>
+                            }
+                            }
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(window).on('beforeunload', function (e) {     
+    });
+    $(document).ready(function () {
+
+        $(".demo-x").mCustomScrollbar({
+            axis: "x",
+            advanced: { autoExpandHorizontalScroll: true }
+        });
+        var j = 0;
+        $('.cls_update_Status').each(function (i, value) {
+            if ($(value).find("input[type='checkbox']")) {
+                j = 1;
+            }
+
+        });
+        if (j == 0) {
+            $('.btn-save').prop("disabled", true);
+        }
+
+        $('.domain-list li.drop').click(function () {
+           
+            $(this).find('ul').toggle();
+
+        });
+
+        $('[data-toggle=confirmation]').confirmation({
+            rootSelector: '[data-toggle=confirmation]',
+            title: '@MessageConstant.AssesmentConfirmMsg',
+            popout: true,
+            btnOkLabel: 'OK',
+            btnCancelLabel: 'Cancel',
+            onConfirm: function () { return true; },
+            onCancel: function () { return false; }
+        });
+        $('[data-toggle=trainingConfirmation]').confirmation({
+            rootSelector: '[data-toggle=trainingConfirmation]',           
+            popout: true,
+            btnOkLabel: 'Yes',
+            btnCancelLabel: 'No',
+            onConfirm: function () {
+                $(this).prop('checked', true);
+                $(this).siblings(".Checkbox-visible").addClass("onbrd-checked");
+                return true;
+            },
+            onCancel: function () {
+                $(this).siblings(".Checkbox-visible").removeClass("onbrd-checked");
+                $(this).prop('checked', false);
+                return false;
+            }
+        });
+        $('.btn-save').click(function () {
+            updateOnBoarding();
+        });
+        $('.btn-update-email').click(function () {
+            updateEmailField();
+        });
+
+    });
+    function updateOnBoarding() {
+        console.log('save training status.');
+        var j = 0;
+        
+        var arrayOfTrainings = [];
+        $('.cls_update_Status').each(function (i, value) {
+            if ($(value).find("input[type='checkbox']").is(":checked")) {
+                var obj = new Object;
+                j = 1;
+                obj.Id = $(value).attr('data-id');
+                obj.OnboardingType = $(value).attr('data-type');
+                obj.BoardingInternalName = $(value).attr('data-title');
+                arrayOfTrainings.push(obj);
+            }
+        });
+
+        if (arrayOfTrainings.length > 0) {
+            jQuery.ajax({
+                type: "POST",
+                url: '/Onboard/OnBoardingStatusUpdate',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(arrayOfTrainings),
+                success: function (data) {
+                    $("#popup-Training").modal('hide');
+                    $('#' + data[1]).replaceWith('<img src="/Images/tick-bg.png" />');
+
+                    $("#popup-DisplayMsg").modal('show');
+                    $("#myModalLabel").html("Success");
+                    $("#modal-body-DisplayMsg").html("Checklist Updated !!");
+                    window.location.reload();
+                },
+                failure: function (errMsg) {
+                    $("#popup-DisplayMsg").modal('show');
+                    $("#myModalLabel").html("Error");
+                    $("#modal-body-DisplayMsg").html(err);
+                    console.log(err);
+                }
+            });
+        }
+        if (j == 0) {         
+            $("#popup-DisplayMsg").modal('show');
+            $("#myModalLabel").html("Warning");
+            $("#modal-body-DisplayMsg").html("No Changes made..!!");
+        }
+    }
+    function updateEmailField() {
+        $.post("/Onboard/OnBoardingStatusEmail").done(function (data) {
+            console.log("Email Field Updated Successfully")
+            $("#popup-DisplayMsg").modal('show');
+            $("#myModalLabel").html("Success");
+            $("#modal-body-DisplayMsg").html("Email has been sent successfully to PMO");
+
+            window.location.href = "/Onboard/OnBoarding";
+        }).fail(function (err) {
+            $("#popup-DisplayMsg").modal('show');
+            $("#myModalLabel").html("Error");
+            $("#modal-body-DisplayMsg").html(err);
+            console.log(err);
+        });
+    }
+</script>

@@ -1,0 +1,194 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/checklist.css" rel="stylesheet" />
+
+<div id="body">
+    <section class="content-wrapper main-content clear-fix container">
+        <a class="btn back-top pull-right no-mrg" href="/Training/Training">Back</a>
+        <h2>UI - Scala Training Plan</h2>
+        <div class="competence-pan">
+            <div class="competence-main checklist">
+                @*<h4>Training Overview</h4>*@
+                @*<table class="table table-bordered admin-onbrdtble" style="width:auto">
+                    <tr>
+                        <td><h5>Week Plan</h5></td>
+                        <td><h5>Description</h5></td>
+                    </tr>
+                    <tr>
+                        <td>Week 1</td>
+                        <td>Scala isn’t just Java</td>
+                    </tr>
+                    <tr>
+                        <td>Week 2</td>
+                        <td>Multi threading (actors/futures/data structures)</td>
+                    </tr>
+                    <tr>
+                        <td>Week 3</td>
+                        <td>Using Play to make APIs</td>
+                    </tr>
+                    <tr>
+                        <td>Week 3</td>
+                        <td>Testing: unit/functional/actors/play</td>
+                    </tr>
+                    <tr>
+                        <td>Week 4</td>
+                        <td>Scala for big data: Kafka / Spark</td>
+                    </tr>
+                    <tr>
+                        <td>Validation Project 1</td>
+                        <td>Kafka/spark batch job</td>
+                    </tr>
+                    <tr>
+                        <td>Validation Project 2</td>
+                        <td>Play framework service aggregation</td>
+                    </tr>
+                </table>*@
+
+                <h4>Training Prerequisites</h4>
+                <ul style="list-style-type:disc;list-style-position:inside;">
+                    <li>
+                        Must be completed by the Candidate before the course starts
+                        <ul style="list-style-type:circle;list-style-position:inside;">
+                            <li>Scala installed</li>
+                            <li>SBT installed</li>
+                            <li>Ideally IntelliJ or Eclipse installed and working but other editor can be used if desired</li>
+                            <li>Hello World written and works</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>Week 1 : Scala Fundamentals</h4>
+                <ul>
+                    <li>
+                        <ul style="list-style-type:circle;list-style-position:inside;">
+                            <li>Why Scala isn't just Java without semicolons.</li>
+                            <li>Based on a 'parse this JSON from CSVs and write it to a file'</li>
+                            <li>Domain models</li>
+                            <li>How we process domain models</li>
+                            <li>For loops</li>
+                            <li>Unit testing</li>
+                            <li>Implicits and type classes</li>
+                            <li>Extending code we don't have the code for</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>Week 2 : Multi threading</h4>
+                <ul style="list-style-type:disc;list-style-position:inside;">
+                    <li>
+                        Futures
+                        <ul style="list-style-type:circle;list-style-position:inside;">
+                            <li>Futures / Thread pools and Executors</li>
+                            <li>Merging futures, sequencing futures</li>
+                            <li>Caching</li>
+                            <li>Atomic Variables, mutexes and Triemaps, and don't use them unless you know what you are doing</li>
+                            <li>Immutable data structures and Lens.</li>
+                            <li>Testing futures</li>
+                        </ul>
+                    </li>
+                    <li>
+                        Actors
+                        <ul style="list-style-type:circle;list-style-position:inside;">
+                            <li>Idea behind of actors</li>
+                            <li>Our first actor</li>
+                            <li>Actors does and don't: defining props, how and when to mutate state, avoiding leakage of state, prefer libraries that use actors (like akka streams)</li>
+                            <li>Supervisors and failure strategies</li>
+                            <li>Testing actors using TestKit</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>Week 3: Making APIs in Scala using Play framework</h4>
+                <ul>
+                    <li>
+                        <ul style="list-style-type:circle;list-style-position:inside;">
+                            <li>Play framework overview</li>
+                            <li>Calling out to other services and aggregating the results</li>
+                            <li>Using configuration</li>
+                            <li>JSON libraries & content negotiation</li>
+                            <li>How to structure your api: programming with arrows and services</li>
+                            <li>Handling exceptions in Scala</li>
+                            <li>How to structure the main method and use dependency injection</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>Week 3 Continued: Testing</h4>
+                <ul>
+                    <li>
+                        <ul style="list-style-type:circle;list-style-position:inside;">
+                            <li>Mocking</li>
+                            <li>Play testing</li>
+                            <li>Functional testing with RestAssured</li>
+                            <li>Consumer Driven Contract Tests?</li>
+                            <li>Test data management: DSLs</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>Week 4 : Scala for Big Data</h4>
+                <ul style="list-style-type:disc;list-style-position:inside;">
+                    <li>
+                        Kafka
+                        <ul style="list-style-type:circle;list-style-position:inside;">
+                            <li>Installing</li>
+                            <li>Getting data from Kafka</li>
+                            <li>Putting data on Kafka</li>
+                            <li>Firing actors when Kafka events occur</li>
+                        </ul>
+                    </li>
+                    <li>
+                        Spark
+                        <ul style="list-style-type:circle;list-style-position:inside;">
+                            <li>Showing that Spark is initially really easy</li>
+                            <li>Process the CSV files we used in day 1</li>
+                            <li>
+                                Problems with Spark:
+                                <ul style="list-style-type:circle;list-style-position:inside;">
+                                    <li>be careful about reference data.</li>
+                                    <li>Be careful about closing over objects</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>Exercise 1 : Kafka / Spark</h4>
+                <ul>
+                    <li>
+                        <ul style="list-style-type:circle;list-style-position:inside;">
+                            <li>Connect to a Kafka queue with a spark application and</li>
+                            <li>Process some data from it by adding up count of the messages for each key in the queue</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>Exercise 2 : Scala API using Play</h4>
+                <ul>
+                    <li>
+                        <ul style="list-style-type:circle;list-style-position:inside;">
+                            <li>Produce endpoint ‘service/version’ that shows the contents of the environment string ‘VERSION’</li>
+                            <li>Produce endpoint ‘service/value/XXX’ that shows the value found in the typesafe config file at ‘service.value.XXX’</li>
+                            <li>Produce endpoint ‘service/config’ that aggregates the results from ‘service/value’ and ‘service/ip’ as a block of JSON</li>
+                            <li>The endpoints ‘service/version’ and ‘service/value/XXX’ need to have the following behavior. In the following <#> means  the words ‘version’ or ‘value’:</li>
+                            <li>They return content type ‘application/json’ unless stated otherwise</li>
+                            <li>If the header ‘X-test-exception-<#>’ is present with structure ‘name-message’ it will throw an exception of type ‘TestException’ and a message equal to the ‘message’ and a content type of text/plain</li>
+                            <li>Otherwise if the header ‘X-test-result-<#>’ is present, instead of the expected result, it returns that as a block of json</li>
+                            <li>Otherwise it returns the expected result as either {“version”: “<version>”} or {“XXX”: “<value>”} where <version> and <value> are the results</li>
+                            <li>The endpoint ‘service/config/’ needs to</li>
+                            <li>Propagate all of its headers to the calls to service/value, and service/version</li>
+                            <li>Return a gateway exception with plain text ‘Gateway Exception’ if any service has an error</li>
+                            <li>Aggregate the results {“version”: “###”, “ip” : “###”, “timezone”: “###”} where ‘timezone’ and ‘ip’ are found from ‘service/value/ip’ and ‘service/value/timezone’</li>
+                        </ul>
+                    </li>
+                </ul>
+
+
+            </div>
+        </div>
+        <a class="btn back-top" href="/Training/Training">Back</a>
+    </section>
+
+
+</div>

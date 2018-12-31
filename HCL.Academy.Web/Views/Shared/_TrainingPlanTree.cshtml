@@ -1,0 +1,55 @@
+﻿
+@using HCLAcademy.Utility;
+
+@model List<HCLAcademy.Models.TrainingPlan>
+
+@helper jstree(List<HCLAcademy.Models.TrainingPlan> modelItems)
+{
+
+    foreach (var boardingItem in modelItems)
+    {
+
+        <li id="@boardingItem.Id" >
+
+            @if (!boardingItem.IsFolder)
+            {
+
+                @*<span class="leaf cls_@boardingItem.DocumentName.Replace(" ","")" id="@boardingItem.Id">@boardingItem.DocumentName</span>*@
+
+                @*<a data-toggle="tab" href="#">@boardingItem.DocumentName</a>*@
+
+                <a >@boardingItem.DocumentName</a>
+            }
+
+            else
+            {
+
+                <span class="folder cls_@boardingItem.DocumentName.Replace(" ","")">@boardingItem.DocumentName</span>
+
+                if (boardingItem.TrainingChild != null)
+                {
+                    <ul>
+
+                        @jstree(boardingItem.TrainingChild)
+
+                    </ul>
+                }
+
+            }
+
+        </li>
+
+    }
+
+
+
+}
+
+<h1>TreeView in ASP.Net MVC</h1>
+
+<ul id="chapterFolders" class="filetree treeview-famfamfam">
+
+    @jstree(Model)
+
+</ul>
+

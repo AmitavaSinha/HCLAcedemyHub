@@ -1,0 +1,56 @@
+﻿
+@model List<HCLAcademy.Models.News>
+
+<div id="carousel-News-vertical" class="vertical-slider carousel vertical slide" data-ride="carousel">
+    <div class="carousel-inner" role="listbox">
+        @if (Model != null && Model.Count > 0)
+        {
+            int i = 0;
+            foreach (var item in Model)
+            {
+                <div class="@(i == 0 ? "item active" : "item")">
+                    <div class="media">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <img src="data:image;base64,@item.ImageURL" height="80" width="100" alt="Media Object" />
+                            </div>
+                            <div class="media-body panel-heading">
+                                <h4 class="media-heading">@item.Header</h4>
+                                <a href="#" class="M3">                                    
+                                    @item.TrimmedBody                                  
+                                </a>
+                                <p class="comment-bdr">
+                                    <a href="../News/NewsEvents" target="_self">
+                                        <i class="fa fa-reply"></i>
+                                        <span style="padding-left: 3px">Read More </span>
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                i++;
+            }
+        }
+        else
+        {
+            <div class="item active">
+                <div class="media">
+                    There is no recent news.
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="arrow-control" style="visibility:hidden">
+        <a class="up carousel-control up-team" href="../News/NewsEvents" role="button" data-slide="prev">
+            <i class="fa fa-chevron-up" aria-hidden="true"></i>
+        </a>
+        <a class="down carousel-control down-team" href="../News/NewsEvents" role="button" data-slide="next">
+            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+        </a>
+    </div>
+</div>
+
+
+

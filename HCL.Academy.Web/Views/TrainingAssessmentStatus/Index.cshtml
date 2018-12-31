@@ -1,0 +1,112 @@
+﻿
+@model HCLAcademy.Models.TrainingStatus
+@{
+    ViewBag.Title = "TrainingStatus";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .table-striped > tr:nth-child(odd) {
+        background-color: red;
+    }
+</style>
+<script>
+    function FillCompetencePopup() {
+        var skillId = $('#ddSkillForAssmnt').val();
+        $.ajax({
+            url: "/Admin/FillCompetence",
+            type: "GET",
+            dataType: "JSON",
+            data: { Id: skillId },
+            success: function (competencies) {
+                $("#ddCompetanceForAssmnt").html(""); // clear before appending new list
+                $("#ddCompetanceForAssmnt").append($('<option></option>').val('Please Select Competency Level').html('Please Select Competency Level'));
+                $.each(competencies, function (i, competence) {
+
+                    $("#ddCompetanceForAssmnt").append(
+
+                        $('<option></option>').val(competence.CompetenceId).html(competence.CompetenceName));
+                });
+            }
+        });
+    }
+
+    function Download()
+    {
+        if ($("#ddCompetanceForAssmnt")[0].selectedIndex == 0 || $("#ddSkillForAssmnt")[0].selectedIndex == 0) {
+            alert('Please select skill and competence');
+            return;
+        }
+        var selectedSkill = $("#ddSkillForAssmnt").val();
+        var selectedComp = $("#ddCompetanceForAssmnt").val();
+
+        var url = '@Url.Action("DownloadReportToExcel", "TrainingAssessmentStatus")?skill=' + selectedSkill + '&competency=' + selectedComp;
+
+                $.get("/Admin/FakeAjaxCall", function () {
+
+                    window.location.href = url;
+                })
+                .done(function () {
+                    window.setTimeout(function () {
+                        $('#myModal').modal('hide');
+                    }, 2000);
+                });
+    }
+</script>
+<style>
+    table td {
+        padding: 5px;
+    }
+
+    .pL0 {
+        padding-left: 0px !important;
+    }
+
+    .pR0 {
+        padding-right: 0px !important;
+    }
+</style>
+<div id="body" >
+    <section class="content-wrapper main-content clear-fix container">
+        <h2>Training Report Download</h2>
+        <div class="container" style="padding-bottom:50px">
+            <div class="row">
+                <article>
+                    <header>
+                        <h1 style="font-size: 15px;font-weight:bolder;margin-bottom:10px">Please select Skill and Competency Level</h1>
+                    </header>
+                </article>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td><h4 style="font-size: 15px;">Skill</h4></td>
+                            <td>
+                                @Html.DropDownList("ddSkillForAssmnt", new SelectList(Model.Skills, "SkillId", "SkillName"), "Please Select Skill",
+                                                 new
+                                                 {
+                                                     @id = "ddSkillForAssmnt",
+                                                     @class = "form-control",
+                                                     @onchange = "FillCompetencePopup()"
+                                                 })
+                            </td>
+                            <td><h4 style="font-size: 15px;">Competency Level</h4></td>
+                            <td>
+                                @Html.DropDownList("ddCompetanceForAssmnt", new SelectList(Enumerable.Empty<SelectListItem>(), "CompetenceId", "CompetenceName"), "Please Select Competency Level",
+                                       new
+                                       {
+                                           @id = "ddCompetanceForAssmnt",
+                                           @class = "form-control"
+                                       })
+                            </td>
+                            <td>
+                                <input type="button" id="btnDownLoad" class="sta-adminbt" onclick="Download()" value="DownLoad To Excel" />
+                            </td>
+                        </tr>
+                        <tr><td colspan="5" style="font-size:12px;font-style:italic">Click the download button to download the userwise completion status for trainings and assessments under the selected skill and competency</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+
+

@@ -1,0 +1,59 @@
+﻿@model HCLAcademy.Models.SharePointAuthAutho
+
+@{
+    ViewBag.Title = "Login";
+}
+
+@{
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+
+
+<header class="header">
+    <img src="../Images/HCL-ING-Aceademy-Hub_Login.png" alt="HCL Academy Hub" title="HCL Academy Hub" />
+    <script>
+      /*--- Hide Error Message ---*/
+      function onchangeeventUser() {
+          $('#user').hide();
+      }
+
+      function onchangeeventPswd() {
+          $('#pswd').hide();
+      }
+    </script>
+</header>
+@using (Html.BeginForm("Login", "Authorize", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <section class="container validate-cont">
+        <div class="login-box">
+            @if (ViewBag.Message != null)
+            {
+                <span style="border: 1px solid red;align-content:center">
+                    ViewBag.Message
+                </span>
+            }
+            <h1>Login</h1>
+            <div class="form-box">
+                <span class="add-ons"><i class="glyphicon glyphicon-user"></i></span>
+                @Html.TextBoxFor(a => a.UserName, new { @placeholder = "Username", @onchange = "onchangeeventUser();" })
+                <div id="user" style="color:red;align-content:center;text-align:center">
+                    @Html.ValidationMessageFor(model => model.UserName)
+                </div>
+
+            </div>
+            <div class="form-box">
+                <span class="add-ons"><i class="glyphicon glyphicon-lock"></i></span>
+                @Html.PasswordFor(a => a.Password, new { @placeholder = "Password", @onchange = "onchangeeventPswd();" })
+                <div id="pswd" style="color:red;align-content:center;text-align:center">
+                    @Html.ValidationMessageFor(model => model.Password)
+                </div>
+            </div>
+
+            <input type="submit" id="btnLogin" value="Login" name="btnLogin" class="btn btn-login" onclick="animateText()" />
+        </div>
+
+    </section>
+}
